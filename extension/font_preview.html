@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Font Options for YouTube Quizzer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Satoshi:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+            min-height: 100vh;
+            padding: 40px;
+            color: #fff;
+        }
+
+        h1 {
+            font-family: -apple-system, sans-serif;
+            font-size: 24px;
+            margin-bottom: 32px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .font-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 900px;
+        }
+
+        .font-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .font-name {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin-bottom: 16px;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .font-preview h2 {
+            font-size: 22px;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .font-preview p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .font-preview .stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .font-preview .stat {
+            text-align: center;
+        }
+
+        .font-preview .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .font-preview .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* Font families */
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .font-jakarta {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .font-space {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .font-sora {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .font-manrope {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .font-dm {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .font-system {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+        }
+
+        .recommendation {
+            margin-top: 40px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 900px;
+        }
+
+        .recommendation h3 {
+            font-family: -apple-system, sans-serif;
+            margin-bottom: 12px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .recommendation ul {
+            list-style: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .recommendation li::before {
+            content: "→ ";
+            color: #ff3b30;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Font Options for YouTube Quizzer</h1>
+
+    <div class="font-grid">
+        <!-- Inter -->
+        <div class="font-card">
+            <div class="font-name">1. Inter (Current Web Standard)</div>
+            <div class="font-preview font-inter">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outfit -->
+        <div class="font-card">
+            <div class="font-name">2. Outfit (Modern & Friendly)</div>
+            <div class="font-preview font-outfit">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plus Jakarta Sans -->
+        <div class="font-card">
+            <div class="font-name">3. Plus Jakarta Sans (Premium Feel)</div>
+            <div class="font-preview font-jakarta">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Space Grotesk -->
+        <div class="font-card">
+            <div class="font-name">4. Space Grotesk (Tech/Futuristic)</div>
+            <div class="font-preview font-space">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sora -->
+        <div class="font-card">
+            <div class="font-name">5. Sora (Clean & Geometric)</div>
+            <div class="font-preview font-sora">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manrope -->
+        <div class="font-card">
+            <div class="font-name">6. Manrope (Soft & Readable)</div>
+            <div class="font-preview font-manrope">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DM Sans -->
+        <div class="font-card">
+            <div class="font-name">7. DM Sans (Google's Choice)</div>
+            <div class="font-preview font-dm">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Font -->
+        <div class="font-card">
+            <div class="font-name">8. SF Pro / System (Apple Native)</div>
+            <div class="font-preview font-system">
+                <h2>YouTube Quizzer</h2>
+                <p>Harder now = better later</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="recommendation">
+        <h3>My Recommendations:</h3>
+        <ul>
+            <li><strong>Outfit</strong> — Modern, friendly, great for the neumorphic style</li>
+            <li><strong>Plus Jakarta Sans</strong> — Premium feel, very polished</li>
+            <li><strong>Space Grotesk</strong> — Techy/futuristic vibe, unique character</li>
+            <li><strong>SF Pro (System)</strong> — Native iOS feel, no external loading needed</li>
+        </ul>
+    </div>
+</body>
+
+</html>
+</CodeContent>
+<parameter name="EmptyFile">false

@@ -1,0 +1,27 @@
+
+# OS/editor
+.DS_Store
+
+# Python
+.venv/
+__pycache__/
+
+# Local temp
+.tmp/
+.agent/
+
+# Env/secrets
+.env
+backend/.env
+credentials.json
+token.json
+
+# Node build/deps
+node_modules/
+backend/node_modules/
+backend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+backend/usage_log.json

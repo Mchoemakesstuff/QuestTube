@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>QuestTube Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Force modal to be visible and relative for preview */
+        .ytq-overlay {
+            position: relative !important;
+            width: 100%;
+            height: 100%;
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+    </style>
+    <script>
+        // Mock Chrome API
+        window.chrome = {
+            runtime: {
+                getURL: (path) => path
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <script src="modal.js"></script>
+    <script>
+        // Initialize and show mock quiz
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = new QuizModal();
+
+            // Mock sound manager since strict auto-play policies might block it context
+            modal.sound = {
+                playMusic: () => { },
+                stopMusic: () => { },
+                playCorrect: () => { },
+                playIncorrect: () => { },
+                playLevelUp: () => { },
+                toggleMute: () => true
+            };
+
+            const mockQuiz = {
+                title: "PREVIEW BATTLE",
+                questions: [
+                    {
+                        type: "multiple_choice",
+                        text: "What determines the vertical position of the background?",
+                        options: [
+                            { label: "A", text: "background-position-x" },
+                            { label: "B", text: "background-position-y" },
+                            { label: "C", text: "z-index" },
+                            { label: "D", text: "opacity" }
+                        ],
+                        correctAnswer: "B"
+                    }
+                ]
+            };
+
+            // Manually trigger show
+            modal.overlay = document.createElement('div');
+            modal.overlay.className = 'ytq-overlay visible';
+            document.body.appendChild(modal.overlay);
+
+            // Render quiz content
+            modal.updateContent(modal.renderQuiz(mockQuiz));
+        });
+    </script>
+</body>
+
+</html>
