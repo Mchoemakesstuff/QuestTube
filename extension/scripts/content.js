@@ -10,12 +10,22 @@
     let quizButton = null;
     let videoElement = null;
     let currentVideoId = null;
+    const questSound = new SoundManager();
 
     /**
      * Initialize the content script
      */
     function init() {
         console.log('YouTube Quizzer: Initializing...');
+
+        // Inject Google Fonts via <link> so they actually load (CSS @import gets blocked by CSP)
+        if (!document.querySelector('link[data-ytq-fonts]')) {
+            const fontLink = document.createElement('link');
+            fontLink.rel = 'stylesheet';
+            fontLink.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap';
+            fontLink.setAttribute('data-ytq-fonts', '1');
+            document.head.appendChild(fontLink);
+        }
 
         // Wait for page to be ready
         if (document.readyState === 'loading') {
@@ -158,7 +168,7 @@
     function createButton(container, type) {
         quizButton = document.createElement('button');
         quizButton.className = 'ytq-quiz-button';
-        quizButton.textContent = 'Quiz me';
+        quizButton.textContent = 'Quest Available!';
         quizButton.addEventListener('click', handleQuizClick);
 
         if (type === 'controls') {
@@ -175,7 +185,7 @@
     function createFloatingButton() {
         quizButton = document.createElement('button');
         quizButton.className = 'ytq-quiz-button floating';
-        quizButton.textContent = 'Quiz me';
+        quizButton.textContent = 'Quest Available!';
         quizButton.addEventListener('click', handleQuizClick);
         document.body.appendChild(quizButton);
         console.log('YouTube Quizzer: Floating button created');
@@ -212,6 +222,7 @@
      */
     async function handleQuizClick() {
         console.log('YouTube Quizzer: Quiz button clicked');
+        questSound.playQuestChime();
         await startQuiz();
     }
 
@@ -252,6 +263,13 @@
 
             quizModal = new window.YouTubeQuizzerModal();
             quizModal.show();
+
+            const modeConfig = await quizModal.showModeSelection();
+            if (!modeConfig) {
+                quizModal.hide();
+                return false;
+            }
+
             // Get prior weak concepts for interleaving
             const forcedWeakConcepts = Array.isArray(options.forcedWeakConcepts)
                 ? options.forcedWeakConcepts.filter(Boolean)
@@ -265,7 +283,8 @@
             const quiz = await window.YouTubeQuizzerAPI.generateQuiz(
                 videoId,
                 title,
-                priorWeakConcepts
+                priorWeakConcepts,
+                modeConfig
             );
 
             // Show quiz
@@ -285,6 +304,8 @@
                             weakConcepts: results.weakConcepts,
                         });
 
+                        await window.QuestTubeStorage.updateStreak();
+
                         await window.QuestTubeStorage.updateConceptModel(
                             results.weakConcepts,
                             results.spacingSchedule
@@ -299,11 +320,25 @@
                         if (results.score >= 70) coinsEarned = 10;
                         if (results.score === 100) coinsEarned = 20;
                         if (coinsEarned > 0) {
-                            await window.QuestTubeStorage.addCoins(coinsEarned);
+                            const coinsResult = await window.QuestTubeStorage.addCoins(coinsEarned);
+                            coinsEarned = Number(coinsResult?.coinsEarned || 0);
                         }
 
                         results.xpResult = xpResult;
                         results.coinsEarned = coinsEarned;
+
+                        // Save wrong answers for popup review
+                        const feedback = Array.isArray(results.questionFeedback) ? results.questionFeedback : [];
+                        const wrongAnswers = feedback
+                            .filter(fb => !fb.isCorrect)
+                            .map(fb => {
+                                const q = quiz.questions?.[fb.questionIndex];
+                                return {
+                                    text: q?.text || `Question ${fb.questionIndex + 1}`,
+                                    timestampSeconds: typeof q?.timestampSeconds === 'number' ? q.timestampSeconds : null,
+                                };
+                            });
+                        await window.QuestTubeStorage.saveWrongAnswers({ videoId, videoTitle: title, wrongAnswers });
                     }
 
                     if (Array.isArray(results.spacingSchedule) && results.spacingSchedule.length > 0) {

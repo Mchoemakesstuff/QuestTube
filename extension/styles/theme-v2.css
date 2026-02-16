@@ -1,0 +1,275 @@
+/* QuestTube - Visual System V2 Theme
+   Refined variables, sizes, and overrides for the polished look */
+
+:root {
+  --bg-dark: #0f1726;
+  --bg-panel: #1a2740;
+  --bg-panel-raised: #223454;
+  --border: #2f4f79;
+  --border-light: #4f76a9;
+  --border-dark: #142038;
+  --gold: #f7c65d;
+  --green: #78d97b;
+  --green-dark: #3ea55e;
+  --red: #f26a6a;
+  --text: #f1f5ff;
+  --text-dim: #9ba9c2;
+  --pixel-font: 'Press Start 2P', monospace;
+  --body-font: 'VT323', monospace;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --radius-panel: 10px;
+  --panel-stroke: 2px solid var(--border);
+  --panel-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light),
+    6px 6px 0 rgba(0, 0, 0, 0.35);
+}
+
+.ytq-overlay {
+  background:
+    radial-gradient(circle at 22% 20%, rgba(94, 165, 255, 0.14) 0, rgba(94, 165, 255, 0) 36%),
+    radial-gradient(circle at 80% 82%, rgba(123, 214, 104, 0.12) 0, rgba(123, 214, 104, 0) 38%),
+    rgba(8, 12, 22, 0.93);
+}
+
+.ytq-modal {
+  width: min(94vw, 860px);
+  max-height: 90vh;
+  border: var(--panel-stroke);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+  overflow: auto;
+}
+
+.ytq-header {
+  padding: var(--space-5);
+  border-bottom: var(--panel-stroke);
+  background: linear-gradient(180deg, #243a5f 0%, #1a2842 100%);
+}
+
+.ytq-title {
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  color: var(--gold);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.ytq-subtitle {
+  font-family: var(--body-font);
+  font-size: 26px;
+  line-height: 1;
+  margin-top: 10px;
+  color: var(--text-dim);
+}
+
+.ytq-content {
+  padding: var(--space-5);
+  font-family: var(--body-font);
+}
+
+.ytq-close,
+.ytq-check-btn,
+.ytq-next-btn,
+.ytq-retry-btn,
+.ytq-submit,
+.ytq-quiz-button {
+  border-radius: 6px;
+}
+
+.ytq-mode-card,
+.ytq-question,
+.ytq-fb-bar,
+.ytq-error,
+.ytq-level-up-banner {
+  border-radius: 8px;
+}
+
+.ytq-mode-grid {
+  gap: var(--space-4);
+}
+
+.ytq-mode-card {
+  border: var(--panel-stroke);
+  background: linear-gradient(180deg, #1e2f4c 0%, #17253e 100%);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-4);
+}
+
+.ytq-mode-name {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+}
+
+.ytq-mode-meta {
+  font-family: var(--body-font);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.ytq-mode-desc {
+  font-family: var(--body-font);
+  font-size: 27px;
+  line-height: 1.1;
+}
+
+.ytq-battle-scene {
+  margin-bottom: -10px;
+  border: var(--panel-stroke);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+}
+
+.ytq-question {
+  border: var(--panel-stroke);
+  background: linear-gradient(180deg, #1c2c49 0%, #152139 100%);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-6);
+}
+
+.ytq-question-number {
+  font-family: var(--body-font);
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.ytq-question-type {
+  font-family: var(--pixel-font);
+  font-size: 7px;
+}
+
+.ytq-question-text {
+  font-family: var(--body-font);
+  font-size: clamp(28px, 3.1vw, 34px);
+  line-height: 1.12;
+  letter-spacing: 0.2px;
+  margin-bottom: var(--space-4);
+}
+
+.ytq-options {
+  gap: var(--space-3);
+}
+
+.ytq-option {
+  border: var(--panel-stroke);
+  border-radius: 8px;
+  background: #121e34;
+  padding: 12px 14px;
+  box-shadow:
+    inset -2px -2px 0 #101a2d,
+    inset 2px 2px 0 #334f79;
+}
+
+.ytq-option:hover {
+  background: #1d2f4e;
+}
+
+.ytq-option-label {
+  border-radius: 6px;
+}
+
+.ytq-option-text {
+  font-family: var(--body-font);
+  font-size: 25px;
+  line-height: 1.08;
+}
+
+.ytq-textarea {
+  border: var(--panel-stroke);
+  border-radius: 8px;
+  background: #101a2f;
+  font-family: var(--body-font);
+  font-size: 27px;
+  line-height: 1.12;
+}
+
+.ytq-textarea::placeholder {
+  font-family: var(--body-font);
+  font-size: 24px;
+}
+
+.ytq-check-btn,
+.ytq-next-btn {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  padding: 12px 14px;
+}
+
+.ytq-fb-bar {
+  border: var(--panel-stroke);
+}
+
+.ytq-fb-text {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 13px;
+}
+
+.ytq-results {
+  padding: var(--space-5);
+}
+
+.ytq-victory-stage {
+  border: var(--panel-stroke);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+}
+
+.ytq-score-sub {
+  font-family: var(--body-font);
+  font-size: 26px;
+}
+
+.ytq-terraria-badge {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.ytq-terraria-stat {
+  font-family: var(--body-font);
+  font-size: 23px;
+  line-height: 1;
+}
+
+.ytq-error {
+  border: var(--panel-stroke);
+  background: linear-gradient(180deg, #1a2a45 0%, #13203a 100%);
+  box-shadow: var(--panel-shadow);
+}
+
+.ytq-error-message {
+  font-family: var(--body-font);
+  font-size: 28px;
+  color: #ffb4b4;
+}
+
+@media (max-width: 900px) {
+  .ytq-title {
+    font-size: 10px;
+  }
+
+  .ytq-question-text {
+    font-size: clamp(24px, 6vw, 30px);
+  }
+
+  .ytq-option-text,
+  .ytq-textarea,
+  .ytq-error-message {
+    font-size: 24px;
+  }
+
+  .ytq-battle-scene {
+    height: 220px;
+  }
+
+  .ytq-hero,
+  .ytq-enemy {
+    width: 180px;
+    height: 180px;
+  }
+}

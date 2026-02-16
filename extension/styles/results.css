@@ -1,0 +1,406 @@
+/* QuestTube - Results Styles
+   Victory screen, scores, rank badges, rewards, level up, review section */
+
+/* ============ RESULTS ============ */
+.ytq-results {
+  padding: 20px;
+  font-family: var(--pixel-font);
+  background: linear-gradient(180deg, rgba(22, 33, 62, 0.95) 0%, rgba(10, 20, 40, 0.95) 100%);
+}
+
+.ytq-score {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: var(--bg-panel);
+  border: 3px solid var(--border);
+  box-shadow:
+    inset -3px -3px 0 var(--border-dark),
+    inset 3px 3px 0 var(--border-light);
+}
+
+.ytq-score-value {
+  font-size: 48px;
+  color: var(--gold);
+  text-shadow: 4px 4px 0 var(--bg-dark);
+}
+
+.ytq-score-label {
+  font-size: 8px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* ============ VICTORY CARD ============ */
+.ytq-victory-modal {
+  max-width: 980px;
+  width: min(96vw, 980px);
+}
+
+.ytq-victory-stage {
+  position: relative;
+  min-height: 440px;
+  border: 3px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ytq-score-center {
+  text-align: center;
+  padding: 20px;
+}
+
+.ytq-score-core {
+  font-family: var(--pixel-font);
+  font-size: clamp(64px, 14vw, 140px);
+  line-height: 1;
+  color: #fef08a;
+  text-shadow:
+    6px 6px 0 rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(250, 204, 21, 0.5);
+}
+
+.ytq-score-sub {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: #e2e8f0;
+  margin-top: 16px;
+}
+
+.ytq-play-again-btn {
+  margin-top: 20px;
+  max-width: 320px;
+}
+
+.ytq-terraria-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  text-align: right;
+}
+
+.ytq-terraria-rank {
+  font-family: var(--pixel-font);
+  font-size: 48px;
+  color: #fef08a;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(254, 240, 138, 0.3);
+  line-height: 1;
+}
+
+.ytq-terraria-stat {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: #e2e8f0;
+  margin-top: 4px;
+  padding-right: 2px;
+}
+
+.ytq-level-up-banner {
+  margin-top: 14px;
+}
+
+@media (max-width: 920px) {
+  .ytq-victory-stage {
+    min-height: 360px;
+  }
+
+  .ytq-terraria-badge {
+    top: 10px;
+    right: 10px;
+  }
+
+  .ytq-terraria-rank {
+    font-size: 36px;
+  }
+}
+
+/* =========================================
+   Results — Review Mistakes Section
+   ========================================= */
+.ytq-review-section {
+  padding: 12px 16px 16px;
+  border-top: 2px dashed #1c3a6e;
+}
+
+.ytq-review-title {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: #ef4444;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.ytq-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.ytq-review-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(14, 22, 42, 0.7);
+  border: 2px solid #1a2e52;
+  box-shadow:
+    inset -1px -1px 0 #0a1628,
+    inset 1px 1px 0 #1e3a5e;
+}
+
+.ytq-review-q {
+  flex: 1;
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 10px;
+  color: #a0b4cc;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ytq-review-seek {
+  flex-shrink: 0;
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 2px solid #22c55e;
+  padding: 3px 8px;
+  cursor: pointer;
+  box-shadow:
+    inset -1px -1px 0 #16a34a,
+    inset 1px 1px 0 #86efac,
+    2px 2px 0 rgba(0, 0, 0, 0.4);
+  transition: transform 0.08s steps(2, end), background 0.08s;
+}
+
+.ytq-review-seek:hover {
+  transform: translateY(-1px);
+  background: rgba(74, 222, 128, 0.2);
+  box-shadow:
+    inset -1px -1px 0 #16a34a,
+    inset 1px 1px 0 #86efac,
+    3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-review-seek:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -1px -1px 0 #16a34a,
+    inset 1px 1px 0 #86efac,
+    1px 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Scrollbar for review list */
+.ytq-review-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ytq-review-list::-webkit-scrollbar-track {
+  background: #0a1628;
+}
+
+.ytq-review-list::-webkit-scrollbar-thumb {
+  background: #1c3a6e;
+}
+
+.ytq-review-hint {
+  margin: 8px 0 0;
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  color: #6b8cbe;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Legacy rank badge classes retained only to avoid accidental regressions */
+.ytq-rank-badge {
+  display: none;
+}
+
+.ytq-rank-badge.s {
+  background: radial-gradient(circle, #fef08a 0%, #f59e0b 100%);
+  color: #3b2200;
+}
+
+.ytq-rank-badge.a {
+  background: radial-gradient(circle, #bfdbfe 0%, #3b82f6 100%);
+  color: #0b1f46;
+}
+
+.ytq-rank-badge.b {
+  background: radial-gradient(circle, #a7f3d0 0%, #10b981 100%);
+  color: #063d2e;
+}
+
+.ytq-rank-badge.c {
+  background: radial-gradient(circle, #fcd34d 0%, #f97316 100%);
+  color: #4a2400;
+}
+
+.ytq-rank-badge.d {
+  background: radial-gradient(circle, #d1d5db 0%, #6b7280 100%);
+  color: #111827;
+}
+
+.ytq-rank-label {
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ytq-rank-value {
+  font-size: 22px;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+/* XP Reward Animation */
+.ytq-xp-reward {
+  display: inline-block;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+  color: var(--bg-dark);
+  padding: 8px 16px;
+  margin-top: 12px;
+  font-size: 10px;
+  border: 2px solid #16a34a;
+  animation: bounce 0.5s ease infinite;
+}
+
+/* ============ WEAK CONCEPTS ============ */
+.ytq-weak-concepts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ytq-concept-tag {
+  padding: 6px 12px;
+  background: #3a2a1a;
+  border: 2px solid var(--gold);
+  font-size: 8px;
+  color: var(--gold);
+}
+
+/* ============ SCHEDULE ============ */
+.ytq-schedule {
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.ytq-schedule-text {
+  color: var(--text);
+  font-size: 8px;
+}
+
+.ytq-schedule-toggle {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ytq-schedule-toggle.active {
+  background: var(--green-dark);
+  border-color: var(--green);
+}
+
+.ytq-schedule-toggle::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--text);
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+}
+
+.ytq-schedule-toggle.active::after {
+  transform: translateX(24px);
+  background: #fff;
+}
+
+/* ============ REWARDS & LEVEL UP ============ */
+@keyframes bg-pulse {
+  0% {
+    background-color: #16a34a;
+  }
+
+  50% {
+    background-color: #15803d;
+  }
+
+  100% {
+    background-color: #16a34a;
+  }
+}
+
+.ytq-rewards {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.ytq-reward-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--border-dark);
+  border-radius: 4px;
+}
+
+.ytq-reward-icon {
+  font-size: 16px;
+}
+
+.ytq-reward-text {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--yellow);
+}
+
+.ytq-level-up-banner {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  padding: 16px;
+  margin: 16px 0;
+  border: 2px solid #bef264;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+  animation: bg-pulse 2s infinite;
+  text-align: center;
+}
+
+.ytq-level-up-text {
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ytq-level-up-details {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: #dcfce7;
+}

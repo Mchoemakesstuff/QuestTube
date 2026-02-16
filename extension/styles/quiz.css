@@ -1,0 +1,899 @@
+/* QuestTube - Quiz Styles
+   Question cards, options, feedback, battle scene, dialog box layout */
+
+/* ============ QUESTION CARD ============ */
+.ytq-question {
+  background: var(--bg-panel);
+  border: 4px double var(--border);
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4);
+  position: relative;
+  min-height: 200px;
+}
+
+/* Animations */
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ============ BATTLE SCENE ============ */
+.ytq-combatant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 20;
+}
+
+.damage-text {
+  position: absolute;
+  color: #ef4444;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  pointer-events: none;
+  animation: floatUpFade 1s forwards;
+  text-shadow: 1px 1px 0 #000;
+  z-index: 10;
+}
+
+@keyframes floatUpFade {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+@keyframes shake-damage {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-2px, 2px);
+  }
+
+  50% {
+    transform: translate(2px, -2px);
+  }
+
+  75% {
+    transform: translate(-2px, -2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.damaged {
+  animation: shake-damage 0.3s cubic-bezier(.36, .07, .19, .97) both;
+  filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5);
+}
+
+
+@keyframes shake-hard {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+
+  40% {
+    transform: translateX(6px) rotate(2deg);
+  }
+
+  60% {
+    transform: translateX(-6px);
+  }
+
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.shake-hard {
+  animation: shake-hard 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+/* Combo Badge */
+.ytq-combo-badge {
+  position: absolute;
+  top: -16px;
+  right: -8px;
+  background: linear-gradient(180deg, var(--gold) 0%, #b45309 100%);
+  color: var(--bg-dark);
+  padding: 8px 12px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  transform: rotate(10deg);
+  z-index: 100;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.ytq-combo-count {
+  font-family: var(--pixel-font);
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ytq-combo-label {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.ytq-combo-text {
+  color: var(--gold);
+  font-weight: bold;
+  text-shadow: 1px 1px 0 #000;
+  animation: pulse 0.5s infinite;
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+}
+
+.ytq-question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px dashed var(--border);
+}
+
+.ytq-question-number {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.ytq-question-type {
+  font-family: var(--pixel-font);
+  font-size: 7px;
+  padding: 4px 8px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.ytq-question-type.free_recall {
+  background: #1a3a2a;
+  border-color: #2a5a3a;
+  color: var(--green);
+}
+
+.ytq-question-type.multiple_choice {
+  background: #3a2a1a;
+  border-color: #5a3a2a;
+  color: var(--gold);
+}
+
+.ytq-question-type.short_answer {
+  background: #1a2a3a;
+  border-color: #2a3a5a;
+  color: #8fb8cb;
+}
+
+.ytq-question-text {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+/* ============ MCQ OPTIONS ============ */
+.ytq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ytq-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.1s;
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light);
+}
+
+.ytq-option:hover {
+  transform: translateY(-2px);
+  background: #1e2847;
+}
+
+.ytq-option.selected {
+  background: #1a3a2a;
+  border-color: var(--green);
+  box-shadow:
+    inset -2px -2px 0 #16a34a,
+    inset 2px 2px 0 #86efac,
+    0 0 10px rgba(74, 222, 128, 0.3);
+}
+
+.ytq-option-label {
+  width: 28px;
+  height: 28px;
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-right: 12px;
+}
+
+.ytq-option.selected .ytq-option-label {
+  background: var(--green);
+  border-color: var(--green-dark);
+  color: var(--bg-dark);
+}
+
+.ytq-option-text {
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* ============ TEXT INPUT ============ */
+.ytq-textarea {
+  width: 100%;
+  min-height: 100px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  padding: 12px;
+  color: var(--text);
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  resize: vertical;
+  box-shadow:
+    inset 2px 2px 0 var(--border-dark);
+}
+
+.ytq-textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow:
+    inset 2px 2px 0 var(--border-dark),
+    0 0 10px rgba(74, 222, 128, 0.2);
+}
+
+.ytq-textarea::placeholder {
+  color: var(--text-dim);
+}
+
+/* ============ SUBMIT BUTTON ============ */
+.ytq-submit {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+  border: 3px solid #16a34a;
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  color: var(--bg-dark);
+  cursor: pointer;
+  transition: all 0.1s;
+  margin-top: 16px;
+  text-transform: uppercase;
+  box-shadow:
+    inset -3px -3px 0 #15803d,
+    inset 3px 3px 0 #86efac,
+    4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-submit:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow:
+    inset -3px -3px 0 #15803d,
+    inset 3px 3px 0 #86efac,
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-submit:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    inset -3px -3px 0 #15803d,
+    inset 3px 3px 0 #86efac,
+    2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(50%);
+}
+
+/* ============ OLD FEEDBACK (legacy) ============ */
+.ytq-feedback-section {
+  margin-bottom: 20px;
+}
+
+.ytq-feedback-title {
+  font-size: 8px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.ytq-feedback-item {
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  padding: 16px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--border);
+}
+
+.ytq-feedback-item.correct {
+  border-left-color: var(--green);
+}
+
+.ytq-feedback-item.incorrect {
+  border-left-color: var(--red);
+}
+
+.ytq-feedback-question {
+  font-size: 9px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.ytq-feedback-answer {
+  font-size: 8px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.ytq-feedback-correct {
+  color: var(--green);
+}
+
+.ytq-feedback-incorrect {
+  color: var(--red);
+}
+
+/* =========================================
+   Feedback Bar (Duolingo-style slim bar)
+   ========================================= */
+.ytq-fb-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  animation: fb-bar-in 0.25s ease-out;
+}
+
+.ytq-fb-bar.visible {
+  display: flex;
+}
+
+.ytq-fb-bar.correct {
+  border-color: var(--green);
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.ytq-fb-bar.incorrect {
+  border-color: var(--red);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+@keyframes fb-bar-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ytq-fb-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ytq-fb-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.ytq-fb-text {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ytq-fb-bar.correct .ytq-fb-text {
+  color: var(--green);
+}
+
+.ytq-fb-bar.incorrect .ytq-fb-text {
+  color: #fca5a5;
+}
+
+.ytq-fb-text strong {
+  color: var(--green);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* ---- Floating +1 Coin Reward ---- */
+.ytq-float-reward {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  color: #fcd34d;
+  text-shadow: 1px 1px 0 #000, 0 0 8px rgba(252, 211, 77, 0.4);
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: float-up 1s ease-out forwards;
+}
+
+.ytq-float-coin {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+
+@keyframes float-up {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  60%  { opacity: 1; transform: translateX(-50%) translateY(-50px) scale(1.15); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-80px) scale(0.9); }
+}
+
+/* ---- Check / Next Buttons ---- */
+.ytq-check-btn,
+.ytq-next-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.ytq-check-btn {
+  background: var(--bg-dark);
+  color: var(--text);
+  box-shadow: inset -2px -2px 0 var(--border-dark);
+}
+
+.ytq-check-btn:hover {
+  background: var(--bg-panel);
+  transform: translateY(-2px);
+}
+
+.ytq-next-btn {
+  flex-shrink: 0;
+  margin-top: 0;
+  padding: 8px 18px;
+  background: var(--gold);
+  color: var(--bg-dark);
+  border-color: #b45309;
+  box-shadow: inset -2px -2px 0 #b45309;
+}
+
+.ytq-next-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.ytq-correct-text {
+  color: var(--green);
+  font-weight: bold;
+}
+
+/* Option States */
+.ytq-option.correct {
+  background: rgba(22, 163, 74, 0.2);
+  border-color: var(--green);
+}
+
+.ytq-option.incorrect {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--red);
+  opacity: 0.7;
+}
+
+.ytq-option.dimmed {
+  opacity: 0.5;
+  filter: grayscale(0.8);
+}
+
+/* =========================================
+   Battle Mode
+   ========================================= */
+.ytq-battle-scene {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 260px;
+  margin-bottom: -20px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  border-radius: 8px 8px 0 0;
+  border: 3px solid var(--border);
+  border-bottom: none;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.ytq-hero,
+.ytq-enemy {
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+  position: relative;
+  transition: transform 0.2s, filter 0.2s;
+  margin-bottom: 30px;
+}
+
+.ytq-hero {
+  transform-origin: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+
+.ytq-enemy {
+  transform-origin: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  bottom: 10px;
+}
+
+/* Battle Animations */
+@keyframes hero-attack {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(120px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes enemy-attack {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-120px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes damage-blink {
+  0% {
+    filter: brightness(1) sepia(0) hue-rotate(0deg);
+    opacity: 1;
+  }
+
+  10% {
+    filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5);
+    opacity: 0.8;
+  }
+
+  20% {
+    filter: brightness(1) sepia(0) hue-rotate(0deg);
+    opacity: 1;
+  }
+
+  30% {
+    filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5);
+    opacity: 0.8;
+  }
+
+  40% {
+    filter: brightness(1) sepia(0) hue-rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.ytq-hero.attacking {
+  animation: hero-attack 0.4s ease-in-out;
+}
+
+.ytq-enemy.attacking {
+  animation: enemy-attack 0.4s ease-in-out;
+}
+
+.ytq-hero.damaged,
+.ytq-enemy.damaged {
+  animation: damage-blink 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+/* ============ DYNAMIC ACTIONS ============ */
+@keyframes shake-screen {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-5px, 5px);
+  }
+
+  50% {
+    transform: translate(5px, -5px);
+  }
+
+  75% {
+    transform: translate(-5px, -5px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.shake-screen {
+  animation: shake-screen 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes pulse-red {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.7));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 1));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.7));
+  }
+}
+
+.damage-number {
+  position: absolute;
+  color: #ef4444;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 100;
+  text-shadow: 2px 2px 0 #000;
+  animation: float-damage 1s forwards;
+  left: 50%;
+  top: -20px;
+  transform: translateX(-50%);
+}
+
+@keyframes float-damage {
+  0% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(-50%, -30px) scale(1.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -60px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   Dialog Box Quiz Layout
+   ========================================= */
+
+/* Modal container */
+.ytq-dlg-modal {
+  width: min(94vw, 680px);
+}
+
+/* Header: portrait thumbnails + title */
+.ytq-dlg-header {
+  padding: 14px 20px;
+}
+
+.ytq-dlg-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ytq-dlg-portrait {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border: 2px solid var(--border);
+  background: var(--bg-dark);
+  border-radius: 4px;
+  box-shadow: inset -1px -1px 0 var(--border-dark), inset 1px 1px 0 var(--border-light);
+}
+
+.ytq-dlg-vs {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--red);
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* Progress bar */
+.ytq-dlg-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: var(--panel-stroke);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.ytq-pdots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ytq-pdot {
+  width: 12px;
+  height: 12px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ytq-pdot.current {
+  border-color: var(--gold);
+  background: rgba(247, 198, 93, 0.25);
+  box-shadow: 0 0 6px rgba(247, 198, 93, 0.3);
+}
+
+.ytq-pdot.correct {
+  background: var(--green);
+  border-color: var(--green-dark);
+}
+
+.ytq-pdot.incorrect {
+  background: var(--red);
+  border-color: #b91c1c;
+}
+
+.ytq-pdot.recall {
+  background: #60a5fa;
+  border-color: #3b82f6;
+}
+
+.ytq-dlg-count {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+/* Smaller text sizes for dialog layout */
+.ytq-dlg-modal .ytq-question-text {
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.2;
+}
+
+.ytq-dlg-modal .ytq-option-text {
+  font-size: 18px;
+}
+
+.ytq-dlg-modal .ytq-textarea {
+  font-size: 20px;
+}
+
+.ytq-dlg-modal .ytq-textarea::placeholder {
+  font-size: 18px;
+}
+
+.ytq-dlg-modal .ytq-fb-text {
+  font-size: 13px;
+}
+
+/* Flash effects (replaces battle sprite animations) */
+.ytq-dlg-modal.flash-correct {
+  animation: dlg-flash-green 0.35s ease-out;
+}
+
+.ytq-dlg-modal.flash-incorrect {
+  animation: dlg-flash-red 0.35s ease-out;
+}
+
+@keyframes dlg-flash-green {
+  0%   { box-shadow: var(--panel-shadow); }
+  40%  { box-shadow: var(--panel-shadow), 0 0 40px rgba(74, 222, 128, 0.5), inset 0 0 20px rgba(74, 222, 128, 0.1); }
+  100% { box-shadow: var(--panel-shadow); }
+}
+
+@keyframes dlg-flash-red {
+  0%   { box-shadow: var(--panel-shadow); }
+  40%  { box-shadow: var(--panel-shadow), 0 0 40px rgba(239, 68, 68, 0.5), inset 0 0 20px rgba(239, 68, 68, 0.1); }
+  100% { box-shadow: var(--panel-shadow); }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .ytq-dlg-modal {
+    width: 96vw;
+  }
+
+  .ytq-dlg-portrait {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ytq-dlg-modal .ytq-question-text {
+    font-size: clamp(16px, 4.5vw, 20px);
+  }
+
+  .ytq-dlg-modal .ytq-option-text {
+    font-size: 16px;
+  }
+}

@@ -1,6 +1,7 @@
 
 # OS/editor
 .DS_Store
+Thumbs.db
 
 # Python
 .venv/
@@ -25,3 +26,6 @@ backend/dist/
 *.log
 npm-debug.log*
 backend/usage_log.json
+
+# Reference/inspiration images in root (only top-level)
+/*.png

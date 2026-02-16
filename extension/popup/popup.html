@@ -202,8 +202,6 @@
     /* UI elements above particles */
     .hud-bar,
     .base-camp,
-    .quest-log,
-    .section-label,
     .footer {
       position: relative;
       z-index: 2;
@@ -347,66 +345,6 @@
       line-height: 1.5;
     }
 
-    /* ============ QUEST LOG ============ */
-    .section-label {
-      font-size: 7px;
-      color: #e9a820;
-      margin-bottom: 8px;
-      letter-spacing: 1px;
-    }
-
-    .quest-log {
-      background: #0a1628;
-      border: 2px solid #0f3460;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    .quest-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px;
-      background: #16213e;
-      border: 1px solid #0f3460;
-      margin-bottom: 6px;
-      transition: transform 0.1s ease, background 0.1s ease;
-    }
-
-    .quest-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .quest-item:hover {
-      transform: translateY(-2px);
-      background: #1e2847;
-    }
-
-    .quest-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .quest-icon {
-      font-size: 14px;
-    }
-
-    .quest-name {
-      font-size: 8px;
-    }
-
-    .quest-reward {
-      font-size: 7px;
-      color: #e9a820;
-    }
-
-    .empty-quest {
-      text-align: center;
-      padding: 16px;
-      color: #666;
-      font-size: 8px;
-    }
 
     /* ============ START BUTTON ============ */
     .start-btn {
@@ -534,38 +472,95 @@
       animation: bounce 0.5s infinite;
     }
 
-    /* ============ QUEST ACTION BUTTON ============ */
-    .quest-action-btn {
-      background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
-      color: #fff;
-      border: 2px solid #991b1b;
-      padding: 6px 12px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 8px;
-      cursor: pointer;
-      text-transform: uppercase;
+    /* ============ REVIEW PANEL ============ */
+    .review-panel {
+      background: #16213e;
+      border: 2px solid #0f3460;
+      border-radius: 4px;
+      margin-bottom: 12px;
       box-shadow:
-        inset -2px -2px 0 #7f1d1d,
-        inset 2px 2px 0 #fca5a5,
-        2px 2px 0 rgba(0, 0, 0, 0.4);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-    }
-
-    .quest-action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        inset -2px -2px 0 #7f1d1d,
-        inset 2px 2px 0 #fca5a5,
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a,
         4px 4px 0 rgba(0, 0, 0, 0.4);
+      overflow: hidden;
     }
 
-    .quest-action-btn:active {
-      transform: translateY(1px);
-      box-shadow:
-        inset -2px -2px 0 #7f1d1d,
-        inset 2px 2px 0 #fca5a5,
-        1px 1px 0 rgba(0, 0, 0, 0.4);
+    .review-panel-header {
+      font-size: 7px;
+      color: #ef4444;
+      letter-spacing: 2px;
+      padding: 10px 12px 6px;
+      text-shadow: 1px 1px 0 #000;
     }
+
+    .review-panel-video {
+      font-size: 6px;
+      color: #888;
+      padding: 0 12px 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .review-panel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 8px 8px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .review-panel-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .review-panel-list::-webkit-scrollbar-track {
+      background: #0a1628;
+    }
+
+    .review-panel-list::-webkit-scrollbar-thumb {
+      background: #1c3a6e;
+    }
+
+    .review-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      background: rgba(14, 22, 42, 0.7);
+      border: 2px solid #1a2e52;
+      cursor: pointer;
+      transition: transform 0.08s steps(2, end), border-color 0.08s;
+    }
+
+    .review-row:hover {
+      border-color: #4ade80;
+      transform: translateX(2px);
+    }
+
+    .review-q {
+      flex: 1;
+      font-size: 7px;
+      color: #a0b4cc;
+      line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .review-ts {
+      flex-shrink: 0;
+      font-size: 7px;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid #22c55e;
+      padding: 2px 6px;
+      box-shadow:
+        inset -1px -1px 0 #16a34a,
+        inset 1px 1px 0 #86efac;
+    }
+
   </style>
 </head>
 
@@ -603,7 +598,7 @@
         <span class="stat-value streak" id="streakCount">0</span>
       </div>
       <div class="hud-stat">
-        <span class="stat-icon coin-icon"><img src="../assets/coin.png" style="width:16px;height:16px;"></span>
+        <span class="stat-icon coin-icon"><img src="../assets/coin.png" style="width:28px;height:28px;image-rendering:pixelated;"></span>
         <span class="stat-value" id="coinCount">0</span>
       </div>
     </div>
@@ -634,18 +629,16 @@
     </div>
   </div>
 
-  <!-- QUEST LOG -->
-  <div class="section-label">QUEST LOG</div>
-  <div class="quest-log" id="dueList">
-    <div class="empty-quest">
-      No quests available.<br>
-      Watch a video to begin!
-    </div>
-  </div>
+  <!-- ENTER QUEST BUTTON -->
+  <button class="start-btn" id="enterQuestBtn">
+    Enter Quest
+  </button>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    Harder now = better later
+  <!-- REVIEW MISTAKES (populated by popup.js) -->
+  <div id="reviewPanel" class="review-panel" style="display:none;">
+    <div class="review-panel-header">REVIEW MISTAKES</div>
+    <div class="review-panel-video" id="reviewVideoTitle"></div>
+    <div class="review-panel-list" id="reviewList"></div>
   </div>
 
   <script src="popup.js"></script>

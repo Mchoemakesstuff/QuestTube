@@ -9,6 +9,8 @@ const STORAGE_KEYS = {
     SETTINGS: 'settings',
     // Gamification
     PLAYER_STATS: 'playerStats',
+    // Last quiz wrong answers (for popup review)
+    LAST_WRONG_ANSWERS: 'lastWrongAnswers',
 };
 
 /**
@@ -204,7 +206,10 @@ async function addCoins(amount) {
         const stats = await getPlayerStats();
         stats.coins += amount;
         await chrome.storage.local.set({ [STORAGE_KEYS.PLAYER_STATS]: stats });
-        return stats;
+        return {
+            stats,
+            coinsEarned: amount
+        };
     } catch (error) {
         console.error('Failed to add coins:', error);
         return null;
@@ -242,6 +247,38 @@ async function updateStreak() {
     }
 }
 
+/**
+ * Save wrong answers from the most recent quiz (replaces previous)
+ * @param {{ videoId: string, videoTitle: string, wrongAnswers: Array<{ text: string, timestampSeconds: number|null }> }} data
+ */
+async function saveWrongAnswers(data) {
+    try {
+        await chrome.storage.local.set({
+            [STORAGE_KEYS.LAST_WRONG_ANSWERS]: {
+                videoId: data.videoId,
+                videoTitle: data.videoTitle,
+                wrongAnswers: data.wrongAnswers,
+                savedAt: new Date().toISOString(),
+            },
+        });
+    } catch (error) {
+        console.error('Failed to save wrong answers:', error);
+    }
+}
+
+/**
+ * Get wrong answers from the most recent quiz
+ */
+async function getWrongAnswers() {
+    try {
+        const data = await chrome.storage.local.get(STORAGE_KEYS.LAST_WRONG_ANSWERS);
+        return data[STORAGE_KEYS.LAST_WRONG_ANSWERS] || null;
+    } catch (error) {
+        console.error('Failed to get wrong answers:', error);
+        return null;
+    }
+}
+
 // Export for use in other scripts
 window.QuestTubeStorage = {
     saveQuizAttempt,
@@ -255,4 +292,7 @@ window.QuestTubeStorage = {
     getXPToNextLevel,
     addCoins,
     updateStreak,
+    // Wrong answer review
+    saveWrongAnswers,
+    getWrongAnswers,
 };

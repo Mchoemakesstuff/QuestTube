@@ -68,14 +68,17 @@ async function fetchTranscript(videoId) {
 /**
  * Generate quiz from transcript
  */
-async function generateQuiz(videoId, title, priorWeakConcepts = []) {
+async function generateQuiz(videoId, title, priorWeakConcepts = [], modeConfig = {}) {
     try {
+        const questionCount = Number(modeConfig.questionCount) || 8;
+        const difficulty = modeConfig.difficulty || 'intermediate';
         return await postJsonWithFallback(
             ['/api/quiz', '/api/quiz/generate'],
             {
                 videoId,
                 title,
-                questionCount: 6,
+                questionCount,
+                difficulty,
                 priorWeakConcepts,
             },
             'Failed to generate quiz'

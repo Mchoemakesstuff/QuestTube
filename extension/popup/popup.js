@@ -6,7 +6,26 @@
 document.addEventListener('DOMContentLoaded', async () => {
     typeWriter('QuestTube', 'mainTitle', 150);
     await loadStats();
-    await loadDueReviews();
+    await loadWrongAnswers();
+
+    document.getElementById('enterQuestBtn').addEventListener('click', async () => {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (tab && tab.url && tab.url.includes('youtube.com/watch')) {
+            chrome.tabs.sendMessage(tab.id, { type: 'START_REVIEW_QUIZ' });
+            window.close();
+        } else {
+            // Flash the button red briefly to indicate no YouTube video
+            const btn = document.getElementById('enterQuestBtn');
+            btn.textContent = 'Open a YouTube video first!';
+            btn.style.background = 'linear-gradient(180deg, #ef4444 0%, #dc2626 100%)';
+            btn.style.borderColor = '#b91c1c';
+            setTimeout(() => {
+                btn.textContent = 'Enter Quest';
+                btn.style.background = '';
+                btn.style.borderColor = '';
+            }, 2000);
+        }
+    });
 });
 
 async function typeWriter(text, elementId, speed = 100) {
@@ -65,65 +84,65 @@ async function loadStats() {
     }
 }
 
-/**
- * Load due reviews
- */
-async function loadDueReviews() {
-    try {
-        const response = await chrome.runtime.sendMessage({ type: 'GET_DUE_REVIEWS' });
-        const dueList = document.getElementById('dueList');
-
-        if (response && response.length > 0) {
-            dueList.innerHTML = response.map(item => `
-        <div class="quest-item">
-          <div class="quest-info">
-            <span class="quest-name">${escapeHtml(item.concept)}</span>
-          </div>
-          <button class="quest-action-btn" data-concept="${escapeHtml(item.concept)}">FIGHT!</button>
-        </div>
-      `).join('');
-
-            // Add click handlers
-            dueList.querySelectorAll('.quest-action-btn').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const concept = btn.dataset.concept;
-                    if (!concept) return;
-
-                    btn.disabled = true;
-                    btn.textContent = 'LOADING...';
-
-                    try {
-                        const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-                        if (!activeTab?.id) {
-                            throw new Error('No active tab found');
-                        }
-
-                        const response = await chrome.tabs.sendMessage(activeTab.id, {
-                            type: 'START_REVIEW_QUIZ',
-                            concept,
-                        });
-
-                        if (!response?.success) {
-                            throw new Error(response?.error || 'Could not start review quiz in this tab');
-                        }
-
-                        window.close();
-                    } catch (error) {
-                        console.error('Failed to start due review:', error);
-                        alert('Open a YouTube watch page in this tab, then press FIGHT again.');
-                        btn.disabled = false;
-                        btn.textContent = 'FIGHT!';
-                    }
-                });
-            });
-        }
-    } catch (error) {
-        console.error('Failed to load due reviews:', error);
-    }
-}
 
 function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+}
+
+/**
+ * Load wrong answers from last quiz and render in the review panel
+ */
+async function loadWrongAnswers() {
+    try {
+        const data = await chrome.storage.local.get('lastWrongAnswers');
+        const info = data.lastWrongAnswers;
+        if (!info || !Array.isArray(info.wrongAnswers) || info.wrongAnswers.length === 0) return;
+
+        const panel = document.getElementById('reviewPanel');
+        const titleEl = document.getElementById('reviewVideoTitle');
+        const listEl = document.getElementById('reviewList');
+
+        titleEl.textContent = info.videoTitle || 'Unknown video';
+
+        listEl.innerHTML = info.wrongAnswers.map(wa => {
+            const truncated = wa.text.length > 50 ? wa.text.slice(0, 47) + '...' : wa.text;
+            const ts = wa.timestampSeconds;
+            const hasTs = typeof ts === 'number' && ts >= 0;
+            const timeLabel = hasTs
+                ? `${Math.floor(ts / 60)}:${String(Math.floor(ts % 60)).padStart(2, '0')}`
+                : null;
+            return `
+                <div class="review-row" ${hasTs ? `data-video="${info.videoId}" data-seconds="${ts}"` : ''}>
+                    <span class="review-q">${escapeHtml(truncated)}</span>
+                    ${timeLabel ? `<span class="review-ts">${timeLabel}</span>` : ''}
+                </div>`;
+        }).join('');
+
+        // Click handler — navigate to video at timestamp
+        listEl.addEventListener('click', async (e) => {
+            const row = e.target.closest('.review-row');
+            if (!row || !row.dataset.video) return;
+
+            const videoId = row.dataset.video;
+            const seconds = Number(row.dataset.seconds);
+            const url = `https://www.youtube.com/watch?v=${videoId}&t=${Math.floor(seconds)}s`;
+
+            // Try to find an existing tab with this video, otherwise open new
+            const tabs = await chrome.tabs.query({ url: '*://www.youtube.com/watch*' });
+            const existing = tabs.find(t => t.url && t.url.includes(`v=${videoId}`));
+
+            if (existing) {
+                await chrome.tabs.update(existing.id, { active: true, url });
+            } else {
+                await chrome.tabs.create({ url });
+            }
+            window.close();
+        });
+
+        panel.style.display = '';
+    } catch (error) {
+        console.error('Failed to load wrong answers:', error);
+    }
 }

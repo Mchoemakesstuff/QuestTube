@@ -11,6 +11,7 @@ interface QuizQuestion {
     options?: { label: string; text: string }[];
     correctAnswer: string;
     concept: string;
+    timestampSeconds?: number;
 }
 
 interface GeneratedQuiz {
@@ -37,8 +38,51 @@ interface GradedResult {
     }[];
 }
 
+type QuizDifficulty = 'easy' | 'intermediate' | 'boss';
+
 let genAI: GoogleGenerativeAI | null = null;
 let model: GenerativeModel | null = null;
+
+function normalizeDifficulty(value: unknown): QuizDifficulty {
+    const normalized = String(value || '').toLowerCase();
+    if (normalized === 'easy') return 'easy';
+    if (normalized === 'boss') return 'boss';
+    return 'intermediate';
+}
+
+function getDifficultyInstruction(difficulty: QuizDifficulty): string {
+    if (difficulty === 'easy') {
+        return [
+            'Difficulty: EASY (but NOT trivial)',
+            '- Most questions: test the biggest ideas and direct claims from the video.',
+            '- Include 1-2 questions that are genuinely tricky — require connecting two points or noticing a subtle detail.',
+            '- Distractors MUST be from the same domain and sound plausible to someone who watched casually.',
+            '  Example: if the answer is "TCP", distractors could be "UDP", "HTTP", "QUIC" — NOT "banana" or "Microsoft Word".',
+            '- Never use obviously absurd or off-topic distractors. Every option should feel like it COULD be correct.'
+        ].join('\n');
+    }
+
+    if (difficulty === 'boss') {
+        return [
+            'Difficulty: BOSS (genuinely hard)',
+            '- Questions should require deep understanding: WHY something works, WHEN it fails, HOW concepts compare.',
+            '- Ask about implications, trade-offs, edge cases, and what the speaker explicitly warned against or distinguished.',
+            '- At least half the questions should require inference or synthesis across multiple points in the transcript.',
+            '- Distractors should be things the speaker ALMOST said, or that sound correct if you only half-understood the topic.',
+            '  Use partial truths, common misconceptions, and reversed cause-effect as distractors.',
+            '- A student who merely skimmed the video should get ≤50% correct. Reward actual attention and thought.'
+        ].join('\n');
+    }
+
+    return [
+        'Difficulty: INTERMEDIATE',
+        '- Mix direct recall (~40%) with conceptual reasoning (~60%): "why", "how", "what happens if", comparisons.',
+        '- Include 2-3 questions that require connecting or contrasting ideas from different parts of the transcript.',
+        '- Distractors must be closely related to the correct answer — same category, similar terminology, plausible misunderstandings.',
+        '  A student should need to actually KNOW the material to distinguish the correct answer from distractors.',
+        '- Never use filler distractors that are obviously wrong to anyone who knows the topic exists.'
+    ].join('\n');
+}
 
 function getModel(): GenerativeModel {
     if (!model) {
@@ -158,31 +202,55 @@ export async function generateQuizFromTranscript(
     videoId: string,
     title: string,
     transcriptText: string,
-    questionCount: number = 6,
+    questionCount: number = 8,
+    difficulty: QuizDifficulty = 'intermediate',
     priorWeakConcepts: string[] = []
 ): Promise<GeneratedQuiz> {
     const gemini = getModel();
+    const normalizedDifficulty = normalizeDifficulty(difficulty);
+    const safeQuestionCount = Math.max(3, Math.min(15, Number(questionCount) || 8));
 
     // Truncate transcript if too long (keep first 15000 chars)
     const truncatedTranscript = transcriptText.length > 15000
         ? transcriptText.substring(0, 15000) + '...'
         : transcriptText;
 
-    const prompt = `You are an educational quiz generator. Based on the following transcript from a video titled "${title}", generate ${questionCount} quiz questions.
+    const prompt = `You are an expert educational quiz designer who creates questions that genuinely test understanding. Based on the transcript from "${title}", generate ${safeQuestionCount} quiz questions.
 
 TRANSCRIPT:
 ${truncatedTranscript}
 
+STEP 1: Identify the core ideas, arguments, distinctions, and "aha moments" in the transcript.
+STEP 2: For each question, choose a concept worth remembering long-term. Skip trivia, throwaway lines, and minor details unless central to the topic.
+STEP 3: Write questions that test whether the student UNDERSTOOD the material, not just whether they heard specific words.
+
 ${priorWeakConcepts.length > 0 ? `
-IMPORTANT: The student has previously struggled with these concepts, so include 1-2 questions that reinforce them:
+The student previously struggled with these concepts — include 1-2 questions reinforcing them:
 ${priorWeakConcepts.join(', ')}
 ` : ''}
 
-Create 100% multiple-choice questions based on the ACTUAL content of the transcript.
-- All questions must be multiple_choice with 4 options.
-- Ensure one option is clearly correct based on the video context.
+${getDifficultyInstruction(normalizedDifficulty)}
 
-IMPORTANT: All questions MUST be directly based on the transcript content. Do not make up information.
+DISTRACTOR RULES (critical — this is what makes a good quiz):
+- Every distractor MUST be from the same domain/category as the correct answer.
+- Distractors should be things a student might confuse with the correct answer if they didn't fully understand.
+- Use: related concepts, partial truths, reversed relationships, common misconceptions, things mentioned elsewhere in the video but wrong for THIS question.
+- NEVER use: obviously absurd options, off-topic filler, options from a completely different field, joke answers.
+- Test: if a stranger who knows the general topic but didn't watch the video would score >70%, your distractors are too weak.
+
+QUESTION VARIETY — use a mix of these question styles:
+- "According to the video, what is X?" (direct recall)
+- "Why does the speaker say X is important?" (reasoning)
+- "What distinguishes X from Y?" (comparison)
+- "What would happen if X?" (application/inference)
+- "Which of these is NOT true according to the video?" (attention to detail)
+
+FORMAT:
+- All questions must be multiple_choice with exactly 4 options (A/B/C/D).
+- Exactly one option must be correct based on the video content.
+- Include a short concept label per question.
+- If the transcript contains timestamps like [M:SS], include the approximate timestamp (in seconds) where the concept is discussed. If no timestamps are present, omit the field.
+- All questions MUST be based on actual transcript content. Do not invent information.
 
 Return ONLY valid JSON in this exact format:
 {
@@ -197,7 +265,8 @@ Return ONLY valid JSON in this exact format:
                 {"label": "D", "text": "Fourth option"}
             ],
             "correctAnswer": "B",
-            "concept": "specific topic"
+            "concept": "specific topic",
+            "timestampSeconds": 90
         }
     ]
 }
@@ -232,6 +301,8 @@ Return ONLY the JSON, no markdown formatting or explanation.`;
                 timestamp: new Date().toISOString(),
                 type: 'generate_quiz',
                 videoId,
+                difficulty: normalizedDifficulty,
+                questionCount: safeQuestionCount,
                 promptTokens: usage.promptTokenCount,
                 responseTokens: usage.candidatesTokenCount,
                 totalTokens: usage.totalTokenCount

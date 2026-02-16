@@ -15,7 +15,7 @@
         "http://localhost:3000/*"
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "scripts/background.js"
     },
     "content_scripts": [
         {
@@ -23,13 +23,20 @@
                 "*://*.youtube.com/watch*"
             ],
             "js": [
-                "api.js",
-                "storage.js",
-                "modal.js",
-                "content.js"
+                "scripts/api.js",
+                "scripts/storage.js",
+                "scripts/utils.js",
+                "scripts/sounds.js",
+                "scripts/particles.js",
+                "scripts/modal.js",
+                "scripts/content.js"
             ],
             "css": [
-                "styles.css"
+                "styles/base.css",
+                "styles/quiz.css",
+                "styles/results.css",
+                "styles/mode-select.css",
+                "styles/theme-v2.css"
             ],
             "run_at": "document_idle"
         }

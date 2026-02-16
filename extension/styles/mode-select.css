@@ -1,0 +1,474 @@
+/* QuestTube - Mode Select Styles
+   Celestial Vault theme, difficulty pick buttons, pixel icons, animations */
+
+/* =========================================
+   Mode Select — Celestial Vault
+   ========================================= */
+.ytq-mode-select-modal {
+  position: relative;
+  overflow: hidden;
+  width: min(94vw, 560px);
+  /* Midnight navy depth */
+  background:
+    linear-gradient(180deg, #0a1228 0%, #080e1a 50%, #060a14 100%);
+  /* Silver-steel 3D vault frame */
+  border: 4px solid #1e293b;
+  box-shadow:
+    inset 0 0 0 2px #334155,
+    inset 3px 3px 0 #475569,
+    inset -3px -3px 0 #0f172a,
+    inset 6px 6px 0 rgba(148, 163, 184, 0.1),
+    inset -6px -6px 0 rgba(0, 0, 0, 0.4),
+    5px 5px 0 rgba(0, 0, 0, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.8);
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+
+/* Starfield + moonlight glow */
+.ytq-mode-select-modal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1px 1px at 15% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 12%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 8%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 35%, rgba(255, 255, 255, 0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 30%, rgba(255, 255, 255, 0.35) 0%, transparent 100%),
+    radial-gradient(ellipse at 50% 0%, rgba(125, 211, 252, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.35) 0%, transparent 50%);
+  z-index: 0;
+}
+
+/* Close button — silver steel */
+.ytq-mode-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  background: rgba(15, 23, 42, 0.85);
+  border: 2px solid #475569;
+  color: #94a3b8;
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 0;
+  box-shadow:
+    inset -2px -2px 0 #1e293b,
+    inset 2px 2px 0 #64748b;
+  transition: color 0.1s, background 0.1s;
+}
+
+.ytq-mode-close:hover {
+  background: #1e293b;
+  color: #cbd5e1;
+}
+
+/* Header area */
+.ytq-mode-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 28px 20px 12px;
+}
+
+.ytq-mode-heading {
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.ytq-mode-subheading {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 13px;
+  color: #7dd3fc;
+  margin: 8px 0 0;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   Mode Select — Minimal Icon Pick
+   ========================================= */
+
+.ytq-pick {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 8px 18px 28px;
+}
+
+/* Button base */
+.ytq-pick__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 8px 16px;
+  background: rgba(14, 22, 42, 0.6);
+  border: 3px solid #1a2e52;
+  cursor: pointer;
+  color: var(--text);
+  font-family: inherit;
+  transition: transform 0.08s steps(2, end), border-color 0.08s steps(1), box-shadow 0.08s steps(1);
+  box-shadow:
+    inset -2px -2px 0 #0a1628,
+    inset 2px 2px 0 #1e3a5e,
+    3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ytq-pick__btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset -2px -2px 0 #0a1628,
+    inset 2px 2px 0 #1e3a5e,
+    5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ytq-pick__btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -2px -2px 0 #0a1628,
+    inset 2px 2px 0 #1e3a5e,
+    1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Difficulty colors */
+.ytq-pick__btn--easy:hover {
+  border-color: #34d399;
+  box-shadow:
+    inset -2px -2px 0 #0a2a18,
+    inset 2px 2px 0 #1a4a32,
+    5px 5px 0 rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(52, 211, 153, 0.15);
+}
+
+.ytq-pick__btn--mid:hover {
+  border-color: #f7c65d;
+  box-shadow:
+    inset -2px -2px 0 #1a1a08,
+    inset 2px 2px 0 #3a3a1a,
+    5px 5px 0 rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(247, 198, 93, 0.15);
+}
+
+.ytq-pick__btn--boss:hover {
+  border-color: #ef4444;
+  box-shadow:
+    inset -2px -2px 0 #1a0808,
+    inset 2px 2px 0 #3a1a1a,
+    5px 5px 0 rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(239, 68, 68, 0.15);
+}
+
+/* Icon container */
+.ytq-pick__icon {
+  display: block;
+  position: relative;
+  image-rendering: pixelated;
+  animation: pick-bob 3s steps(6, end) infinite;
+}
+
+@keyframes pick-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* ---- Slime icon (pixel blob) ---- */
+.ytq-pick__icon--easy {
+  width: 48px;
+  height: 36px;
+  background: #4ade80;
+  border-radius: 8px 8px 4px 4px;
+  box-shadow:
+    inset 4px 4px 0 #86efac,
+    inset -4px -4px 0 #22c55e,
+    0 4px 0 #16a34a,
+    4px 0 0 #16a34a,
+    -4px 0 0 #16a34a;
+}
+
+.ytq-pick__icon--easy::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  box-shadow:
+    18px 0 0 #fff,
+    2px 2px 0 2px #1a1a2e,
+    20px 2px 0 2px #1a1a2e;
+}
+
+.ytq-pick__icon--easy::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 4px;
+  background: #16a34a;
+}
+
+/* ---- Torch icon (pixel drawn) ---- */
+.ytq-pick__icon--mid {
+  width: 40px;
+  height: 44px;
+}
+
+/* Wooden handle */
+.ytq-pick__icon--mid::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 26px;
+  background: #8b6914;
+  box-shadow:
+    inset 2px 0 0 #a08040,
+    inset -2px 0 0 #6b4914,
+    /* Cloth wrap band */
+    -2px -20px 0 #5a3a1a,
+    2px -20px 0 #5a3a1a;
+}
+
+/* Flame */
+.ytq-pick__icon--mid::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 18px;
+  background: #f97316;
+  border-radius: 4px 4px 2px 2px;
+  box-shadow:
+    inset 4px 4px 0 #fbbf24,
+    inset -4px -4px 0 #ea580c,
+    0 0 10px rgba(249, 115, 22, 0.5),
+    0 -2px 8px rgba(251, 191, 36, 0.3);
+  animation: torch-flicker 1.5s steps(3, end) infinite;
+}
+
+@keyframes torch-flicker {
+  0%, 100% { opacity: 1; }
+  40%      { opacity: 0.75; }
+  70%      { opacity: 0.95; }
+}
+
+.ytq-pick__btn--mid:hover .ytq-pick__icon--mid::after {
+  box-shadow:
+    inset 4px 4px 0 #fbbf24,
+    inset -4px -4px 0 #ea580c,
+    0 0 16px rgba(249, 115, 22, 0.7),
+    0 -4px 12px rgba(251, 191, 36, 0.5);
+}
+
+/* ---- Skull icon (pixel drawn) ---- */
+.ytq-pick__icon--boss {
+  width: 40px;
+  height: 44px;
+  background: #e8e0d4;
+  border-radius: 6px 6px 2px 2px;
+  box-shadow:
+    inset 4px 4px 0 #f5f0e8,
+    inset -4px -4px 0 #c4bca8,
+    0 4px 0 #aaa69c;
+}
+
+.ytq-pick__icon--boss::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  background: #1a1a2e;
+  box-shadow:
+    18px 0 0 #1a1a2e,
+    2px 2px 0 #ef4444,
+    20px 2px 0 #ef4444;
+}
+
+.ytq-pick__icon--boss::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 6px;
+  background: #1a1a2e;
+  box-shadow:
+    -4px 0 0 #e8e0d4,
+    4px 0 0 #e8e0d4,
+    -8px 0 0 #e8e0d4,
+    8px 0 0 #e8e0d4,
+    0 -4px 0 #d4ccc0;
+}
+
+.ytq-pick__btn--boss:hover .ytq-pick__icon--boss {
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+/* Title */
+.ytq-pick__name {
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.ytq-pick__btn--easy .ytq-pick__name { color: #6ee7b7; }
+.ytq-pick__btn--mid .ytq-pick__name  { color: #fcd34d; }
+.ytq-pick__btn--boss .ytq-pick__name { color: #fca5a5; }
+
+/* Subtitle */
+.ytq-pick__info {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 13px;
+  color: #7a8ea8;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .ytq-mode-select-modal {
+    width: 96vw;
+  }
+
+  .ytq-pick {
+    gap: 8px;
+    padding: 8px 10px 20px;
+  }
+
+  .ytq-pick__name {
+    font-size: 7px;
+  }
+
+  .ytq-pick__info {
+    font-size: 9px;
+  }
+
+  .ytq-mode-heading {
+    font-size: 12px;
+  }
+}
+
+/* =========================================
+   Mode Select — Animations
+   ========================================= */
+
+/* Twinkling stars — second layer with offset timing */
+.ytq-mode-select-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1px 1px at 8% 42%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 52% 58%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 18%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 78%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 65%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 5%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  animation: star-twinkle-a 4s ease-in-out infinite;
+}
+
+/* Twinkle the existing starfield layer too */
+.ytq-mode-select-modal::after {
+  animation: star-twinkle-b 5.5s ease-in-out infinite;
+}
+
+@keyframes star-twinkle-a {
+  0%, 100% { opacity: 0.8; }
+  25%      { opacity: 0.3; }
+  50%      { opacity: 1; }
+  75%      { opacity: 0.5; }
+}
+
+@keyframes star-twinkle-b {
+  0%, 100% { opacity: 0.65; }
+  33%      { opacity: 1; }
+  66%      { opacity: 0.3; }
+}
+
+
+@keyframes heading-shimmer {
+  0%, 15%  { background-position: 100% 0; }
+  85%, 100% { background-position: -50% 0; }
+}
+
+/* Entrance animation — staggered pop-in for difficulty buttons */
+@keyframes pick-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ytq-pick__btn {
+  animation: pick-entrance 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+.ytq-pick__btn:nth-child(1) { animation-delay: 0.12s; }
+.ytq-pick__btn:nth-child(2) { animation-delay: 0.26s; }
+.ytq-pick__btn:nth-child(3) { animation-delay: 0.4s; }
+
+/* Icon glow on hover — per-difficulty colored drop-shadow */
+.ytq-pick__icon {
+  transition: filter 0.15s ease;
+}
+
+.ytq-pick__btn--easy:hover .ytq-pick__icon--easy {
+  filter:
+    drop-shadow(0 0 8px rgba(52, 211, 153, 0.6))
+    drop-shadow(0 0 18px rgba(52, 211, 153, 0.3));
+}
+
+.ytq-pick__btn--mid:hover .ytq-pick__icon--mid {
+  filter:
+    drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))
+    drop-shadow(0 0 18px rgba(251, 191, 36, 0.3));
+}
+
+.ytq-pick__btn--boss:hover .ytq-pick__icon--boss {
+  filter:
+    drop-shadow(0 0 8px rgba(239, 68, 68, 0.6))
+    drop-shadow(0 0 18px rgba(239, 68, 68, 0.3));
+}
+
+/* Selected button press — press-down + flash */
+@keyframes pick-press {
+  0%   { transform: scale(1); filter: brightness(1); }
+  35%  { transform: scale(0.92) translateY(3px); filter: brightness(0.85); }
+  65%  { transform: scale(0.95) translateY(2px); filter: brightness(1.6); }
+  100% { transform: scale(1); filter: brightness(1); opacity: 0.5; }
+}
+
+.ytq-pick__btn--pressed {
+  animation: pick-press 0.3s ease-out forwards !important;
+  pointer-events: none !important;
+}

@@ -9,7 +9,13 @@ export async function quizRoutes(fastify: FastifyInstance) {
     const generateQuizHandler = async (request: FastifyRequest, reply: FastifyReply) => {
         try {
             const body = request.body as any;
-            const { videoId, title, questionCount = 6, priorWeakConcepts = [] } = body;
+            const {
+                videoId,
+                title,
+                questionCount = 8,
+                difficulty = 'intermediate',
+                priorWeakConcepts = []
+            } = body;
 
             if (!videoId) {
                 return reply.status(400).send({ error: 'videoId is required' });
@@ -22,20 +28,25 @@ export async function quizRoutes(fastify: FastifyInstance) {
             const transcriptResult = await fetchTranscript(videoId);
 
             if (!transcriptResult.success || !transcriptResult.text) {
-                return reply.status(404).send({
+                const statusCode = Number(transcriptResult.statusCode) || 404;
+                return reply.status(statusCode).send({
                     error: transcriptResult.error || 'Transcript not available for this video'
                 });
             }
 
             console.log(`Transcript fetched: ${transcriptResult.text.length} characters`);
 
+            // Prefer timestamped transcript so Gemini can provide per-question timestamps
+            const transcriptForQuiz = transcriptResult.timestampedText || transcriptResult.text;
+
             // Step 2: Generate quiz using Gemini
             console.log('Step 2: Generating quiz with Gemini...');
             const quiz = await generateQuizFromTranscript(
                 videoId,
                 title || 'YouTube Video',
-                transcriptResult.text,
+                transcriptForQuiz,
                 questionCount,
+                difficulty,
                 priorWeakConcepts
             );
 
@@ -101,7 +112,8 @@ export async function quizRoutes(fastify: FastifyInstance) {
         const result = await fetchTranscript(videoId);
 
         if (!result.success) {
-            return reply.status(404).send({ error: result.error });
+            const statusCode = Number(result.statusCode) || 404;
+            return reply.status(statusCode).send({ error: result.error });
         }
 
         return reply.send({

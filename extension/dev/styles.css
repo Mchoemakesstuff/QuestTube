@@ -1,0 +1,2553 @@
+/* QuestTube - Retro Pixel Styles */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&display=swap');
+
+/* ============ BASE VARIABLES ============ */
+:root {
+  --bg-dark: #1a1a2e;
+  --bg-panel: #16213e;
+  --border: #0f3460;
+  --border-light: #1e4a7a;
+  --border-dark: #0a1628;
+  --gold: #e9a820;
+  --green: #4ade80;
+  --green-dark: #22c55e;
+  --red: #ef4444;
+  --text: #e8e8e8;
+  --text-dim: #888;
+  --pixel-font: 'Press Start 2P', monospace;
+}
+
+/* ============ MODAL OVERLAY ============ */
+.ytq-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 20, 0.95);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  image-rendering: pixelated;
+}
+
+.ytq-overlay.visible {
+  opacity: 1;
+}
+
+/* ============ MODAL CONTAINER ============ */
+.ytq-modal {
+  background: var(--bg-dark);
+  border: 3px solid var(--border);
+  max-width: 720px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow:
+    inset -3px -3px 0 var(--border-dark),
+    inset 3px 3px 0 var(--border-light),
+    8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ============ HEADER ============ */
+.ytq-header {
+  padding: 20px;
+  border-bottom: 3px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-panel);
+}
+
+.ytq-title {
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  color: var(--gold);
+  margin: 0;
+  text-shadow: 2px 2px 0 var(--bg-dark);
+}
+
+.ytq-subtitle {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+.ytq-close {
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  color: var(--text-dim);
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.1s;
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light);
+}
+
+.ytq-close:hover {
+  background: var(--red);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ============ CONTENT ============ */
+.ytq-content {
+  padding: 20px;
+  font-family: var(--pixel-font);
+}
+
+.ytq-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ytq-mode-card {
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  color: var(--text);
+  text-align: left;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light);
+}
+
+.ytq-mode-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+}
+
+.ytq-mode-card-recommended {
+  border-color: var(--green);
+}
+
+.ytq-mode-card-boss {
+  border-color: #f97316;
+}
+
+.ytq-mode-name {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.ytq-mode-meta {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--text-dim);
+}
+
+.ytq-mode-desc {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .ytq-mode-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ MOTIVATION ============ */
+.ytq-motivation {
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light);
+}
+
+.ytq-motivation-text {
+  color: var(--gold);
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  line-height: 1.8;
+}
+
+/* ============ QUESTION CARD ============ */
+/* ============ BATTLE MODE QUESTION ============ */
+.ytq-question {
+  background: var(--bg-panel);
+  border: 4px double var(--border);
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4);
+  position: relative;
+  min-height: 200px;
+}
+
+/* Animations */
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ============ BATTLE SCENE ============ */
+.ytq-combatant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 20;
+}
+
+.damage-text {
+  position: absolute;
+  color: #ef4444;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  pointer-events: none;
+  animation: floatUpFade 1s forwards;
+  text-shadow: 1px 1px 0 #000;
+  z-index: 10;
+}
+
+@keyframes floatUpFade {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+@keyframes shake-damage {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-2px, 2px);
+  }
+
+  50% {
+    transform: translate(2px, -2px);
+  }
+
+  75% {
+    transform: translate(-2px, -2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.damaged {
+  animation: shake-damage 0.3s cubic-bezier(.36, .07, .19, .97) both;
+  filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5);
+  /* Flash red */
+}
+
+
+@keyframes shake-hard {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+
+  40% {
+    transform: translateX(6px) rotate(2deg);
+  }
+
+  60% {
+    transform: translateX(-6px);
+  }
+
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.shake-hard {
+  animation: shake-hard 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+/* Combo Badge */
+.ytq-combo-badge {
+  position: absolute;
+  top: -16px;
+  right: -8px;
+  background: linear-gradient(180deg, var(--gold) 0%, #b45309 100%);
+  color: var(--bg-dark);
+  padding: 8px 12px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  transform: rotate(10deg);
+  z-index: 100;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.ytq-combo-count {
+  font-family: var(--pixel-font);
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ytq-combo-label {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.ytq-combo-text {
+  color: var(--gold);
+  font-weight: bold;
+  text-shadow: 1px 1px 0 #000;
+  animation: pulse 0.5s infinite;
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+}
+
+.ytq-question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px dashed var(--border);
+}
+
+.ytq-question-number {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.ytq-question-type {
+  font-family: var(--pixel-font);
+  font-size: 7px;
+  padding: 4px 8px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.ytq-question-type.free_recall {
+  background: #1a3a2a;
+  border-color: #2a5a3a;
+  color: var(--green);
+}
+
+.ytq-question-type.multiple_choice {
+  background: #3a2a1a;
+  border-color: #5a3a2a;
+  color: var(--gold);
+}
+
+.ytq-question-type.short_answer {
+  background: #1a2a3a;
+  border-color: #2a3a5a;
+  color: #8fb8cb;
+}
+
+.ytq-question-text {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+/* ============ MCQ OPTIONS ============ */
+.ytq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ytq-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.1s;
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light);
+}
+
+.ytq-option:hover {
+  transform: translateY(-2px);
+  background: #1e2847;
+}
+
+.ytq-option.selected {
+  background: #1a3a2a;
+  border-color: var(--green);
+  box-shadow:
+    inset -2px -2px 0 #16a34a,
+    inset 2px 2px 0 #86efac,
+    0 0 10px rgba(74, 222, 128, 0.3);
+}
+
+.ytq-option-label {
+  width: 28px;
+  height: 28px;
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-right: 12px;
+}
+
+.ytq-option.selected .ytq-option-label {
+  background: var(--green);
+  border-color: var(--green-dark);
+  color: var(--bg-dark);
+}
+
+.ytq-option-text {
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* ============ TEXT INPUT ============ */
+.ytq-textarea {
+  width: 100%;
+  min-height: 100px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  padding: 12px;
+  color: var(--text);
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  resize: vertical;
+  box-shadow:
+    inset 2px 2px 0 var(--border-dark);
+}
+
+.ytq-textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow:
+    inset 2px 2px 0 var(--border-dark),
+    0 0 10px rgba(74, 222, 128, 0.2);
+}
+
+.ytq-textarea::placeholder {
+  color: var(--text-dim);
+}
+
+/* ============ SUBMIT BUTTON ============ */
+.ytq-submit {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+  border: 3px solid #16a34a;
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  color: var(--bg-dark);
+  cursor: pointer;
+  transition: all 0.1s;
+  margin-top: 16px;
+  text-transform: uppercase;
+  box-shadow:
+    inset -3px -3px 0 #15803d,
+    inset 3px 3px 0 #86efac,
+    4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-submit:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow:
+    inset -3px -3px 0 #15803d,
+    inset 3px 3px 0 #86efac,
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-submit:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    inset -3px -3px 0 #15803d,
+    inset 3px 3px 0 #86efac,
+    2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(50%);
+}
+
+/* ============ RESULTS ============ */
+.ytq-results {
+  padding: 20px;
+  font-family: var(--pixel-font);
+  background: linear-gradient(180deg, rgba(22, 33, 62, 0.95) 0%, rgba(10, 20, 40, 0.95) 100%);
+}
+
+.ytq-score {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: var(--bg-panel);
+  border: 3px solid var(--border);
+  box-shadow:
+    inset -3px -3px 0 var(--border-dark),
+    inset 3px 3px 0 var(--border-light);
+}
+
+.ytq-score-value {
+  font-size: 48px;
+  color: var(--gold);
+  text-shadow: 4px 4px 0 var(--bg-dark);
+}
+
+.ytq-score-label {
+  font-size: 8px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* ============ VICTORY CARD ============ */
+.ytq-victory-modal {
+  max-width: 980px;
+  width: min(96vw, 980px);
+}
+
+.ytq-victory-stage {
+  position: relative;
+  min-height: 440px;
+  border: 3px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ytq-score-center {
+  text-align: center;
+  padding: 20px;
+}
+
+.ytq-score-core {
+  font-family: var(--pixel-font);
+  font-size: clamp(64px, 14vw, 140px);
+  line-height: 1;
+  color: #fef08a;
+  text-shadow:
+    6px 6px 0 rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(250, 204, 21, 0.5);
+}
+
+.ytq-score-sub {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: #e2e8f0;
+  margin-top: 16px;
+}
+
+.ytq-play-again-btn {
+  margin-top: 20px;
+  max-width: 320px;
+}
+
+.ytq-terraria-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  text-align: right;
+}
+
+.ytq-terraria-rank {
+  font-family: var(--pixel-font);
+  font-size: 48px;
+  color: #fef08a;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(254, 240, 138, 0.3);
+  line-height: 1;
+}
+
+.ytq-terraria-stat {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: #e2e8f0;
+  margin-top: 4px;
+  padding-right: 2px;
+}
+
+.ytq-level-up-banner {
+  margin-top: 14px;
+}
+
+@media (max-width: 920px) {
+  .ytq-victory-stage {
+    min-height: 360px;
+  }
+
+  .ytq-terraria-badge {
+    top: 10px;
+    right: 10px;
+  }
+
+  .ytq-terraria-rank {
+    font-size: 36px;
+  }
+}
+
+/* =========================================
+   Results — Review Mistakes Section
+   ========================================= */
+.ytq-review-section {
+  padding: 12px 16px 16px;
+  border-top: 2px dashed #1c3a6e;
+}
+
+.ytq-review-title {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: #ef4444;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.ytq-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.ytq-review-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(14, 22, 42, 0.7);
+  border: 2px solid #1a2e52;
+  box-shadow:
+    inset -1px -1px 0 #0a1628,
+    inset 1px 1px 0 #1e3a5e;
+}
+
+.ytq-review-q {
+  flex: 1;
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 10px;
+  color: #a0b4cc;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ytq-review-seek {
+  flex-shrink: 0;
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 2px solid #22c55e;
+  padding: 3px 8px;
+  cursor: pointer;
+  box-shadow:
+    inset -1px -1px 0 #16a34a,
+    inset 1px 1px 0 #86efac,
+    2px 2px 0 rgba(0, 0, 0, 0.4);
+  transition: transform 0.08s steps(2, end), background 0.08s;
+}
+
+.ytq-review-seek:hover {
+  transform: translateY(-1px);
+  background: rgba(74, 222, 128, 0.2);
+  box-shadow:
+    inset -1px -1px 0 #16a34a,
+    inset 1px 1px 0 #86efac,
+    3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-review-seek:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -1px -1px 0 #16a34a,
+    inset 1px 1px 0 #86efac,
+    1px 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Scrollbar for review list */
+.ytq-review-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ytq-review-list::-webkit-scrollbar-track {
+  background: #0a1628;
+}
+
+.ytq-review-list::-webkit-scrollbar-thumb {
+  background: #1c3a6e;
+}
+
+.ytq-review-hint {
+  margin: 8px 0 0;
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  color: #6b8cbe;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Legacy rank badge classes retained only to avoid accidental regressions */
+.ytq-rank-badge {
+  display: none;
+}
+
+.ytq-rank-badge.s {
+  background: radial-gradient(circle, #fef08a 0%, #f59e0b 100%);
+  color: #3b2200;
+}
+
+.ytq-rank-badge.a {
+  background: radial-gradient(circle, #bfdbfe 0%, #3b82f6 100%);
+  color: #0b1f46;
+}
+
+.ytq-rank-badge.b {
+  background: radial-gradient(circle, #a7f3d0 0%, #10b981 100%);
+  color: #063d2e;
+}
+
+.ytq-rank-badge.c {
+  background: radial-gradient(circle, #fcd34d 0%, #f97316 100%);
+  color: #4a2400;
+}
+
+.ytq-rank-badge.d {
+  background: radial-gradient(circle, #d1d5db 0%, #6b7280 100%);
+  color: #111827;
+}
+
+.ytq-rank-label {
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ytq-rank-value {
+  font-size: 22px;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+
+/* XP Reward Animation */
+.ytq-xp-reward {
+  display: inline-block;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+  color: var(--bg-dark);
+  padding: 8px 16px;
+  margin-top: 12px;
+  font-size: 10px;
+  border: 2px solid #16a34a;
+  animation: bounce 0.5s ease infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.ytq-feedback-section {
+  margin-bottom: 20px;
+}
+
+.ytq-feedback-title {
+  font-size: 8px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.ytq-feedback-item {
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  padding: 16px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--border);
+}
+
+.ytq-feedback-item.correct {
+  border-left-color: var(--green);
+}
+
+.ytq-feedback-item.incorrect {
+  border-left-color: var(--red);
+}
+
+.ytq-feedback-question {
+  font-size: 9px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.ytq-feedback-answer {
+  font-size: 8px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.ytq-feedback-correct {
+  color: var(--green);
+}
+
+.ytq-feedback-incorrect {
+  color: var(--red);
+}
+
+/* ============ WEAK CONCEPTS ============ */
+.ytq-weak-concepts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ytq-concept-tag {
+  padding: 6px 12px;
+  background: #3a2a1a;
+  border: 2px solid var(--gold);
+  font-size: 8px;
+  color: var(--gold);
+}
+
+/* ============ SCHEDULE ============ */
+.ytq-schedule {
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.ytq-schedule-text {
+  color: var(--text);
+  font-size: 8px;
+}
+
+.ytq-schedule-toggle {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ytq-schedule-toggle.active {
+  background: var(--green-dark);
+  border-color: var(--green);
+}
+
+.ytq-schedule-toggle::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--text);
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+}
+
+.ytq-schedule-toggle.active::after {
+  transform: translateX(24px);
+  background: #fff;
+}
+
+/* ============ LOADING ============ */
+.ytq-loading {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.ytq-spinner {
+  width: 32px;
+  height: 32px;
+  border: 4px solid var(--border);
+  border-top-color: var(--gold);
+  animation: spin 0.8s steps(8) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ytq-loading-text {
+  margin-top: 16px;
+  color: #fff;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  animation: pulse 2s infinite;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* ============ QUIZ BUTTON ============ */
+.ytq-quiz-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: linear-gradient(180deg, var(--gold) 0%, #c4891a 100%);
+  border: 2px solid #b8860b;
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--bg-dark);
+  cursor: pointer;
+  transition: all 0.1s;
+  margin-left: 8px;
+  white-space: nowrap;
+  box-shadow:
+    inset -2px -2px 0 #8b6914,
+    inset 2px 2px 0 #ffd700,
+    2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-quiz-button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset -2px -2px 0 #8b6914,
+    inset 2px 2px 0 #ffd700,
+    3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-quiz-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -2px -2px 0 #8b6914,
+    inset 2px 2px 0 #ffd700,
+    1px 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-quiz-button svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* Floating button */
+.ytq-quiz-button.floating {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 9999;
+  padding: 8px 14px;
+  font-size: 9px;
+}
+
+/* ============ ERROR ============ */
+.ytq-error {
+  text-align: center;
+  padding: 32px;
+  font-family: var(--pixel-font);
+}
+
+.ytq-error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.ytq-gameover-sprite-wrap {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.ytq-gameover-sprite {
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  transform: translateY(4px);
+  transform-origin: center center;
+  filter: grayscale(1) brightness(0.72) saturate(0.55) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.6));
+  opacity: 0.9;
+}
+
+.ytq-gameover-sprite.fallback {
+  transform: rotate(92deg) translateY(4px);
+  filter: grayscale(1) brightness(0.72) saturate(0.55) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.6));
+}
+
+.ytq-error-message {
+  color: var(--red);
+  font-size: 10px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.ytq-retry-btn {
+  padding: 12px 24px;
+  background: var(--bg-panel);
+  border: 2px solid var(--border);
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.1s;
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light),
+    3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.ytq-retry-btn:hover {
+  transform: translateY(-2px);
+  background: #1e4a7a;
+}
+
+@keyframes bg-pulse {
+  0% {
+    background-color: #16a34a;
+  }
+
+  50% {
+    background-color: #15803d;
+  }
+
+  100% {
+    background-color: #16a34a;
+  }
+}
+
+/* ============ REWARDS & LEVEL UP ============ */
+.ytq-rewards {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.ytq-reward-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--border-dark);
+  border-radius: 4px;
+}
+
+.ytq-reward-icon {
+  font-size: 16px;
+}
+
+.ytq-reward-text {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--yellow);
+}
+
+.ytq-level-up-banner {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  padding: 16px;
+  margin: 16px 0;
+  border: 2px solid #bef264;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+  animation: bg-pulse 2s infinite;
+  text-align: center;
+}
+
+.ytq-level-up-text {
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ytq-level-up-details {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+
+  color: #dcfce7;
+}
+
+/* ============ INSTANT FEEDBACK ============ */
+/* =========================================
+   Feedback Bar (Duolingo-style slim bar)
+   ========================================= */
+.ytq-fb-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  animation: fb-bar-in 0.25s ease-out;
+}
+
+.ytq-fb-bar.visible {
+  display: flex;
+}
+
+.ytq-fb-bar.correct {
+  border-color: var(--green);
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.ytq-fb-bar.incorrect {
+  border-color: var(--red);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+@keyframes fb-bar-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ytq-fb-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ytq-fb-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.ytq-fb-text {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ytq-fb-bar.correct .ytq-fb-text {
+  color: var(--green);
+}
+
+.ytq-fb-bar.incorrect .ytq-fb-text {
+  color: #fca5a5;
+}
+
+.ytq-fb-text strong {
+  color: var(--green);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* ---- Floating +1 Coin Reward ---- */
+.ytq-float-reward {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  color: #fcd34d;
+  text-shadow: 1px 1px 0 #000, 0 0 8px rgba(252, 211, 77, 0.4);
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: float-up 1s ease-out forwards;
+}
+
+.ytq-float-coin {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+
+@keyframes float-up {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  60%  { opacity: 1; transform: translateX(-50%) translateY(-50px) scale(1.15); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-80px) scale(0.9); }
+}
+
+/* ---- Buttons ---- */
+.ytq-check-btn,
+.ytq-next-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.ytq-check-btn {
+  background: var(--bg-dark);
+  color: var(--text);
+  box-shadow: inset -2px -2px 0 var(--border-dark);
+}
+
+.ytq-check-btn:hover {
+  background: var(--bg-panel);
+  transform: translateY(-2px);
+}
+
+.ytq-next-btn {
+  flex-shrink: 0;
+  margin-top: 0;
+  padding: 8px 18px;
+  background: var(--gold);
+  color: var(--bg-dark);
+  border-color: #b45309;
+  box-shadow: inset -2px -2px 0 #b45309;
+}
+
+.ytq-next-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.ytq-correct-text {
+  color: var(--green);
+  font-weight: bold;
+}
+
+/* Option States */
+.ytq-option.correct {
+  background: rgba(22, 163, 74, 0.2);
+  border-color: var(--green);
+}
+
+.ytq-option.incorrect {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--red);
+  opacity: 0.7;
+}
+
+.ytq-option.dimmed {
+  opacity: 0.5;
+  filter: grayscale(0.8);
+}
+
+.ytq-bounce {
+  display: inline-block;
+  /* Ensure block for transform */
+  animation: bounce 0.5s infinite;
+}
+
+/* Particles */
+.ytq-particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 10001;
+  animation: particle-explode 0.8s ease-out forwards;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes particle-explode {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Header Controls */
+.ytq-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ytq-icon-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  transition: transform 0.1s;
+  filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
+  line-height: 1;
+}
+
+.ytq-icon-btn:hover {
+  transform: scale(1.2);
+}
+
+.ytq-icon-btn:active {
+  transform: scale(0.9);
+}
+
+/* Pixel Art Icons */
+.ytq-icon-img {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  /* Crucial for sharp pixels */
+  vertical-align: middle;
+}
+
+@keyframes coin-bounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.ytq-coin {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border: none;
+  image-rendering: pixelated;
+  vertical-align: middle;
+  margin-left: 10px;
+  display: inline-block;
+  animation: coin-bounce 0.8s infinite ease-in-out;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Loading Portal */
+@keyframes portal-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.ytq-loading-portal {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  /* Clip any remaining background corners */
+  image-rendering: pixelated;
+  display: block;
+  margin: 0 auto 24px;
+  animation: portal-spin 3s infinite linear;
+  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* =========================================
+   Battle Mode
+   ========================================= */
+.ytq-battle-scene {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 260px;
+  margin-bottom: -20px;
+  /* Overlap with dialog */
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+  /* Battle Background */
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  border-radius: 8px 8px 0 0;
+  border: 3px solid var(--border);
+  border-bottom: none;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.ytq-hero,
+.ytq-enemy {
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+  position: relative;
+  /* Removed bottom offset */
+  transition: transform 0.2s, filter 0.2s;
+  margin-bottom: 30px;
+}
+
+.ytq-hero {
+  /* Hero already faces right towards enemy */
+  transform-origin: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+
+.ytq-enemy {
+  /* Enemy naturally faces left (towards hero) */
+  transform-origin: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  bottom: 10px;
+}
+
+/* Animations */
+@keyframes hero-attack {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(120px);
+    /* Reduced range */
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes enemy-attack {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-120px);
+    /* Reduced range */
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes damage-blink {
+  0% {
+    filter: brightness(1) sepia(0) hue-rotate(0deg);
+    opacity: 1;
+  }
+
+  10% {
+    filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5);
+    opacity: 0.8;
+  }
+
+  /* Red Flash */
+  20% {
+    filter: brightness(1) sepia(0) hue-rotate(0deg);
+    opacity: 1;
+  }
+
+  30% {
+    filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5);
+    opacity: 0.8;
+  }
+
+  40% {
+    filter: brightness(1) sepia(0) hue-rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.ytq-hero.attacking {
+  animation: hero-attack 0.4s ease-in-out;
+}
+
+.ytq-enemy.attacking {
+  animation: enemy-attack 0.4s ease-in-out;
+}
+
+.ytq-hero.damaged,
+.ytq-enemy.damaged {
+  animation: damage-blink 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+/* ============ DYNAMIC ACTIONS ============ */
+@keyframes shake-screen {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-5px, 5px);
+  }
+
+  50% {
+    transform: translate(5px, -5px);
+  }
+
+  75% {
+    transform: translate(-5px, -5px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.shake-screen {
+  animation: shake-screen 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes pulse-red {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.7));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 1));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.7));
+  }
+}
+
+.damage-number {
+  position: absolute;
+  color: #ef4444;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 100;
+  text-shadow: 2px 2px 0 #000;
+  animation: float-damage 1s forwards;
+  left: 50%;
+  top: -20px;
+  transform: translateX(-50%);
+}
+
+@keyframes float-damage {
+  0% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(-50%, -30px) scale(1.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -60px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   Visual System V2
+   ========================================= */
+:root {
+  --bg-dark: #0f1726;
+  --bg-panel: #1a2740;
+  --bg-panel-raised: #223454;
+  --border: #2f4f79;
+  --border-light: #4f76a9;
+  --border-dark: #142038;
+  --gold: #f7c65d;
+  --green: #78d97b;
+  --green-dark: #3ea55e;
+  --red: #f26a6a;
+  --text: #f1f5ff;
+  --text-dim: #9ba9c2;
+  --pixel-font: 'Press Start 2P', monospace;
+  --body-font: 'VT323', monospace;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --radius-panel: 10px;
+  --panel-stroke: 2px solid var(--border);
+  --panel-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light),
+    6px 6px 0 rgba(0, 0, 0, 0.35);
+}
+
+.ytq-overlay {
+  background:
+    radial-gradient(circle at 22% 20%, rgba(94, 165, 255, 0.14) 0, rgba(94, 165, 255, 0) 36%),
+    radial-gradient(circle at 80% 82%, rgba(123, 214, 104, 0.12) 0, rgba(123, 214, 104, 0) 38%),
+    rgba(8, 12, 22, 0.93);
+}
+
+.ytq-modal {
+  width: min(94vw, 860px);
+  max-height: 90vh;
+  border: var(--panel-stroke);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+  overflow: auto;
+}
+
+.ytq-header {
+  padding: var(--space-5);
+  border-bottom: var(--panel-stroke);
+  background: linear-gradient(180deg, #243a5f 0%, #1a2842 100%);
+}
+
+.ytq-title {
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  color: var(--gold);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.ytq-subtitle {
+  font-family: var(--body-font);
+  font-size: 26px;
+  line-height: 1;
+  margin-top: 10px;
+  color: var(--text-dim);
+}
+
+.ytq-content {
+  padding: var(--space-5);
+  font-family: var(--body-font);
+}
+
+.ytq-close,
+.ytq-check-btn,
+.ytq-next-btn,
+.ytq-retry-btn,
+.ytq-submit,
+.ytq-quiz-button {
+  border-radius: 6px;
+}
+
+.ytq-mode-card,
+.ytq-question,
+.ytq-fb-bar,
+.ytq-error,
+.ytq-level-up-banner {
+  border-radius: 8px;
+}
+
+.ytq-mode-grid {
+  gap: var(--space-4);
+}
+
+.ytq-mode-card {
+  border: var(--panel-stroke);
+  background: linear-gradient(180deg, #1e2f4c 0%, #17253e 100%);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-4);
+}
+
+.ytq-mode-name {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+}
+
+.ytq-mode-meta {
+  font-family: var(--body-font);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.ytq-mode-desc {
+  font-family: var(--body-font);
+  font-size: 27px;
+  line-height: 1.1;
+}
+
+.ytq-battle-scene {
+  margin-bottom: -10px;
+  border: var(--panel-stroke);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+}
+
+.ytq-question {
+  border: var(--panel-stroke);
+  background: linear-gradient(180deg, #1c2c49 0%, #152139 100%);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-6);
+}
+
+.ytq-question-number {
+  font-family: var(--body-font);
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.ytq-question-type {
+  font-family: var(--pixel-font);
+  font-size: 7px;
+}
+
+.ytq-question-text {
+  font-family: var(--body-font);
+  font-size: clamp(28px, 3.1vw, 34px);
+  line-height: 1.12;
+  letter-spacing: 0.2px;
+  margin-bottom: var(--space-4);
+}
+
+.ytq-options {
+  gap: var(--space-3);
+}
+
+.ytq-option {
+  border: var(--panel-stroke);
+  border-radius: 8px;
+  background: #121e34;
+  padding: 12px 14px;
+  box-shadow:
+    inset -2px -2px 0 #101a2d,
+    inset 2px 2px 0 #334f79;
+}
+
+.ytq-option:hover {
+  background: #1d2f4e;
+}
+
+.ytq-option-label {
+  border-radius: 6px;
+}
+
+.ytq-option-text {
+  font-family: var(--body-font);
+  font-size: 25px;
+  line-height: 1.08;
+}
+
+.ytq-textarea {
+  border: var(--panel-stroke);
+  border-radius: 8px;
+  background: #101a2f;
+  font-family: var(--body-font);
+  font-size: 27px;
+  line-height: 1.12;
+}
+
+.ytq-textarea::placeholder {
+  font-family: var(--body-font);
+  font-size: 24px;
+}
+
+.ytq-check-btn,
+.ytq-next-btn {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  padding: 12px 14px;
+}
+
+.ytq-fb-bar {
+  border: var(--panel-stroke);
+}
+
+.ytq-fb-text {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 13px;
+}
+
+.ytq-results {
+  padding: var(--space-5);
+}
+
+.ytq-victory-stage {
+  border: var(--panel-stroke);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+}
+
+.ytq-score-sub {
+  font-family: var(--body-font);
+  font-size: 26px;
+}
+
+.ytq-terraria-badge {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.ytq-terraria-stat {
+  font-family: var(--body-font);
+  font-size: 23px;
+  line-height: 1;
+}
+
+.ytq-error {
+  border: var(--panel-stroke);
+  background: linear-gradient(180deg, #1a2a45 0%, #13203a 100%);
+  box-shadow: var(--panel-shadow);
+}
+
+.ytq-error-message {
+  font-family: var(--body-font);
+  font-size: 28px;
+  color: #ffb4b4;
+}
+
+@media (max-width: 900px) {
+  .ytq-title {
+    font-size: 10px;
+  }
+
+  .ytq-question-text {
+    font-size: clamp(24px, 6vw, 30px);
+  }
+
+  .ytq-option-text,
+  .ytq-textarea,
+  .ytq-error-message {
+    font-size: 24px;
+  }
+
+  .ytq-battle-scene {
+    height: 220px;
+  }
+
+  .ytq-hero,
+  .ytq-enemy {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* =========================================
+   Mode Select — Celestial Vault
+   ========================================= */
+.ytq-mode-select-modal {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  width: min(94vw, 560px);
+  /* Midnight navy depth */
+  background:
+    linear-gradient(180deg, #0a1228 0%, #080e1a 50%, #060a14 100%);
+  /* Silver-steel 3D vault frame */
+  border: 4px solid #1e293b;
+  box-shadow:
+    inset 0 0 0 2px #334155,
+    inset 3px 3px 0 #475569,
+    inset -3px -3px 0 #0f172a,
+    inset 6px 6px 0 rgba(148, 163, 184, 0.1),
+    inset -6px -6px 0 rgba(0, 0, 0, 0.4),
+    5px 5px 0 rgba(0, 0, 0, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.8);
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+
+/* Starfield layer B + moonlight glow */
+.ytq-mode-select-modal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(2px 2px at 18% 28%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+    radial-gradient(3px 3px at 48% 18%, rgba(200, 220, 255, 0.95) 0%, transparent 100%),
+    radial-gradient(2px 2px at 75% 35%, rgba(255, 255, 255, 0.85) 0%, transparent 100%),
+    radial-gradient(2px 2px at 85% 12%, rgba(200, 230, 255, 0.9) 0%, transparent 100%),
+    radial-gradient(2px 2px at 32% 55%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+    radial-gradient(3px 3px at 62% 45%, rgba(200, 220, 255, 0.9) 0%, transparent 100%),
+    radial-gradient(2px 2px at 5% 48%, rgba(255, 255, 255, 0.85) 0%, transparent 100%),
+    radial-gradient(ellipse at 50% 0%, rgba(125, 211, 252, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.35) 0%, transparent 50%);
+  z-index: 0;
+  animation: star-twinkle-b 3.5s ease-in-out infinite;
+}
+
+/* Close button — silver steel */
+.ytq-mode-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  background: rgba(15, 23, 42, 0.85);
+  border: 2px solid #475569;
+  color: #94a3b8;
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 0;
+  box-shadow:
+    inset -2px -2px 0 #1e293b,
+    inset 2px 2px 0 #64748b;
+  transition: color 0.1s, background 0.1s;
+}
+
+.ytq-mode-close:hover {
+  background: #1e293b;
+  color: #cbd5e1;
+}
+
+/* Header area */
+.ytq-mode-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 28px 20px 12px;
+}
+
+.ytq-mode-heading {
+  font-family: var(--pixel-font);
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+  text-shadow:
+    2px 2px 0 #000,
+    0 0 14px rgba(255, 255, 255, 0.25),
+    0 0 30px rgba(255, 255, 255, 0.1);
+  letter-spacing: 2px;
+}
+
+.ytq-mode-subheading {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 13px;
+  color: #7dd3fc;
+  margin: 8px 0 0;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   Mode Select — Minimal Icon Pick
+   ========================================= */
+
+.ytq-pick {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 8px 18px 28px;
+}
+
+/* Button base */
+.ytq-pick__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 8px 16px;
+  background: rgba(14, 22, 42, 0.6);
+  border: 3px solid #1a2e52;
+  cursor: pointer;
+  color: var(--text);
+  font-family: inherit;
+  transition: transform 0.08s steps(2, end), border-color 0.08s steps(1), box-shadow 0.08s steps(1);
+  box-shadow:
+    inset -2px -2px 0 #0a1628,
+    inset 2px 2px 0 #1e3a5e,
+    3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ytq-pick__btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset -2px -2px 0 #0a1628,
+    inset 2px 2px 0 #1e3a5e,
+    5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ytq-pick__btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -2px -2px 0 #0a1628,
+    inset 2px 2px 0 #1e3a5e,
+    1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Difficulty colors */
+.ytq-pick__btn--easy:hover {
+  border-color: #34d399;
+  box-shadow:
+    inset -2px -2px 0 #0a2a18,
+    inset 2px 2px 0 #1a4a32,
+    5px 5px 0 rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(52, 211, 153, 0.15);
+}
+
+.ytq-pick__btn--mid:hover {
+  border-color: #f7c65d;
+  box-shadow:
+    inset -2px -2px 0 #1a1a08,
+    inset 2px 2px 0 #3a3a1a,
+    5px 5px 0 rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(247, 198, 93, 0.15);
+}
+
+.ytq-pick__btn--boss:hover {
+  border-color: #ef4444;
+  box-shadow:
+    inset -2px -2px 0 #1a0808,
+    inset 2px 2px 0 #3a1a1a,
+    5px 5px 0 rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(239, 68, 68, 0.15);
+}
+
+/* Icon container */
+.ytq-pick__icon {
+  display: block;
+  position: relative;
+  image-rendering: pixelated;
+  animation: pick-bob 3s steps(6, end) infinite;
+}
+
+@keyframes pick-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* ---- Slime icon (pixel blob) ---- */
+.ytq-pick__icon--easy {
+  width: 48px;
+  height: 36px;
+  background: #4ade80;
+  /* Stepped border-radius for blocky slime shape */
+  border-radius: 8px 8px 4px 4px;
+  box-shadow:
+    inset 4px 4px 0 #86efac,
+    inset -4px -4px 0 #22c55e,
+    0 4px 0 #16a34a,
+    4px 0 0 #16a34a,
+    -4px 0 0 #16a34a;
+}
+
+.ytq-pick__icon--easy::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  box-shadow:
+    18px 0 0 #fff,
+    2px 2px 0 2px #1a1a2e,
+    20px 2px 0 2px #1a1a2e;
+}
+
+.ytq-pick__icon--easy::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 4px;
+  background: #16a34a;
+}
+
+/* ---- Torch icon (pixel drawn) ---- */
+.ytq-pick__icon--mid {
+  width: 40px;
+  height: 44px;
+}
+
+/* Wooden handle */
+.ytq-pick__icon--mid::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 26px;
+  background: #8b6914;
+  box-shadow:
+    inset 2px 0 0 #a08040,
+    inset -2px 0 0 #6b4914,
+    /* Cloth wrap band */
+    -2px -20px 0 #5a3a1a,
+    2px -20px 0 #5a3a1a;
+}
+
+/* Flame */
+.ytq-pick__icon--mid::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 18px;
+  background: #f97316;
+  border-radius: 4px 4px 2px 2px;
+  box-shadow:
+    inset 4px 4px 0 #fbbf24,
+    inset -4px -4px 0 #ea580c,
+    0 0 10px rgba(249, 115, 22, 0.5),
+    0 -2px 8px rgba(251, 191, 36, 0.3);
+  animation: torch-flicker 1.5s steps(3, end) infinite;
+}
+
+@keyframes torch-flicker {
+  0%, 100% { opacity: 1; }
+  40%      { opacity: 0.75; }
+  70%      { opacity: 0.95; }
+}
+
+.ytq-pick__btn--mid:hover .ytq-pick__icon--mid::after {
+  box-shadow:
+    inset 4px 4px 0 #fbbf24,
+    inset -4px -4px 0 #ea580c,
+    0 0 16px rgba(249, 115, 22, 0.7),
+    0 -4px 12px rgba(251, 191, 36, 0.5);
+}
+
+/* ---- Skull icon (pixel drawn) ---- */
+.ytq-pick__icon--boss {
+  width: 40px;
+  height: 44px;
+  background: #e8e0d4;
+  border-radius: 6px 6px 2px 2px;
+  box-shadow:
+    inset 4px 4px 0 #f5f0e8,
+    inset -4px -4px 0 #c4bca8,
+    0 4px 0 #aaa69c;
+}
+
+.ytq-pick__icon--boss::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  background: #1a1a2e;
+  box-shadow:
+    18px 0 0 #1a1a2e,
+    2px 2px 0 #ef4444,
+    20px 2px 0 #ef4444;
+}
+
+.ytq-pick__icon--boss::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 6px;
+  background: #1a1a2e;
+  box-shadow:
+    -4px 0 0 #e8e0d4,
+    4px 0 0 #e8e0d4,
+    -8px 0 0 #e8e0d4,
+    8px 0 0 #e8e0d4,
+    0 -4px 0 #d4ccc0;
+}
+
+.ytq-pick__btn--boss:hover .ytq-pick__icon--boss {
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+/* Title */
+.ytq-pick__name {
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.ytq-pick__btn--easy .ytq-pick__name { color: #6ee7b7; }
+.ytq-pick__btn--mid .ytq-pick__name  { color: #fcd34d; }
+.ytq-pick__btn--boss .ytq-pick__name { color: #fca5a5; }
+
+/* Subtitle */
+.ytq-pick__info {
+  font-family: 'Silkscreen', var(--pixel-font);
+  font-size: 13px;
+  color: #7a8ea8;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .ytq-mode-select-modal {
+    width: 96vw;
+  }
+
+  .ytq-pick {
+    gap: 8px;
+    padding: 8px 10px 20px;
+  }
+
+  .ytq-pick__name {
+    font-size: 7px;
+  }
+
+  .ytq-pick__info {
+    font-size: 9px;
+  }
+
+  .ytq-mode-heading {
+    font-size: 12px;
+  }
+}
+
+/* =========================================
+   Mode Select — Animations
+   ========================================= */
+
+/* Twinkling stars — bright layer A */
+.ytq-mode-select-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(2px 2px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%),
+    radial-gradient(2px 2px at 55% 8%, rgba(200,220,255,0.85) 0%, transparent 100%),
+    radial-gradient(3px 3px at 80% 22%, rgba(255,255,255,1) 0%, transparent 100%),
+    radial-gradient(2px 2px at 25% 38%, rgba(200,220,255,0.8) 0%, transparent 100%),
+    radial-gradient(2px 2px at 90% 42%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(3px 3px at 40% 52%, rgba(200,230,255,0.9) 0%, transparent 100%),
+    radial-gradient(2px 2px at 70% 48%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(2px 2px at 15% 62%, rgba(200,220,255,0.85) 0%, transparent 100%);
+  animation: star-twinkle-a 2.5s ease-in-out infinite;
+}
+
+@keyframes star-twinkle-a {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 1; }
+}
+
+@keyframes star-twinkle-b {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.1; }
+}
+
+/* Heading shimmer — sweeping highlight across text */
+.ytq-mode-heading {
+  background:
+    linear-gradient(90deg,
+      rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 35%,
+      #fff 48%, #fff 52%,
+      rgba(255, 255, 255, 0.85) 65%, rgba(255, 255, 255, 0.85) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  animation: heading-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes heading-shimmer {
+  0%, 15%  { background-position: 100% 0; }
+  85%, 100% { background-position: -50% 0; }
+}
+
+/* Entrance animation — staggered pop-in for difficulty buttons */
+@keyframes pick-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ytq-pick__btn {
+  animation: pick-entrance 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+.ytq-pick__btn:nth-child(1) { animation-delay: 0.12s; }
+.ytq-pick__btn:nth-child(2) { animation-delay: 0.26s; }
+.ytq-pick__btn:nth-child(3) { animation-delay: 0.4s; }
+
+/* Icon glow on hover — per-difficulty colored drop-shadow */
+.ytq-pick__icon {
+  transition: filter 0.15s ease;
+}
+
+.ytq-pick__btn--easy:hover .ytq-pick__icon--easy {
+  filter:
+    drop-shadow(0 0 8px rgba(52, 211, 153, 0.6))
+    drop-shadow(0 0 18px rgba(52, 211, 153, 0.3));
+}
+
+.ytq-pick__btn--mid:hover .ytq-pick__icon--mid {
+  filter:
+    drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))
+    drop-shadow(0 0 18px rgba(251, 191, 36, 0.3));
+}
+
+.ytq-pick__btn--boss:hover .ytq-pick__icon--boss {
+  filter:
+    drop-shadow(0 0 8px rgba(239, 68, 68, 0.6))
+    drop-shadow(0 0 18px rgba(239, 68, 68, 0.3));
+}
+
+/* Selected button press — press-down + flash */
+@keyframes pick-press {
+  0%   { transform: scale(1); filter: brightness(1); }
+  35%  { transform: scale(0.92) translateY(3px); filter: brightness(0.85); }
+  65%  { transform: scale(0.95) translateY(2px); filter: brightness(1.6); }
+  100% { transform: scale(1); filter: brightness(1); opacity: 0.5; }
+}
+
+.ytq-pick__btn--pressed {
+  animation: pick-press 0.3s ease-out forwards !important;
+  pointer-events: none !important;
+}
+
+/* =========================================
+   Dialog Box Quiz Layout
+   To revert: delete this entire section.
+   The battle-scene CSS above remains untouched.
+   ========================================= */
+
+/* Modal container */
+.ytq-dlg-modal {
+  width: min(94vw, 680px);
+}
+
+/* Header: portrait thumbnails + title */
+.ytq-dlg-header {
+  padding: 14px 20px;
+}
+
+.ytq-dlg-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ytq-dlg-portrait {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border: 2px solid var(--border);
+  background: var(--bg-dark);
+  border-radius: 4px;
+  box-shadow: inset -1px -1px 0 var(--border-dark), inset 1px 1px 0 var(--border-light);
+}
+
+.ytq-dlg-vs {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--red);
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* Progress bar */
+.ytq-dlg-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: var(--panel-stroke);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.ytq-pdots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ytq-pdot {
+  width: 12px;
+  height: 12px;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ytq-pdot.current {
+  border-color: var(--gold);
+  background: rgba(247, 198, 93, 0.25);
+  box-shadow: 0 0 6px rgba(247, 198, 93, 0.3);
+}
+
+.ytq-pdot.correct {
+  background: var(--green);
+  border-color: var(--green-dark);
+}
+
+.ytq-pdot.incorrect {
+  background: var(--red);
+  border-color: #b91c1c;
+}
+
+.ytq-pdot.recall {
+  background: #60a5fa;
+  border-color: #3b82f6;
+}
+
+.ytq-dlg-count {
+  font-family: var(--pixel-font);
+  font-size: 8px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+/* Smaller text sizes for dialog layout */
+.ytq-dlg-modal .ytq-question-text {
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.2;
+}
+
+.ytq-dlg-modal .ytq-option-text {
+  font-size: 18px;
+}
+
+.ytq-dlg-modal .ytq-textarea {
+  font-size: 20px;
+}
+
+.ytq-dlg-modal .ytq-textarea::placeholder {
+  font-size: 18px;
+}
+
+.ytq-dlg-modal .ytq-fb-text {
+  font-size: 13px;
+}
+
+/* Flash effects (replaces battle sprite animations) */
+.ytq-dlg-modal.flash-correct {
+  animation: dlg-flash-green 0.35s ease-out;
+}
+
+.ytq-dlg-modal.flash-incorrect {
+  animation: dlg-flash-red 0.35s ease-out;
+}
+
+@keyframes dlg-flash-green {
+  0%   { box-shadow: var(--panel-shadow); }
+  40%  { box-shadow: var(--panel-shadow), 0 0 40px rgba(74, 222, 128, 0.5), inset 0 0 20px rgba(74, 222, 128, 0.1); }
+  100% { box-shadow: var(--panel-shadow); }
+}
+
+@keyframes dlg-flash-red {
+  0%   { box-shadow: var(--panel-shadow); }
+  40%  { box-shadow: var(--panel-shadow), 0 0 40px rgba(239, 68, 68, 0.5), inset 0 0 20px rgba(239, 68, 68, 0.1); }
+  100% { box-shadow: var(--panel-shadow); }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .ytq-dlg-modal {
+    width: 96vw;
+  }
+
+  .ytq-dlg-portrait {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ytq-dlg-modal .ytq-question-text {
+    font-size: clamp(16px, 4.5vw, 20px);
+  }
+
+  .ytq-dlg-modal .ytq-option-text {
+    font-size: 16px;
+  }
+}
