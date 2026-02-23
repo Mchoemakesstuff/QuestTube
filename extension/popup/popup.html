@@ -561,6 +561,1311 @@
         inset 1px 1px 0 #86efac;
     }
 
+    /* ============ NAV TABS ============ */
+    .nav-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 10px 8px;
+      background: #0a1628;
+      border: 2px solid #0f3460;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: #555;
+      cursor: pointer;
+      text-align: center;
+      transition: color 0.1s, background 0.1s;
+      letter-spacing: 1px;
+    }
+
+    .nav-tab:not(:last-child) {
+      border-right: none;
+    }
+
+    .nav-tab.active {
+      background: #16213e;
+      color: #e9a820;
+      box-shadow:
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a;
+    }
+
+    .nav-tab:hover:not(.active) {
+      color: #888;
+      background: #0e1a32;
+    }
+
+    .nav-tab .tab-count {
+      font-size: 6px;
+      color: #888;
+      margin-left: 4px;
+    }
+
+    .nav-tab.active .tab-count {
+      color: #c4891a;
+    }
+
+    /* ============ PAGE CONTAINERS ============ */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ============ BADGES PAGE ============ */
+    .badges-page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .badges-header {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 7px;
+      color: #888;
+      letter-spacing: 1px;
+    }
+
+    .badges-header span {
+      color: #e9a820;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .badge-tile {
+      background: #16213e;
+      border: 2px solid #0f3460;
+      padding: 12px 6px 10px;
+      text-align: center;
+      box-shadow:
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a;
+      transition: transform 0.1s;
+    }
+
+    .badge-tile:hover {
+      transform: translateY(-2px);
+    }
+
+    .badge-tile.unlocked {
+      border-color: var(--badge-color, #0f3460);
+      box-shadow:
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a,
+        0 0 8px color-mix(in srgb, var(--badge-color) 30%, transparent);
+    }
+
+    .badge-icon {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 8px;
+      background: #0a1628;
+      border: 2px solid #1a2e52;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #333;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .badge-tile.unlocked .badge-icon {
+      background: color-mix(in srgb, var(--badge-color) 20%, #0a1628);
+      border-color: var(--badge-color);
+      color: var(--badge-color);
+      box-shadow: 0 0 6px color-mix(in srgb, var(--badge-color) 40%, transparent);
+    }
+
+    .badge-tile.locked .badge-icon {
+      color: #222;
+    }
+
+    .badge-name {
+      font-size: 6px;
+      color: #555;
+      margin-bottom: 4px;
+      line-height: 1.4;
+      min-height: 18px;
+    }
+
+    .badge-tile.unlocked .badge-name {
+      color: #e8e8e8;
+    }
+
+    .badge-desc {
+      font-size: 5px;
+      color: #444;
+      line-height: 1.4;
+    }
+
+    .badge-tile.unlocked .badge-desc {
+      color: #777;
+    }
+
+    /* Tier glow for legendary badges */
+    .badge-tile.unlocked.tier-legendary {
+      animation: badge-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes badge-glow {
+      0%, 100% { box-shadow: inset -2px -2px 0 #0a1628, inset 2px 2px 0 #1e4a7a, 0 0 8px color-mix(in srgb, var(--badge-color) 30%, transparent); }
+      50% { box-shadow: inset -2px -2px 0 #0a1628, inset 2px 2px 0 #1e4a7a, 0 0 16px color-mix(in srgb, var(--badge-color) 50%, transparent); }
+    }
+
+    /* ============ BADGE PIXEL ART ICONS ============ */
+    .badge-px {
+      display: block;
+      position: relative;
+      image-rendering: pixelated;
+      margin: 0 auto;
+    }
+    .badge-px::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 3px;
+      background: transparent;
+    }
+
+    /* Boot — First Steps */
+    .badge-px-boot { width: 12px; height: 18px; }
+    .badge-px-boot::after {
+      box-shadow:
+        3px 0 0 #D4A020, 6px 0 0 #FBBF24,
+        3px 3px 0 #8B6914, 6px 3px 0 #D4A020,
+        3px 6px 0 #8B6914, 6px 6px 0 #D4A020,
+        0 9px 0 #8B6914, 3px 9px 0 #D4A020, 6px 9px 0 #8B6914,
+        0 12px 0 #5C3D10, 3px 12px 0 #8B6914, 6px 12px 0 #8B6914, 9px 12px 0 #5C3D10,
+        0 15px 0 #5C3D10, 3px 15px 0 #5C3D10, 6px 15px 0 #5C3D10, 9px 15px 0 #5C3D10;
+    }
+
+    /* Sword — Adventurer */
+    .badge-px-sword { width: 9px; height: 21px; }
+    .badge-px-sword::after {
+      box-shadow:
+        3px 0 0 #E2E8F0,
+        3px 3px 0 #CBD5E1,
+        3px 6px 0 #CBD5E1,
+        3px 9px 0 #94A3B8,
+        0 12px 0 #D4A020, 3px 12px 0 #FBBF24, 6px 12px 0 #D4A020,
+        3px 15px 0 #8B6914,
+        3px 18px 0 #D4A020;
+    }
+
+    /* Shield — Veteran */
+    .badge-px-shield { width: 15px; height: 18px; }
+    .badge-px-shield::after {
+      box-shadow:
+        3px 0 0 #FBBF24, 6px 0 0 #FFD700, 9px 0 0 #D4A020,
+        0 3px 0 #D4A020, 3px 3px 0 #FBBF24, 6px 3px 0 #FFD700, 9px 3px 0 #D4A020, 12px 3px 0 #8B6914,
+        0 6px 0 #D4A020, 3px 6px 0 #D4A020, 6px 6px 0 #FBBF24, 9px 6px 0 #D4A020, 12px 6px 0 #8B6914,
+        0 9px 0 #8B6914, 3px 9px 0 #D4A020, 6px 9px 0 #D4A020, 9px 9px 0 #8B6914, 12px 9px 0 #8B6914,
+        3px 12px 0 #8B6914, 6px 12px 0 #D4A020, 9px 12px 0 #8B6914,
+        6px 15px 0 #8B6914;
+    }
+
+    /* Gem — Flawless */
+    .badge-px-gem { width: 15px; height: 15px; }
+    .badge-px-gem::after {
+      box-shadow:
+        6px 0 0 #C4B5FD,
+        3px 3px 0 #A78BFA, 6px 3px 0 #E8E8F0, 9px 3px 0 #A78BFA,
+        0 6px 0 #7C3AED, 3px 6px 0 #A78BFA, 6px 6px 0 #FFFFFF, 9px 6px 0 #A78BFA, 12px 6px 0 #7C3AED,
+        3px 9px 0 #7C3AED, 6px 9px 0 #A78BFA, 9px 9px 0 #7C3AED,
+        6px 12px 0 #5B21B6;
+    }
+
+    /* Skull — Boss Slayer */
+    .badge-px-skull { width: 15px; height: 18px; }
+    .badge-px-skull::after {
+      box-shadow:
+        3px 0 0 #E2E8F0, 6px 0 0 #E2E8F0, 9px 0 0 #CBD5E1,
+        0 3px 0 #CBD5E1, 3px 3px 0 #E2E8F0, 6px 3px 0 #E2E8F0, 9px 3px 0 #E2E8F0, 12px 3px 0 #94A3B8,
+        0 6px 0 #CBD5E1, 6px 6px 0 #E2E8F0, 12px 6px 0 #94A3B8,
+        0 9px 0 #94A3B8, 3px 9px 0 #CBD5E1, 6px 9px 0 #CBD5E1, 9px 9px 0 #CBD5E1, 12px 9px 0 #94A3B8,
+        3px 12px 0 #94A3B8, 6px 12px 0 #CBD5E1, 9px 12px 0 #94A3B8,
+        3px 15px 0 #94A3B8, 9px 15px 0 #94A3B8;
+    }
+
+    /* Crown — Boss Master */
+    .badge-px-crown { width: 15px; height: 15px; }
+    .badge-px-crown::after {
+      box-shadow:
+        0 0 0 #FFD700, 6px 0 0 #FFD700, 12px 0 0 #FFD700,
+        0 3px 0 #D4A020, 3px 3px 0 #FFD700, 6px 3px 0 #FBBF24, 9px 3px 0 #FFD700, 12px 3px 0 #D4A020,
+        0 6px 0 #D4A020, 3px 6px 0 #EF4444, 6px 6px 0 #FFD700, 9px 6px 0 #EF4444, 12px 6px 0 #D4A020,
+        3px 9px 0 #8B6914, 6px 9px 0 #D4A020, 9px 9px 0 #8B6914,
+        3px 12px 0 #8B6914, 6px 12px 0 #D4A020, 9px 12px 0 #8B6914;
+    }
+
+    /* Small Flame — On Fire (3-day) */
+    .badge-px-flame1 { width: 9px; height: 15px; }
+    .badge-px-flame1::after {
+      box-shadow:
+        3px 0 0 #FEF08A,
+        0 3px 0 #FBBF24, 3px 3px 0 #FEF08A, 6px 3px 0 #FBBF24,
+        0 6px 0 #F97316, 3px 6px 0 #FBBF24, 6px 6px 0 #F97316,
+        3px 9px 0 #EA580C,
+        3px 12px 0 #DC2626;
+    }
+
+    /* Medium Flame — Dedicated (7-day) */
+    .badge-px-flame2 { width: 9px; height: 18px; }
+    .badge-px-flame2::after {
+      box-shadow:
+        3px 0 0 #FFFFFF,
+        0 3px 0 #FEF08A, 3px 3px 0 #FFFFFF, 6px 3px 0 #FEF08A,
+        0 6px 0 #FBBF24, 3px 6px 0 #FEF08A, 6px 6px 0 #FBBF24,
+        0 9px 0 #F97316, 3px 9px 0 #FBBF24, 6px 9px 0 #F97316,
+        3px 12px 0 #EA580C,
+        3px 15px 0 #DC2626;
+    }
+
+    /* Large Flame — Unstoppable (14-day) */
+    .badge-px-flame3 { width: 15px; height: 21px; }
+    .badge-px-flame3::after {
+      box-shadow:
+        6px 0 0 #FFFFFF,
+        3px 3px 0 #FEF08A, 6px 3px 0 #FFFFFF, 9px 3px 0 #FEF08A,
+        0 6px 0 #FBBF24, 3px 6px 0 #FEF08A, 6px 6px 0 #FFFFFF, 9px 6px 0 #FEF08A, 12px 6px 0 #FBBF24,
+        0 9px 0 #F97316, 3px 9px 0 #FBBF24, 6px 9px 0 #FEF08A, 9px 9px 0 #FBBF24, 12px 9px 0 #F97316,
+        3px 12px 0 #EA580C, 6px 12px 0 #F97316, 9px 12px 0 #EA580C,
+        6px 15px 0 #DC2626,
+        6px 18px 0 #B91C1C;
+    }
+
+    /* Star — Rising Star */
+    .badge-px-star { width: 15px; height: 15px; }
+    .badge-px-star::after {
+      box-shadow:
+        6px 0 0 #FFFFFF,
+        3px 3px 0 #FEF08A, 6px 3px 0 #FFFFFF, 9px 3px 0 #FEF08A,
+        0 6px 0 #FBBF24, 3px 6px 0 #FEF08A, 6px 6px 0 #FFFFFF, 9px 6px 0 #FEF08A, 12px 6px 0 #FBBF24,
+        3px 9px 0 #D4A020, 6px 9px 0 #FEF08A, 9px 9px 0 #D4A020,
+        6px 12px 0 #D4A020;
+    }
+
+    /* Medal — Elite */
+    .badge-px-medal { width: 15px; height: 21px; }
+    .badge-px-medal::after {
+      box-shadow:
+        0 0 0 #3B82F6, 12px 0 0 #3B82F6,
+        3px 3px 0 #2563EB, 9px 3px 0 #2563EB,
+        6px 6px 0 #1D4ED8,
+        3px 9px 0 #FBBF24, 6px 9px 0 #FFD700, 9px 9px 0 #FBBF24,
+        0 12px 0 #D4A020, 3px 12px 0 #FBBF24, 6px 12px 0 #FFD700, 9px 12px 0 #FBBF24, 12px 12px 0 #D4A020,
+        3px 15px 0 #8B6914, 6px 15px 0 #D4A020, 9px 15px 0 #8B6914,
+        6px 18px 0 #8B6914;
+    }
+
+    /* Chest — Treasure Hunter */
+    .badge-px-chest { width: 15px; height: 15px; }
+    .badge-px-chest::after {
+      box-shadow:
+        0 0 0 #92400E, 3px 0 0 #B45309, 6px 0 0 #D4A020, 9px 0 0 #B45309, 12px 0 0 #92400E,
+        0 3px 0 #78350F, 3px 3px 0 #92400E, 6px 3px 0 #B45309, 9px 3px 0 #92400E, 12px 3px 0 #78350F,
+        0 6px 0 #D4A020, 3px 6px 0 #D4A020, 6px 6px 0 #D4A020, 9px 6px 0 #D4A020, 12px 6px 0 #D4A020,
+        0 9px 0 #78350F, 3px 9px 0 #92400E, 6px 9px 0 #FFD700, 9px 9px 0 #92400E, 12px 9px 0 #78350F,
+        0 12px 0 #78350F, 3px 12px 0 #78350F, 6px 12px 0 #92400E, 9px 12px 0 #78350F, 12px 12px 0 #78350F;
+    }
+
+    /* ============ SHOP PAGE ============ */
+    .shop-page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .shop-balance {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #e9a820;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .shop-category {
+      margin-bottom: 12px;
+    }
+
+    .shop-category-label {
+      font-size: 7px;
+      color: #888;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      padding-left: 2px;
+    }
+
+    .shop-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .shop-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: #16213e;
+      border: 2px solid #0f3460;
+      cursor: pointer;
+      transition: transform 0.08s, border-color 0.1s;
+      box-shadow:
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a;
+    }
+
+    .shop-item:hover {
+      transform: translateX(2px);
+      border-color: #1e4a7a;
+    }
+
+    .shop-item.owned {
+      border-color: #22c55e;
+    }
+
+    .shop-item.equipped {
+      border-color: #e9a820;
+      background: #1a2540;
+      box-shadow:
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a,
+        0 0 8px rgba(233, 168, 32, 0.2);
+    }
+
+    .shop-item.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .shop-item-preview {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #1a2e52;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6px;
+      color: #e8e8e8;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .shop-item-preview.theme-swatch {
+      border-radius: 0;
+    }
+
+    .shop-item-preview.btn-swatch {
+      border-radius: 0;
+    }
+
+    .shop-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .shop-item-name {
+      font-size: 8px;
+      color: #e8e8e8;
+      margin-bottom: 2px;
+    }
+
+    .shop-item-status {
+      font-size: 6px;
+      color: #555;
+    }
+
+    .shop-item.owned .shop-item-status {
+      color: #22c55e;
+    }
+
+    .shop-item.equipped .shop-item-status {
+      color: #e9a820;
+    }
+
+    .shop-item-price {
+      font-size: 8px;
+      color: #e9a820;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .shop-item.owned .shop-item-price,
+    .shop-item.equipped .shop-item-price {
+      display: none;
+    }
+
+    .shop-item-equip {
+      font-size: 6px;
+      color: #22c55e;
+      display: none;
+      flex-shrink: 0;
+    }
+
+    .shop-item.owned .shop-item-equip {
+      display: block;
+    }
+
+    .shop-item.equipped .shop-item-equip {
+      display: block;
+      color: #e9a820;
+    }
+
+    /* Player title display */
+    .player-title {
+      font-size: 6px;
+      color: #a78bfa;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* ============ MAP PAGE ============ */
+    .map-page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .map-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 0 2px;
+    }
+
+    .map-title {
+      font-size: 7px;
+      color: #e9a820;
+      letter-spacing: 2px;
+    }
+
+    .map-subtitle {
+      font-size: 6px;
+      color: #888;
+    }
+
+    /* Scrollable viewport */
+    .map-viewport {
+      height: 280px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: #0a0a14;
+      border: 2px solid #0f3460;
+      border-radius: 4px;
+      box-shadow:
+        inset -2px -2px 0 #060610,
+        inset 2px 2px 0 #12122a,
+        4px 4px 0 rgba(0, 0, 0, 0.4);
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .map-viewport::-webkit-scrollbar { width: 4px; }
+    .map-viewport::-webkit-scrollbar-track { background: #060610; }
+    .map-viewport::-webkit-scrollbar-thumb { background: #1c3a6e; }
+
+    /* Canvas — absolutely positioned children */
+    .map-canvas {
+      position: relative;
+      width: 100%;
+      min-height: 100%;
+      background: #0a0a14;
+      overflow: hidden;
+    }
+
+    /* ---- Biome background strips ---- */
+    .map-biome-bg {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      z-index: 0;
+      image-rendering: pixelated;
+    }
+
+    /* Fade mask — top and bottom edges dissolve into neighbors */
+    .map-biome-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      z-index: 1;
+    }
+
+    .map-biome-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      z-index: 1;
+    }
+
+    /* ── MEADOW ── pixel art tiled terrain */
+    .map-biome-bg--meadow {
+      background: url('../assets/meadow_tile.png');
+      background-size: 160px 160px;
+      background-repeat: repeat;
+      image-rendering: pixelated;
+    }
+
+    .map-biome-bg--meadow::before {
+      background: linear-gradient(180deg, rgba(10, 18, 16, 0.85) 0%, transparent 100%);
+    }
+    .map-biome-bg--meadow::after {
+      background: linear-gradient(0deg, rgba(10, 10, 20, 0.7) 0%, transparent 100%);
+    }
+
+    /* ── CAVERNS ── pixel art tiled terrain */
+    .map-biome-bg--cave {
+      background: url('../assets/caverns_tile.png');
+      background-size: 160px 160px;
+      background-repeat: repeat;
+      image-rendering: pixelated;
+    }
+
+    .map-biome-bg--cave::before {
+      background: linear-gradient(180deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    }
+    .map-biome-bg--cave::after {
+      background: linear-gradient(0deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    }
+
+    /* ── DUNGEON ── purple arcane, floating runes, magic particles */
+    .map-biome-bg--dungeon {
+      background:
+        /* Arcane particles / runes */
+        radial-gradient(2px 2px at 18% 20%, rgba(167, 139, 250, 0.5) 0%, transparent 100%),
+        radial-gradient(2px 2px at 45% 35%, rgba(167, 139, 250, 0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 72% 15%, rgba(196, 167, 255, 0.4) 0%, transparent 100%),
+        radial-gradient(2px 2px at 88% 45%, rgba(167, 139, 250, 0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 33% 60%, rgba(196, 167, 255, 0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 62% 70%, rgba(167, 139, 250, 0.25) 0%, transparent 100%),
+        /* Arcane circle ambient glow */
+        radial-gradient(ellipse 60px 60px at 50% 50%, rgba(120, 80, 200, 0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 40px 40px at 25% 40%, rgba(100, 60, 180, 0.04) 0%, transparent 100%),
+        /* Brick wall texture */
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 15px,
+          rgba(80, 60, 120, 0.06) 15px,
+          rgba(80, 60, 120, 0.06) 16px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 24px,
+          rgba(80, 60, 120, 0.04) 24px,
+          rgba(80, 60, 120, 0.04) 25px
+        ),
+        /* Base: deep purple */
+        linear-gradient(
+          180deg,
+          #0c0a18 0%,
+          #100e20 30%,
+          #12102a 60%,
+          #0e0c1e 100%
+        );
+    }
+
+    .map-biome-bg--dungeon::before {
+      background: linear-gradient(180deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    }
+    .map-biome-bg--dungeon::after {
+      background: linear-gradient(0deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    }
+
+    /* ── ABYSS ── deep red, ember particles, lava cracks, heat haze */
+    .map-biome-bg--abyss {
+      background:
+        /* Floating ember particles */
+        radial-gradient(2px 2px at 10% 30%, rgba(255, 120, 40, 0.5) 0%, transparent 100%),
+        radial-gradient(2px 2px at 28% 55%, rgba(255, 160, 60, 0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 20%, rgba(255, 100, 30, 0.45) 0%, transparent 100%),
+        radial-gradient(2px 2px at 70% 65%, rgba(255, 140, 50, 0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 40%, rgba(255, 120, 40, 0.4) 0%, transparent 100%),
+        radial-gradient(2px 2px at 40% 80%, rgba(255, 80, 30, 0.3) 0%, transparent 100%),
+        /* Lava cracks */
+        repeating-linear-gradient(
+          160deg,
+          transparent 0px,
+          transparent 20px,
+          rgba(239, 68, 68, 0.06) 20px,
+          rgba(239, 68, 68, 0.06) 21px,
+          transparent 21px,
+          transparent 40px
+        ),
+        repeating-linear-gradient(
+          70deg,
+          transparent 0px,
+          transparent 30px,
+          rgba(200, 50, 30, 0.05) 30px,
+          rgba(200, 50, 30, 0.05) 31px,
+          transparent 31px,
+          transparent 55px
+        ),
+        /* Under-glow from lava below */
+        radial-gradient(ellipse 120px 40px at 50% 90%, rgba(200, 50, 20, 0.1) 0%, transparent 100%),
+        radial-gradient(ellipse 80px 30px at 20% 85%, rgba(239, 68, 68, 0.06) 0%, transparent 100%),
+        /* Base: deep crimson black */
+        linear-gradient(
+          180deg,
+          #0e0808 0%,
+          #140a0a 25%,
+          #1a0c0c 50%,
+          #1e0e0e 75%,
+          #180a0a 100%
+        );
+    }
+
+    .map-biome-bg--abyss::before {
+      background: linear-gradient(180deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    }
+    .map-biome-bg--abyss::after {
+      background: linear-gradient(0deg, rgba(14, 8, 8, 0.7) 0%, transparent 100%);
+    }
+
+    /* Subtle ambient animations */
+
+    .map-biome-bg--dungeon {
+      animation: biome-dungeon-flicker 4s ease-in-out infinite;
+    }
+    @keyframes biome-dungeon-flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+
+    .map-biome-bg--abyss {
+      animation: biome-abyss-glow 3s ease-in-out infinite;
+    }
+    @keyframes biome-abyss-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.9; }
+    }
+
+    /* Ensure nodes/paths/labels sit above biome backgrounds */
+    .map-path-dot,
+    .map-node,
+    .map-player,
+    .map-biome-label,
+    .map-next-label {
+      z-index: 2;
+    }
+
+    /* Path dots */
+    .map-path-dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      opacity: 0.85;
+      image-rendering: pixelated;
+    }
+
+    .map-path-placeholder {
+      opacity: 0.3;
+      animation: map-placeholder-pulse 2s infinite;
+    }
+
+    @keyframes map-placeholder-pulse {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Next quest placeholder */
+    .map-next-label {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border: 2px dashed #2e2e3e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: #2e2e3e;
+      opacity: 0.4;
+    }
+
+    /* ---- Map Nodes ---- */
+    .map-node {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      z-index: 2;
+    }
+
+    .map-node:hover {
+      transform: scale(1.25);
+      z-index: 3;
+    }
+
+    /* Door icon base — stone archway via box-shadow pixel art (2px grid) */
+    .map-node-icon {
+      width: 32px;
+      height: 32px;
+      position: relative;
+      image-rendering: pixelated;
+    }
+
+    /* Pixel door built with ::before (stone frame) and ::after (door/interior) */
+    .map-node-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+    }
+
+    .map-node-icon::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+    }
+
+    /* ======== COMPLETED — open door with golden light ======== */
+    .map-node.completed .map-node-icon::before {
+      /* Stone archway frame */
+      box-shadow:
+        /* Arch top row */
+        8px 0 0 #8b7355, 10px 0 0 #a08860, 12px 0 0 #a08860,
+        14px 0 0 #a08860, 16px 0 0 #a08860, 18px 0 0 #a08860,
+        20px 0 0 #8b7355,
+        /* Arch second row */
+        6px 2px 0 #a08860, 8px 2px 0 #c4a870, 20px 2px 0 #c4a870,
+        22px 2px 0 #a08860,
+        /* Left pillar */
+        4px 4px 0 #8b7355, 6px 4px 0 #a08860,
+        4px 6px 0 #a08860, 6px 6px 0 #8b7355,
+        4px 8px 0 #8b7355, 6px 8px 0 #a08860,
+        4px 10px 0 #a08860, 6px 10px 0 #8b7355,
+        4px 12px 0 #8b7355, 6px 12px 0 #a08860,
+        4px 14px 0 #a08860, 6px 14px 0 #8b7355,
+        /* Right pillar */
+        22px 4px 0 #a08860, 24px 4px 0 #8b7355,
+        22px 6px 0 #8b7355, 24px 6px 0 #a08860,
+        22px 8px 0 #a08860, 24px 8px 0 #8b7355,
+        22px 10px 0 #8b7355, 24px 10px 0 #a08860,
+        22px 12px 0 #a08860, 24px 12px 0 #8b7355,
+        22px 14px 0 #8b7355, 24px 14px 0 #a08860,
+        /* Base stones */
+        2px 14px 0 #6b5b43, 26px 14px 0 #6b5b43;
+    }
+
+    .map-node.completed .map-node-icon::after {
+      /* Golden light interior */
+      box-shadow:
+        10px 2px 0 #ffd700, 12px 2px 0 #ffe44d, 14px 2px 0 #ffe44d,
+        16px 2px 0 #ffe44d, 18px 2px 0 #ffd700,
+        8px 4px 0 #ffd700, 10px 4px 0 #ffe44d, 12px 4px 0 #fff4a3,
+        14px 4px 0 #fff4a3, 16px 4px 0 #ffe44d, 18px 4px 0 #ffe44d,
+        20px 4px 0 #ffd700,
+        8px 6px 0 #e9a820, 10px 6px 0 #ffd700, 12px 6px 0 #ffe44d,
+        14px 6px 0 #fff4a3, 16px 6px 0 #ffe44d, 18px 6px 0 #ffd700,
+        20px 6px 0 #e9a820,
+        8px 8px 0 #d4a020, 10px 8px 0 #e9a820, 12px 8px 0 #ffd700,
+        14px 8px 0 #ffe44d, 16px 8px 0 #ffd700, 18px 8px 0 #e9a820,
+        20px 8px 0 #d4a020,
+        8px 10px 0 #c4891a, 10px 10px 0 #d4a020, 12px 10px 0 #e9a820,
+        14px 10px 0 #ffd700, 16px 10px 0 #e9a820, 18px 10px 0 #d4a020,
+        20px 10px 0 #c4891a,
+        8px 12px 0 #8b6914, 10px 12px 0 #c4891a, 12px 12px 0 #d4a020,
+        14px 12px 0 #e9a820, 16px 12px 0 #d4a020, 18px 12px 0 #c4891a,
+        20px 12px 0 #8b6914,
+        8px 14px 0 #6b5512, 10px 14px 0 #8b6914, 12px 14px 0 #c4891a,
+        14px 14px 0 #d4a020, 16px 14px 0 #c4891a, 18px 14px 0 #8b6914,
+        20px 14px 0 #6b5512;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.5));
+    }
+
+    .map-node.completed {
+      filter: drop-shadow(0 0 4px rgba(212, 160, 32, 0.35));
+    }
+
+    /* ======== REVIEW DUE — cracked door with red glow ======== */
+    .map-node.review-due .map-node-icon::before {
+      /* Stone archway frame — reddish tint */
+      box-shadow:
+        /* Arch top */
+        8px 0 0 #6b4040, 10px 0 0 #7a4a4a, 12px 0 0 #7a4a4a,
+        14px 0 0 #7a4a4a, 16px 0 0 #7a4a4a, 18px 0 0 #7a4a4a,
+        20px 0 0 #6b4040,
+        /* Arch second row */
+        6px 2px 0 #7a4a4a, 8px 2px 0 #8a5a5a, 20px 2px 0 #8a5a5a,
+        22px 2px 0 #7a4a4a,
+        /* Left pillar */
+        4px 4px 0 #6b4040, 6px 4px 0 #7a4a4a,
+        4px 6px 0 #7a4a4a, 6px 6px 0 #6b4040,
+        4px 8px 0 #6b4040, 6px 8px 0 #7a4a4a,
+        4px 10px 0 #7a4a4a, 6px 10px 0 #6b4040,
+        4px 12px 0 #6b4040, 6px 12px 0 #7a4a4a,
+        4px 14px 0 #7a4a4a, 6px 14px 0 #6b4040,
+        /* Right pillar */
+        22px 4px 0 #7a4a4a, 24px 4px 0 #6b4040,
+        22px 6px 0 #6b4040, 24px 6px 0 #7a4a4a,
+        22px 8px 0 #7a4a4a, 24px 8px 0 #6b4040,
+        22px 10px 0 #6b4040, 24px 10px 0 #7a4a4a,
+        22px 12px 0 #7a4a4a, 24px 12px 0 #6b4040,
+        22px 14px 0 #6b4040, 24px 14px 0 #7a4a4a,
+        /* Base */
+        2px 14px 0 #4a2a2a, 26px 14px 0 #4a2a2a;
+    }
+
+    .map-node.review-due .map-node-icon::after {
+      /* Red glow through cracked door */
+      box-shadow:
+        10px 2px 0 #1a0808, 12px 2px 0 #2a0a0a, 14px 2px 0 #2a0a0a,
+        16px 2px 0 #2a0a0a, 18px 2px 0 #1a0808,
+        8px 4px 0 #1a0808, 10px 4px 0 #2a0a0a, 12px 4px 0 #3a1010,
+        14px 4px 0 #3a1010, 16px 4px 0 #2a0a0a, 18px 4px 0 #2a0a0a,
+        20px 4px 0 #1a0808,
+        8px 6px 0 #2a0a0a, 10px 6px 0 #3a1010, 14px 6px 0 #ef4444,
+        18px 6px 0 #3a1010, 20px 6px 0 #2a0a0a,
+        8px 8px 0 #1a0808, 12px 8px 0 #cc3030, 14px 8px 0 #ef4444,
+        16px 8px 0 #cc3030, 20px 8px 0 #1a0808,
+        8px 10px 0 #2a0a0a, 10px 10px 0 #3a1010, 14px 10px 0 #cc3030,
+        18px 10px 0 #3a1010, 20px 10px 0 #2a0a0a,
+        8px 12px 0 #1a0808, 10px 12px 0 #2a0a0a, 12px 12px 0 #3a1010,
+        14px 12px 0 #3a1010, 16px 12px 0 #2a0a0a, 18px 12px 0 #2a0a0a,
+        20px 12px 0 #1a0808,
+        8px 14px 0 #0e0404, 10px 14px 0 #1a0808, 12px 14px 0 #2a0a0a,
+        14px 14px 0 #2a0a0a, 16px 14px 0 #2a0a0a, 18px 14px 0 #1a0808,
+        20px 14px 0 #0e0404;
+      animation: map-door-pulse 1.8s ease-in-out infinite;
+    }
+
+    /* Exclamation mark above review-due door */
+    .map-node.review-due::before {
+      content: '!';
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: #ef4444;
+      text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+      animation: map-exclaim-bob 1s ease-in-out infinite;
+      z-index: 5;
+    }
+
+    @keyframes map-door-pulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.3));
+      }
+      50% {
+        filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.6));
+      }
+    }
+
+    @keyframes map-exclaim-bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-3px); }
+    }
+
+    /* ======== NEEDS WORK — closed stone door ======== */
+    .map-node.needs-work .map-node-icon::before {
+      /* Stone archway frame — grey */
+      box-shadow:
+        /* Arch top */
+        8px 0 0 #4a4a58, 10px 0 0 #555568, 12px 0 0 #555568,
+        14px 0 0 #555568, 16px 0 0 #555568, 18px 0 0 #555568,
+        20px 0 0 #4a4a58,
+        /* Arch second row */
+        6px 2px 0 #555568, 8px 2px 0 #626275, 20px 2px 0 #626275,
+        22px 2px 0 #555568,
+        /* Left pillar */
+        4px 4px 0 #4a4a58, 6px 4px 0 #555568,
+        4px 6px 0 #555568, 6px 6px 0 #4a4a58,
+        4px 8px 0 #4a4a58, 6px 8px 0 #555568,
+        4px 10px 0 #555568, 6px 10px 0 #4a4a58,
+        4px 12px 0 #4a4a58, 6px 12px 0 #555568,
+        4px 14px 0 #555568, 6px 14px 0 #4a4a58,
+        /* Right pillar */
+        22px 4px 0 #555568, 24px 4px 0 #4a4a58,
+        22px 6px 0 #4a4a58, 24px 6px 0 #555568,
+        22px 8px 0 #555568, 24px 8px 0 #4a4a58,
+        22px 10px 0 #4a4a58, 24px 10px 0 #555568,
+        22px 12px 0 #555568, 24px 12px 0 #4a4a58,
+        22px 14px 0 #4a4a58, 24px 14px 0 #555568,
+        /* Base */
+        2px 14px 0 #3a3a48, 26px 14px 0 #3a3a48;
+    }
+
+    .map-node.needs-work .map-node-icon::after {
+      /* Closed wooden door — dark planks */
+      box-shadow:
+        10px 2px 0 #3a3040, 12px 2px 0 #342a38, 14px 2px 0 #3a3040,
+        16px 2px 0 #342a38, 18px 2px 0 #3a3040,
+        8px 4px 0 #342a38, 10px 4px 0 #3a3040, 12px 4px 0 #342a38,
+        14px 4px 0 #3a3040, 16px 4px 0 #342a38, 18px 4px 0 #3a3040,
+        20px 4px 0 #342a38,
+        8px 6px 0 #3a3040, 10px 6px 0 #342a38, 12px 6px 0 #3a3040,
+        14px 6px 0 #342a38, 16px 6px 0 #3a3040, 18px 6px 0 #342a38,
+        20px 6px 0 #3a3040,
+        8px 8px 0 #342a38, 10px 8px 0 #3a3040, 12px 8px 0 #342a38,
+        14px 8px 0 #4a4050, 16px 8px 0 #342a38, 18px 8px 0 #3a3040,
+        20px 8px 0 #342a38,
+        8px 10px 0 #3a3040, 10px 10px 0 #342a38, 12px 10px 0 #3a3040,
+        14px 10px 0 #342a38, 16px 10px 0 #3a3040, 18px 10px 0 #342a38,
+        20px 10px 0 #3a3040,
+        8px 12px 0 #342a38, 10px 12px 0 #3a3040, 12px 12px 0 #342a38,
+        14px 12px 0 #3a3040, 16px 12px 0 #342a38, 18px 12px 0 #3a3040,
+        20px 12px 0 #342a38,
+        8px 14px 0 #2a2230, 10px 14px 0 #342a38, 12px 14px 0 #2a2230,
+        14px 14px 0 #342a38, 16px 14px 0 #2a2230, 18px 14px 0 #342a38,
+        20px 14px 0 #2a2230;
+      opacity: 0.6;
+    }
+
+    .map-node.needs-work {
+      opacity: 0.65;
+    }
+
+    /* Score label below node */
+    .map-node-score {
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 5px;
+      color: #666;
+      white-space: nowrap;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .map-node.completed .map-node-score { color: #e9a820; }
+    .map-node.review-due .map-node-score { color: #ef4444; }
+
+    /* ---- Player sprite ---- */
+    .map-player {
+      position: absolute;
+      z-index: 4;
+      pointer-events: none;
+      animation: map-player-bob 1.5s ease-in-out infinite;
+    }
+
+    @keyframes map-player-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .map-player-sprite {
+      width: 16px;
+      height: 20px;
+      image-rendering: pixelated;
+      position: relative;
+    }
+
+    /* Pixel-art knight via box-shadow (2px grid) */
+    .map-player-sprite::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+      box-shadow:
+        /* helmet top */
+        4px 0 0 #94a3b8, 6px 0 0 #94a3b8, 8px 0 0 #94a3b8,
+        /* helmet */
+        2px 2px 0 #94a3b8, 4px 2px 0 #cbd5e1, 6px 2px 0 #e2e8f0,
+        8px 2px 0 #cbd5e1, 10px 2px 0 #64748b,
+        /* visor */
+        2px 4px 0 #64748b, 4px 4px 0 #0c0c14, 6px 4px 0 #0c0c14,
+        8px 4px 0 #0c0c14, 10px 4px 0 #475569,
+        /* body top */
+        4px 6px 0 #fbbf24, 6px 6px 0 #d4a020, 8px 6px 0 #fbbf24,
+        /* body */
+        2px 8px 0 #8b6914, 4px 8px 0 #d4a020, 6px 8px 0 #fbbf24,
+        8px 8px 0 #d4a020, 10px 8px 0 #8b6914,
+        /* body bottom */
+        4px 10px 0 #d4a020, 6px 10px 0 #8b6914, 8px 10px 0 #d4a020,
+        /* legs */
+        4px 12px 0 #57534e, 8px 12px 0 #57534e,
+        /* feet */
+        2px 14px 0 #44403c, 4px 14px 0 #57534e,
+        8px 14px 0 #57534e, 10px 14px 0 #44403c;
+    }
+
+    /* ---- Biome labels ---- */
+    .map-biome-label {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 2px 0 rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+      z-index: 3;
+    }
+
+    .map-biome-label.biome-meadow { color: #4ade80; }
+    .map-biome-label.biome-cave { color: #fbbf24; }
+    .map-biome-label.biome-dungeon { color: #c4b5fd; }
+    .map-biome-label.biome-abyss { color: #f87171; }
+
+    /* ---- Detail panel ---- */
+    .map-detail {
+      background: #16213e;
+      border: 2px solid #0f3460;
+      border-radius: 4px;
+      padding: 10px 12px;
+      position: relative;
+      box-shadow:
+        inset -2px -2px 0 #0a1628,
+        inset 2px 2px 0 #1e4a7a;
+      animation: map-detail-in 0.15s ease-out;
+    }
+
+    @keyframes map-detail-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .map-detail-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      cursor: pointer;
+      color: #555;
+      font-size: 10px;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .map-detail-close:hover { color: #ef4444; }
+
+    .map-detail-title {
+      font-size: 7px;
+      color: #e9a820;
+      margin-bottom: 6px;
+      padding-right: 16px;
+      line-height: 1.5;
+    }
+
+    .map-detail-stats {
+      display: flex;
+      align-items: center;
+      font-size: 6px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .map-detail-sep {
+      margin: 0 6px;
+      color: #333;
+    }
+
+    .map-detail-status {
+      font-size: 6px;
+      margin-bottom: 8px;
+    }
+
+    .map-detail-status.due { color: #ef4444; }
+    .map-detail-status.mastered { color: #4ade80; }
+    .map-detail-status.needs-work { color: #807a6e; }
+
+    .map-detail-btn {
+      width: 100%;
+      padding: 8px;
+      background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+      color: #1a1a2e;
+      border: 2px solid #16a34a;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      cursor: pointer;
+      box-shadow:
+        inset -2px -2px 0 #15803d,
+        inset 2px 2px 0 #86efac;
+      transition: transform 0.1s;
+    }
+
+    .map-detail-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .map-detail-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* ---- Empty state ---- */
+    .map-empty {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .map-empty-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      background: #16213e;
+      border: 2px solid #0f3460;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #333;
+      font-family: 'Press Start 2P', monospace;
+      box-shadow: inset -2px -2px 0 #0a1628, inset 2px 2px 0 #1e4a7a;
+    }
+
+    .map-empty-text {
+      font-size: 7px;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    /* ---- Popup streak flame (inline for isolated context) ---- */
+    .popup-flame {
+      display: inline-block;
+      position: relative;
+      image-rendering: pixelated;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+
+    .popup-flame::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+    }
+
+    .popup-flame.tier-1 { width: 8px; height: 10px; }
+    .popup-flame.tier-1::after {
+      animation: pf1 0.8s steps(1) infinite;
+      box-shadow:
+        2px 0 0 #fbbf24,
+        0 2px 0 #f97316, 2px 2px 0 #fef08a, 4px 2px 0 #f97316,
+        0 4px 0 #ea580c, 2px 4px 0 #f97316, 4px 4px 0 #ea580c,
+        0 6px 0 #dc2626, 2px 6px 0 #ea580c, 4px 6px 0 #dc2626,
+        2px 8px 0 #b91c1c;
+    }
+    @keyframes pf1 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 1; box-shadow:
+        2px 0 0 #fef08a,
+        0 2px 0 #fbbf24, 2px 2px 0 #fbbf24, 4px 2px 0 #fbbf24,
+        0 4px 0 #f97316, 2px 4px 0 #fbbf24, 4px 4px 0 #f97316,
+        0 6px 0 #ea580c, 2px 6px 0 #f97316, 4px 6px 0 #ea580c,
+        2px 8px 0 #dc2626;
+      }
+    }
+
+    .popup-flame.tier-2 { width: 10px; height: 14px; }
+    .popup-flame.tier-2::after {
+      animation: pf2 0.6s steps(1) infinite;
+      box-shadow:
+        4px 0 0 #fef08a,
+        2px 2px 0 #fbbf24, 4px 2px 0 #fef08a, 6px 2px 0 #fbbf24,
+        0 4px 0 #f97316, 2px 4px 0 #fbbf24, 4px 4px 0 #fef08a, 6px 4px 0 #fbbf24, 8px 4px 0 #f97316,
+        0 6px 0 #ea580c, 2px 6px 0 #f97316, 4px 6px 0 #fbbf24, 6px 6px 0 #f97316, 8px 6px 0 #ea580c,
+        2px 8px 0 #dc2626, 4px 8px 0 #ea580c, 6px 8px 0 #dc2626,
+        2px 10px 0 #b91c1c, 4px 10px 0 #dc2626, 6px 10px 0 #b91c1c,
+        4px 12px 0 #7f1d1d;
+    }
+    @keyframes pf2 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 1; box-shadow:
+        4px 0 0 #fbbf24,
+        2px 2px 0 #fef08a, 4px 2px 0 #fbbf24, 6px 2px 0 #fef08a,
+        0 4px 0 #fbbf24, 2px 4px 0 #fef08a, 4px 4px 0 #fbbf24, 6px 4px 0 #fef08a, 8px 4px 0 #fbbf24,
+        0 6px 0 #f97316, 2px 6px 0 #fbbf24, 4px 6px 0 #fef08a, 6px 6px 0 #fbbf24, 8px 6px 0 #f97316,
+        2px 8px 0 #ea580c, 4px 8px 0 #f97316, 6px 8px 0 #ea580c,
+        2px 10px 0 #dc2626, 4px 10px 0 #dc2626, 6px 10px 0 #dc2626,
+        4px 12px 0 #b91c1c;
+      }
+    }
+
+    .popup-flame.tier-3 { width: 14px; height: 16px; }
+    .popup-flame.tier-3::after {
+      animation: pf3 0.5s steps(1) infinite;
+      box-shadow:
+        6px 0 0 #fef08a,
+        4px 2px 0 #fbbf24, 6px 2px 0 #fef08a, 8px 2px 0 #fbbf24,
+        2px 4px 0 #f97316, 4px 4px 0 #fbbf24, 6px 4px 0 #fef08a, 8px 4px 0 #fbbf24, 10px 4px 0 #f97316,
+        0 6px 0 #ea580c, 2px 6px 0 #f97316, 4px 6px 0 #fbbf24, 6px 6px 0 #fbbf24, 8px 6px 0 #f97316, 10px 6px 0 #f97316, 12px 6px 0 #ea580c,
+        0 8px 0 #dc2626, 2px 8px 0 #ea580c, 4px 8px 0 #f97316, 6px 8px 0 #f97316, 8px 8px 0 #f97316, 10px 8px 0 #ea580c, 12px 8px 0 #dc2626,
+        2px 10px 0 #b91c1c, 4px 10px 0 #dc2626, 6px 10px 0 #ea580c, 8px 10px 0 #dc2626, 10px 10px 0 #b91c1c,
+        4px 12px 0 #b91c1c, 6px 12px 0 #b91c1c, 8px 12px 0 #b91c1c,
+        6px 14px 0 #7f1d1d;
+      filter: drop-shadow(0 0 3px rgba(249, 115, 22, 0.4));
+    }
+    @keyframes pf3 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 1; filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.6)); box-shadow:
+        6px 0 0 #fbbf24,
+        4px 2px 0 #fef08a, 6px 2px 0 #fbbf24, 8px 2px 0 #fef08a,
+        2px 4px 0 #fbbf24, 4px 4px 0 #fef08a, 6px 4px 0 #fbbf24, 8px 4px 0 #fef08a, 10px 4px 0 #fbbf24,
+        0 6px 0 #f97316, 2px 6px 0 #fbbf24, 4px 6px 0 #fef08a, 6px 6px 0 #fbbf24, 8px 6px 0 #fbbf24, 10px 6px 0 #fbbf24, 12px 6px 0 #f97316,
+        0 8px 0 #ea580c, 2px 8px 0 #f97316, 4px 8px 0 #fbbf24, 6px 8px 0 #fbbf24, 8px 8px 0 #fbbf24, 10px 8px 0 #f97316, 12px 8px 0 #ea580c,
+        2px 10px 0 #dc2626, 4px 10px 0 #ea580c, 6px 10px 0 #f97316, 8px 10px 0 #ea580c, 10px 10px 0 #dc2626,
+        4px 12px 0 #b91c1c, 6px 12px 0 #b91c1c, 8px 12px 0 #b91c1c,
+        6px 14px 0 #7f1d1d;
+      }
+    }
+
+    .popup-flame.tier-4 { width: 16px; height: 18px; }
+    .popup-flame.tier-4::after {
+      animation: pf4 0.35s steps(1) infinite;
+      box-shadow:
+        6px 0 0 #ffffff,
+        4px 2px 0 #fef08a, 6px 2px 0 #ffffff, 8px 2px 0 #fef08a,
+        2px 4px 0 #fbbf24, 4px 4px 0 #fef08a, 6px 4px 0 #ffffff, 8px 4px 0 #fef08a, 10px 4px 0 #fbbf24,
+        0 6px 0 #f97316, 2px 6px 0 #fbbf24, 4px 6px 0 #fef08a, 6px 6px 0 #fef08a, 8px 6px 0 #fbbf24, 10px 6px 0 #fbbf24, 12px 6px 0 #f97316,
+        0 8px 0 #ea580c, 2px 8px 0 #f97316, 4px 8px 0 #fbbf24, 6px 8px 0 #fbbf24, 8px 8px 0 #fbbf24, 10px 8px 0 #f97316, 12px 8px 0 #ea580c,
+        0 10px 0 #dc2626, 2px 10px 0 #ea580c, 4px 10px 0 #f97316, 6px 10px 0 #f97316, 8px 10px 0 #f97316, 10px 10px 0 #ea580c, 12px 10px 0 #dc2626,
+        2px 12px 0 #b91c1c, 4px 12px 0 #dc2626, 6px 12px 0 #ea580c, 8px 12px 0 #dc2626, 10px 12px 0 #b91c1c,
+        4px 14px 0 #7f1d1d, 6px 14px 0 #b91c1c, 8px 14px 0 #7f1d1d,
+        6px 16px 0 #450a0a;
+      filter: drop-shadow(0 0 4px rgba(254, 240, 138, 0.5)) drop-shadow(0 0 8px rgba(249, 115, 22, 0.3));
+    }
+    @keyframes pf4 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(254, 240, 138, 0.7)) drop-shadow(0 0 12px rgba(249, 115, 22, 0.4)); box-shadow:
+        6px 0 0 #fef08a,
+        4px 2px 0 #ffffff, 6px 2px 0 #fef08a, 8px 2px 0 #ffffff,
+        2px 4px 0 #fef08a, 4px 4px 0 #ffffff, 6px 4px 0 #fef08a, 8px 4px 0 #ffffff, 10px 4px 0 #fef08a,
+        0 6px 0 #fbbf24, 2px 6px 0 #fef08a, 4px 6px 0 #ffffff, 6px 6px 0 #fef08a, 8px 6px 0 #fef08a, 10px 6px 0 #fbbf24, 12px 6px 0 #fbbf24,
+        0 8px 0 #f97316, 2px 8px 0 #fbbf24, 4px 8px 0 #fef08a, 6px 8px 0 #fef08a, 8px 8px 0 #fbbf24, 10px 8px 0 #fbbf24, 12px 8px 0 #f97316,
+        0 10px 0 #ea580c, 2px 10px 0 #f97316, 4px 10px 0 #fbbf24, 6px 10px 0 #fbbf24, 8px 10px 0 #fbbf24, 10px 10px 0 #f97316, 12px 10px 0 #ea580c,
+        2px 12px 0 #dc2626, 4px 12px 0 #ea580c, 6px 12px 0 #f97316, 8px 12px 0 #ea580c, 10px 12px 0 #dc2626,
+        4px 14px 0 #b91c1c, 6px 14px 0 #b91c1c, 8px 14px 0 #b91c1c,
+        6px 16px 0 #7f1d1d;
+      }
+    }
+
   </style>
 </head>
 
@@ -585,6 +1890,7 @@
   <div class="hud-bar">
     <div class="hud-level">
       <div class="level-badge">LV 1</div>
+      <div class="player-title" id="playerTitle"></div>
     </div>
     <div class="xp-container">
       <div class="xp-label">XP</div>
@@ -594,7 +1900,7 @@
     </div>
     <div class="hud-stats">
       <div class="hud-stat">
-        <span class="stat-icon">Streak</span>
+        <span class="stat-icon" id="streakFlame"><span class="popup-flame tier-1"></span></span>
         <span class="stat-value streak" id="streakCount">0</span>
       </div>
       <div class="hud-stat">
@@ -604,43 +1910,125 @@
     </div>
   </div>
 
-  <!-- BASE CAMP -->
-  <div class="base-camp">
-    <div class="camp-header">
-      <div class="camp-icon">
-        <img src="../assets/popup_logo.png" alt="" style="width: 40px; height: 40px; image-rendering: pixelated;">
+  <!-- NAV TABS -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-page="home">HOME</button>
+    <button class="nav-tab" data-page="badges">BADGES <span class="tab-count" id="badgeCount">0/12</span></button>
+    <button class="nav-tab" data-page="shop">SHOP</button>
+    <button class="nav-tab" data-page="map">MAP</button>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <!-- BASE CAMP -->
+    <div class="base-camp">
+      <div class="camp-header">
+        <div class="camp-icon">
+          <img src="../assets/popup_logo.png" alt="" style="width: 40px; height: 40px; image-rendering: pixelated;">
+        </div>
+        <div class="camp-title">
+          <h1 id="mainTitle"></h1>
+          <p>Learn by quest. Remember forever.</p>
+        </div>
       </div>
-      <div class="camp-title">
-        <h1 id="mainTitle"></h1>
-        <p>Learn by quest. Remember forever.</p>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-tile">
+          <div class="stat-tile-value" id="quizCount">0</div>
+          <div class="stat-tile-label">Quests Done</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-value" id="avgScore">--</div>
+          <div class="stat-tile-label">Avg Score</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-value" id="bestStreak">0</div>
+          <div class="stat-tile-label">Best Streak</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-value" id="currentFloor">1</div>
+          <div class="stat-tile-label">Floor</div>
+        </div>
       </div>
     </div>
 
-    <!-- STATS -->
-    <div class="stats-grid">
-      <div class="stat-tile">
-        <div class="stat-tile-value" id="quizCount">0</div>
-        <div class="stat-tile-label">Quests Done</div>
-      </div>
-      <div class="stat-tile">
-        <div class="stat-tile-value" id="avgScore">—</div>
-        <div class="stat-tile-label">Avg Score</div>
-      </div>
+    <!-- ENTER QUEST BUTTON -->
+    <button class="start-btn" id="enterQuestBtn">
+      Enter Quest
+    </button>
+
+    <!-- REVIEW MISTAKES (populated by popup.js) -->
+    <div id="reviewPanel" class="review-panel" style="display:none;">
+      <div class="review-panel-header">REVIEW MISTAKES FROM YOUR LAST QUEST</div>
+      <div class="review-panel-video" id="reviewVideoTitle"></div>
+      <div class="review-panel-list" id="reviewList"></div>
     </div>
   </div>
 
-  <!-- ENTER QUEST BUTTON -->
-  <button class="start-btn" id="enterQuestBtn">
-    Enter Quest
-  </button>
-
-  <!-- REVIEW MISTAKES (populated by popup.js) -->
-  <div id="reviewPanel" class="review-panel" style="display:none;">
-    <div class="review-panel-header">REVIEW MISTAKES</div>
-    <div class="review-panel-video" id="reviewVideoTitle"></div>
-    <div class="review-panel-list" id="reviewList"></div>
+  <!-- BADGES PAGE -->
+  <div class="page badges-page" id="page-badges">
+    <div class="badges-header">UNLOCKED: <span id="badgeUnlocked">0</span> / <span id="badgeTotal">12</span></div>
+    <div class="badge-grid" id="badgeGrid"></div>
   </div>
 
+  <!-- SHOP PAGE -->
+  <div class="page shop-page" id="page-shop">
+    <div class="shop-balance">
+      <img src="../assets/coin.png" style="width:20px;height:20px;image-rendering:pixelated;vertical-align:middle;">
+      <span id="shopCoinCount">0</span>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-category-label">TITLES</div>
+      <div class="shop-grid" id="shopTitles"></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-category-label">THEMES</div>
+      <div class="shop-grid" id="shopThemes"></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-category-label">BUTTON SKINS</div>
+      <div class="shop-grid" id="shopButtons"></div>
+    </div>
+
+    <div class="shop-category">
+      <div class="shop-category-label">CONSUMABLES</div>
+      <div class="shop-grid" id="shopConsumables"></div>
+    </div>
+  </div>
+
+  <!-- MAP PAGE -->
+  <div class="page map-page" id="page-map">
+    <div class="map-header">
+      <span class="map-title">QUEST MAP</span>
+      <span class="map-subtitle" id="mapNodeCount">0 quests</span>
+    </div>
+    <div class="map-viewport" id="mapViewport">
+      <div class="map-canvas" id="mapCanvas"></div>
+    </div>
+    <div class="map-detail" id="mapDetail" style="display:none;">
+      <div class="map-detail-close" data-action="close-detail">&times;</div>
+      <div class="map-detail-title" id="mapDetailTitle"></div>
+      <div class="map-detail-stats">
+        <span class="map-detail-score" id="mapDetailScore"></span>
+        <span class="map-detail-sep">&middot;</span>
+        <span class="map-detail-attempts" id="mapDetailAttempts"></span>
+      </div>
+      <div class="map-detail-status" id="mapDetailStatus"></div>
+      <button class="map-detail-btn" data-action="map-review">Review Quest</button>
+    </div>
+    <div class="map-empty" id="mapEmpty" style="display:none;">
+      <div class="map-empty-icon">?</div>
+      <div class="map-empty-text">Complete your first quest<br>to reveal the map!</div>
+    </div>
+  </div>
+
+  <script src="../scripts/storage.js"></script>
+  <script src="../scripts/achievements.js"></script>
+  <script src="../scripts/map.js"></script>
   <script src="popup.js"></script>
   <script src="particles.js"></script>
 </body>

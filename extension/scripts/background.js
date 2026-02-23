@@ -5,6 +5,37 @@
 
 console.log('YouTube Quizzer: Background script loaded');
 
+// ── Dev auto-reload ──────────────────────────────────────
+// Polls dev-reload.mjs server for file changes and reloads the extension.
+// Safe in production: if the dev server isn't running, polling silently stops.
+(function devAutoReload() {
+  const DEV_RELOAD_URL = 'http://localhost:3001';
+  const POLL_MS = 1500;
+  let lastTs = null;
+  let failures = 0;
+
+  async function poll() {
+    try {
+      const res = await fetch(DEV_RELOAD_URL, { cache: 'no-store' });
+      const data = await res.json();
+      failures = 0;
+      if (lastTs !== null && data.ts !== lastTs) {
+        console.log('[dev-reload] File change detected, reloading extension...');
+        chrome.runtime.reload();
+        return; // reload kills the service worker
+      }
+      lastTs = data.ts;
+    } catch (_) {
+      failures++;
+      // Stop polling after 5 consecutive failures (dev server not running)
+      if (failures >= 5) return;
+    }
+    setTimeout(poll, POLL_MS);
+  }
+
+  poll();
+})();
+
 function encodeConcept(concept) {
     return encodeURIComponent(String(concept || '').trim());
 }

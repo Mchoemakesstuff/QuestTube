@@ -1,135 +1,551 @@
 /* QuestTube - Results Styles
-   Victory screen, scores, rank badges, rewards, level up, review section */
+   Dark Souls minimalist: big score on void, staggered reveals */
 
-/* ============ RESULTS ============ */
+/* ============ RESULTS CONTAINER ============ */
 .ytq-results {
-  padding: 20px;
+  padding: 0;
   font-family: var(--pixel-font);
-  background: linear-gradient(180deg, rgba(22, 33, 62, 0.95) 0%, rgba(10, 20, 40, 0.95) 100%);
+  background: #08080e;
 }
 
-.ytq-score {
-  text-align: center;
-  margin-bottom: 24px;
-  padding: 24px;
-  background: var(--bg-panel);
-  border: 3px solid var(--border);
-  box-shadow:
-    inset -3px -3px 0 var(--border-dark),
-    inset 3px 3px 0 var(--border-light);
-}
-
-.ytq-score-value {
-  font-size: 48px;
-  color: var(--gold);
-  text-shadow: 4px 4px 0 var(--bg-dark);
-}
-
-.ytq-score-label {
-  font-size: 8px;
-  color: var(--text-dim);
-  margin-top: 8px;
-}
-
-/* ============ VICTORY CARD ============ */
+/* ============ MODAL SHELL ============ */
 .ytq-victory-modal {
-  max-width: 980px;
-  width: min(96vw, 980px);
+  max-width: 680px;
+  width: min(94vw, 680px);
+  background: #08080e;
+  border: none;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
 }
 
+/* Floating close button — no header bar */
+.ytq-close-float {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: none;
+  border: none;
+  color: #464658;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.ytq-close-float:hover {
+  color: #807a6e;
+}
+
+/* ============ VICTORY STAGE ============ */
 .ytq-victory-stage {
   position: relative;
-  min-height: 440px;
-  border: 3px solid var(--border);
-  border-radius: 8px;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 32px;
+  background: #08080e;
+  box-shadow: none;
+}
+
+/* ---- Hero area: headline + score + tier ---- */
+.ytq-result-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+/* "QUEST COMPLETE" / "YOU FELL" headline */
+.ytq-result-headline {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #464658;
+  text-shadow: 1px 1px 0 #000;
+  animation: headline-fade 1s ease-out forwards;
+}
+
+@keyframes headline-fade {
+  0%   { opacity: 0; letter-spacing: 12px; }
+  100% { opacity: 1; letter-spacing: 6px; }
+}
+
+/* Animated counter — THE hero element */
+.ytq-score-counter {
+  font-family: var(--pixel-font);
+  font-size: clamp(64px, 14vw, 108px);
+  line-height: 1;
+  color: #2a2940;
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  transition: color 0.6s, text-shadow 0.6s;
+}
+
+.ytq-score-counter.done {
+  color: #fef08a;
+  text-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(250, 204, 21, 0.3),
+    0 0 60px rgba(250, 204, 21, 0.1);
+}
+
+/* ---- Tier emblem ---- */
+.ytq-tier-emblem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: rgba(12, 12, 20, 0.6);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ytq-tier-emblem.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---- Pixel-art tier icons ---- */
+.ytq-tier-pip {
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+}
+
+.ytq-tier-pip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+}
+
+.ytq-tier-name {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ---- Dungeon Master — Gold Crown ---- */
+.ytq-tier-emblem.tier-master {
+  border-color: #fbbf24;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.08) 100%);
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.2);
+}
+
+.ytq-tier-emblem.tier-master .ytq-tier-pip {
+  width: 14px;
+  height: 10px;
+}
+
+.ytq-tier-emblem.tier-master .ytq-tier-pip::after {
+  box-shadow:
+    2px 0 0 #fef08a, 6px 0 0 #fef08a, 10px 0 0 #fef08a,
+    0 2px 0 #f59e0b, 2px 2px 0 #fbbf24, 6px 2px 0 #fbbf24, 10px 2px 0 #fbbf24, 12px 2px 0 #f59e0b,
+    0 4px 0 #fbbf24, 2px 4px 0 #fbbf24, 4px 4px 0 #fef08a, 6px 4px 0 #fbbf24, 8px 4px 0 #fef08a, 10px 4px 0 #fbbf24, 12px 4px 0 #f59e0b,
+    2px 6px 0 #f59e0b, 4px 6px 0 #fbbf24, 6px 6px 0 #f59e0b, 8px 6px 0 #fbbf24, 10px 6px 0 #f59e0b,
+    4px 8px 0 #d4a020, 6px 8px 0 #d4a020, 8px 8px 0 #d4a020;
+}
+
+.ytq-tier-emblem.tier-master .ytq-tier-name {
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+}
+
+/* ---- Knight — Silver Shield ---- */
+.ytq-tier-emblem.tier-knight {
+  border-color: #94a3b8;
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.12) 0%, rgba(100, 116, 139, 0.06) 100%);
+}
+
+.ytq-tier-emblem.tier-knight .ytq-tier-pip {
+  width: 14px;
+  height: 14px;
+}
+
+.ytq-tier-emblem.tier-knight .ytq-tier-pip::after {
+  box-shadow:
+    4px 0 0 #cbd5e1, 6px 0 0 #e2e8f0, 8px 0 0 #cbd5e1,
+    2px 2px 0 #94a3b8, 4px 2px 0 #cbd5e1, 6px 2px 0 #e2e8f0, 8px 2px 0 #cbd5e1, 10px 2px 0 #94a3b8,
+    0 4px 0 #64748b, 2px 4px 0 #94a3b8, 4px 4px 0 #cbd5e1, 6px 4px 0 #e2e8f0, 8px 4px 0 #cbd5e1, 10px 4px 0 #94a3b8, 12px 4px 0 #64748b,
+    0 6px 0 #64748b, 2px 6px 0 #94a3b8, 4px 6px 0 #94a3b8, 6px 6px 0 #cbd5e1, 8px 6px 0 #94a3b8, 10px 6px 0 #94a3b8, 12px 6px 0 #64748b,
+    2px 8px 0 #64748b, 4px 8px 0 #94a3b8, 6px 8px 0 #94a3b8, 8px 8px 0 #94a3b8, 10px 8px 0 #64748b,
+    4px 10px 0 #64748b, 6px 10px 0 #64748b, 8px 10px 0 #64748b,
+    6px 12px 0 #475569;
+}
+
+.ytq-tier-emblem.tier-knight .ytq-tier-name {
+  color: #cbd5e1;
+}
+
+/* ---- Adventurer — Bronze Sword ---- */
+.ytq-tier-emblem.tier-adventurer {
+  border-color: #d97706;
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, rgba(180, 83, 9, 0.06) 100%);
+}
+
+.ytq-tier-emblem.tier-adventurer .ytq-tier-pip {
+  width: 14px;
+  height: 12px;
+}
+
+.ytq-tier-emblem.tier-adventurer .ytq-tier-pip::after {
+  box-shadow:
+    6px 0 0 #fef08a,
+    6px 2px 0 #fbbf24,
+    6px 4px 0 #d97706,
+    0 6px 0 #78716c, 2px 6px 0 #94a3b8, 6px 6px 0 #b45309, 10px 6px 0 #94a3b8, 12px 6px 0 #78716c,
+    6px 8px 0 #57534e,
+    4px 10px 0 #78716c, 6px 10px 0 #57534e, 8px 10px 0 #78716c;
+}
+
+.ytq-tier-emblem.tier-adventurer .ytq-tier-name {
+  color: #fbbf24;
+}
+
+/* ---- Squire — Stone Helmet ---- */
+.ytq-tier-emblem.tier-squire {
+  border-color: #57534e;
+  background: linear-gradient(135deg, rgba(87, 83, 78, 0.12) 0%, rgba(68, 64, 60, 0.06) 100%);
+}
+
+.ytq-tier-emblem.tier-squire .ytq-tier-pip {
+  width: 14px;
+  height: 10px;
+}
+
+.ytq-tier-emblem.tier-squire .ytq-tier-pip::after {
+  box-shadow:
+    2px 0 0 #a8a29e, 4px 0 0 #a8a29e, 6px 0 0 #a8a29e, 8px 0 0 #a8a29e, 10px 0 0 #78716c,
+    0 2px 0 #78716c, 2px 2px 0 #a8a29e, 4px 2px 0 #a8a29e, 6px 2px 0 #a8a29e, 8px 2px 0 #a8a29e, 10px 2px 0 #78716c, 12px 2px 0 #57534e,
+    0 4px 0 #78716c, 4px 4px 0 #57534e, 6px 4px 0 #57534e, 8px 4px 0 #57534e, 12px 4px 0 #57534e,
+    0 6px 0 #57534e, 6px 6px 0 #44403c, 12px 6px 0 #44403c,
+    2px 8px 0 #57534e, 4px 8px 0 #44403c, 8px 8px 0 #44403c, 10px 8px 0 #57534e;
+}
+
+.ytq-tier-emblem.tier-squire .ytq-tier-name {
+  color: #a8a29e;
+}
+
+/* ---- Fallen — Red Skull ---- */
+.ytq-tier-emblem.tier-fallen {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%);
+}
+
+.ytq-tier-emblem.tier-fallen .ytq-tier-pip {
+  width: 14px;
+  height: 12px;
+}
+
+.ytq-tier-emblem.tier-fallen .ytq-tier-pip::after {
+  box-shadow:
+    2px 0 0 #fca5a5, 4px 0 0 #ef4444, 6px 0 0 #ef4444, 8px 0 0 #ef4444, 10px 0 0 #dc2626,
+    0 2px 0 #ef4444, 2px 2px 0 #fca5a5, 4px 2px 0 #ef4444, 6px 2px 0 #ef4444, 8px 2px 0 #ef4444, 10px 2px 0 #dc2626, 12px 2px 0 #b91c1c,
+    0 4px 0 #ef4444, 2px 4px 0 #dc2626, 6px 4px 0 #dc2626, 10px 4px 0 #b91c1c, 12px 4px 0 #b91c1c,
+    0 6px 0 #dc2626, 2px 6px 0 #dc2626, 4px 6px 0 #b91c1c, 6px 6px 0 #dc2626, 8px 6px 0 #b91c1c, 10px 6px 0 #b91c1c, 12px 6px 0 #b91c1c,
+    2px 8px 0 #b91c1c, 4px 8px 0 #b91c1c, 8px 8px 0 #b91c1c, 10px 8px 0 #b91c1c,
+    4px 10px 0 #7f1d1d, 8px 10px 0 #7f1d1d;
+}
+
+.ytq-tier-emblem.tier-fallen .ytq-tier-name {
+  color: #fca5a5;
+}
+
+/* ============ DETAILS — hearts, summary, level-up ============ */
+/* Hidden until JS adds .visible after score counter finishes */
+.ytq-result-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ytq-result-details.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Heart recap row — scaled down, subtle */
+.ytq-heart-recap {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ytq-heart-recap .ytq-hrt {
+  transform: scale(0.9);
+}
+
+/* Compact summary line: "7/10 · +45 XP · +2 coins" */
+.ytq-result-summary {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  color: #464658;
+}
+
+.ytq-summary-stat {
+  color: #807a6e;
+}
+
+.ytq-summary-stat.xp {
+  color: #4ade80;
+}
+
+.ytq-summary-stat.coins {
+  color: #fbbf24;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.ytq-summary-sep {
+  margin: 0 8px;
+  color: #2e2e3e;
+}
+
+.ytq-reward-coin-img {
+  width: 12px;
+  height: 12px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* ---- Floor advancement line ---- */
+.ytq-floor-advance {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.ytq-score-center {
-  text-align: center;
-  padding: 20px;
-}
-
-.ytq-score-core {
+  gap: 8px;
   font-family: var(--pixel-font);
-  font-size: clamp(64px, 14vw, 140px);
-  line-height: 1;
-  color: #fef08a;
-  text-shadow:
-    6px 6px 0 rgba(0, 0, 0, 0.55),
-    0 0 14px rgba(250, 204, 21, 0.5);
+  font-size: 9px;
+  letter-spacing: 1px;
+  margin-top: 6px;
 }
 
-.ytq-score-sub {
-  font-family: var(--pixel-font);
-  font-size: 10px;
-  color: #e2e8f0;
-  margin-top: 16px;
-}
-
-.ytq-play-again-btn {
-  margin-top: 20px;
-  max-width: 320px;
-}
-
-.ytq-terraria-badge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  text-align: right;
-}
-
-.ytq-terraria-rank {
-  font-family: var(--pixel-font);
-  font-size: 48px;
-  color: #fef08a;
-  text-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(254, 240, 138, 0.3);
-  line-height: 1;
-}
-
-.ytq-terraria-stat {
-  font-family: var(--pixel-font);
+.ytq-floor-label { color: #807a6e; }
+.ytq-floor-label.highlight { color: #fef08a; text-shadow: 0 0 8px rgba(254, 240, 138, 0.5); }
+.ytq-floor-arrow { color: #464658; }
+.ytq-floor-zone {
   font-size: 8px;
-  color: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.ytq-floor-status { color: #464658; font-size: 8px; font-style: italic; }
+
+.ytq-floor-advance.floor-up .ytq-floor-arrow { color: #4ade80; }
+.ytq-floor-advance.floor-down .ytq-floor-arrow { color: #ef4444; }
+.ytq-floor-advance.floor-down .ytq-floor-label { color: #ef4444; }
+
+/* Zone-colored backgrounds on the zone name pill */
+.ytq-floor-zone.zone-meadow  { background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.2); }
+.ytq-floor-zone.zone-cave    { background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2); }
+.ytq-floor-zone.zone-dungeon { background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); }
+.ytq-floor-zone.zone-abyss   { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+/* ---- Streak result line ---- */
+.ytq-result-streak {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  letter-spacing: 1px;
   margin-top: 4px;
-  padding-right: 2px;
+}
+
+.ytq-result-streak.streak-up span,
+.ytq-result-streak.streak-maintained span {
+  color: #fbbf24;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.3);
+}
+
+.ytq-result-streak.streak-up span {
+  color: #fef08a;
+  text-shadow: 0 0 10px rgba(254, 240, 138, 0.5);
+}
+
+.ytq-result-streak.streak-frozen span {
+  color: #38bdf8;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.3);
+}
+
+.ytq-result-streak.streak-reset span {
+  color: #464658;
+}
+
+/* Shield icon for streak freeze */
+.ytq-shield-icon {
+  display: inline-block;
+  width: 12px;
+  height: 14px;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.ytq-shield-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow:
+    2px 0 0 #38bdf8, 4px 0 0 #7dd3fc, 6px 0 0 #7dd3fc, 8px 0 0 #38bdf8,
+    0 2px 0 #38bdf8, 2px 2px 0 #7dd3fc, 4px 2px 0 #bae6fd, 6px 2px 0 #7dd3fc, 8px 2px 0 #38bdf8, 10px 2px 0 #0284c7,
+    0 4px 0 #38bdf8, 2px 4px 0 #7dd3fc, 4px 4px 0 #38bdf8, 6px 4px 0 #7dd3fc, 8px 4px 0 #38bdf8, 10px 4px 0 #0284c7,
+    0 6px 0 #0ea5e9, 2px 6px 0 #38bdf8, 4px 6px 0 #38bdf8, 6px 6px 0 #38bdf8, 8px 6px 0 #38bdf8, 10px 6px 0 #0284c7,
+    2px 8px 0 #0ea5e9, 4px 8px 0 #38bdf8, 6px 8px 0 #38bdf8, 8px 8px 0 #0ea5e9,
+    4px 10px 0 #0284c7, 6px 10px 0 #0284c7,
+    4px 12px 0 #075985;
+}
+
+/* ---- Action buttons ---- */
+/* Hidden until JS adds .visible */
+.ytq-result-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  width: 100%;
+  max-width: 340px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ytq-result-actions.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ytq-btn-resume {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.08s, box-shadow 0.08s;
+  background: linear-gradient(180deg, #7c3aed 0%, #5b21b6 100%);
+  border: 2px solid #8b5cf6;
+  color: #fff;
+  box-shadow:
+    inset -2px -2px 0 #4c1d95,
+    inset 2px 2px 0 #a78bfa,
+    3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-btn-resume:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset -2px -2px 0 #4c1d95,
+    inset 2px 2px 0 #a78bfa,
+    5px 5px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-btn-resume:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -2px -2px 0 #4c1d95,
+    inset 2px 2px 0 #a78bfa,
+    1px 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ytq-btn-retry {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.08s, box-shadow 0.08s;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text-dim);
+  box-shadow:
+    inset -2px -2px 0 var(--border-dark),
+    inset 2px 2px 0 var(--border-light),
+    3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.ytq-btn-retry:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-light);
+  color: var(--text);
+}
+
+.ytq-btn-retry:active {
+  transform: translateY(1px);
+}
+
+/* ============ LEVEL UP ============ */
+@keyframes bg-pulse {
+  0%   { background-color: #16a34a; }
+  50%  { background-color: #15803d; }
+  100% { background-color: #16a34a; }
 }
 
 .ytq-level-up-banner {
-  margin-top: 14px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  padding: 10px 16px;
+  margin: 0;
+  border: 2px solid #bef264;
+  border-radius: 6px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+  animation: bg-pulse 2s infinite;
+  text-align: center;
 }
 
-@media (max-width: 920px) {
-  .ytq-victory-stage {
-    min-height: 360px;
-  }
+.ytq-level-up-text {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
 
-  .ytq-terraria-badge {
-    top: 10px;
-    right: 10px;
-  }
-
-  .ytq-terraria-rank {
-    font-size: 36px;
-  }
+.ytq-level-up-details {
+  font-family: var(--pixel-font);
+  font-size: 9px;
+  color: #dcfce7;
 }
 
 /* =========================================
    Results — Review Mistakes Section
    ========================================= */
 .ytq-review-section {
-  padding: 12px 16px 16px;
-  border-top: 2px dashed #1c3a6e;
+  padding: 16px 24px 20px;
+  border-top: 1px solid #1a1925;
 }
 
 .ytq-review-title {
   font-family: var(--pixel-font);
-  font-size: 10px;
+  font-size: 9px;
   color: #ef4444;
   letter-spacing: 2px;
   margin: 0 0 10px;
@@ -140,7 +556,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 140px;
+  max-height: 120px;
   overflow-y: auto;
 }
 
@@ -149,18 +565,19 @@
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
-  background: rgba(14, 22, 42, 0.7);
-  border: 2px solid #1a2e52;
+  background: rgba(12, 12, 22, 0.7);
+  border: 2px solid #1a1925;
+  border-radius: 4px;
   box-shadow:
-    inset -1px -1px 0 #0a1628,
-    inset 1px 1px 0 #1e3a5e;
+    inset -1px -1px 0 #08080e,
+    inset 1px 1px 0 #2a2940;
 }
 
 .ytq-review-q {
   flex: 1;
   font-family: 'Silkscreen', var(--pixel-font);
   font-size: 10px;
-  color: #a0b4cc;
+  color: #a09888;
   line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -174,6 +591,7 @@
   color: #4ade80;
   background: rgba(74, 222, 128, 0.1);
   border: 2px solid #22c55e;
+  border-radius: 4px;
   padding: 3px 8px;
   cursor: pointer;
   box-shadow:
@@ -186,221 +604,176 @@
 .ytq-review-seek:hover {
   transform: translateY(-1px);
   background: rgba(74, 222, 128, 0.2);
-  box-shadow:
-    inset -1px -1px 0 #16a34a,
-    inset 1px 1px 0 #86efac,
-    3px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
 .ytq-review-seek:active {
   transform: translateY(1px);
-  box-shadow:
-    inset -1px -1px 0 #16a34a,
-    inset 1px 1px 0 #86efac,
-    1px 1px 0 rgba(0, 0, 0, 0.4);
 }
 
-/* Scrollbar for review list */
+/* Scrollbar */
 .ytq-review-list::-webkit-scrollbar {
   width: 6px;
 }
 
 .ytq-review-list::-webkit-scrollbar-track {
-  background: #0a1628;
+  background: #08080e;
 }
 
 .ytq-review-list::-webkit-scrollbar-thumb {
-  background: #1c3a6e;
+  background: #2e2e3e;
+  border-radius: 3px;
 }
 
 .ytq-review-hint {
   margin: 8px 0 0;
   font-family: 'Silkscreen', monospace;
   font-size: 9px;
-  color: #6b8cbe;
+  color: #7a7568;
   text-align: center;
   opacity: 0.8;
 }
 
-/* Legacy rank badge classes retained only to avoid accidental regressions */
-.ytq-rank-badge {
-  display: none;
-}
-
-.ytq-rank-badge.s {
-  background: radial-gradient(circle, #fef08a 0%, #f59e0b 100%);
-  color: #3b2200;
-}
-
-.ytq-rank-badge.a {
-  background: radial-gradient(circle, #bfdbfe 0%, #3b82f6 100%);
-  color: #0b1f46;
-}
-
-.ytq-rank-badge.b {
-  background: radial-gradient(circle, #a7f3d0 0%, #10b981 100%);
-  color: #063d2e;
-}
-
-.ytq-rank-badge.c {
-  background: radial-gradient(circle, #fcd34d 0%, #f97316 100%);
-  color: #4a2400;
-}
-
-.ytq-rank-badge.d {
-  background: radial-gradient(circle, #d1d5db 0%, #6b7280 100%);
-  color: #111827;
-}
-
-.ytq-rank-label {
-  font-size: 7px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.ytq-rank-value {
-  font-size: 22px;
-  line-height: 1;
-  margin-top: 4px;
-}
-
-/* XP Reward Animation */
-.ytq-xp-reward {
-  display: inline-block;
-  background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
-  color: var(--bg-dark);
-  padding: 8px 16px;
-  margin-top: 12px;
-  font-size: 10px;
-  border: 2px solid #16a34a;
-  animation: bounce 0.5s ease infinite;
-}
-
-/* ============ WEAK CONCEPTS ============ */
-.ytq-weak-concepts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.ytq-concept-tag {
-  padding: 6px 12px;
-  background: #3a2a1a;
-  border: 2px solid var(--gold);
-  font-size: 8px;
-  color: var(--gold);
-}
-
-/* ============ SCHEDULE ============ */
-.ytq-schedule {
-  background: var(--bg-panel);
-  border: 2px solid var(--border);
-  padding: 16px;
+/* ============ ACHIEVEMENT TOAST — Dark Souls style ============ */
+.ytq-achievement-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  z-index: 10010;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
+  gap: 12px;
+  padding: 12px 20px;
+  min-width: 280px;
+  max-width: 420px;
+  background: linear-gradient(180deg, #1a1925 0%, #0e0e18 100%);
+  border: 2px solid #8b6914;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 20px rgba(212, 160, 32, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  animation: toast-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
 }
 
-.ytq-schedule-text {
-  color: var(--text);
-  font-size: 8px;
+.ytq-achievement-toast.dismissing {
+  animation: toast-exit 0.5s ease-in forwards;
 }
 
-.ytq-schedule-toggle {
-  position: relative;
-  width: 48px;
-  height: 24px;
-  background: var(--bg-dark);
-  border: 2px solid var(--border);
-  cursor: pointer;
-  transition: all 0.2s;
+@keyframes toast-enter {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(120px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-.ytq-schedule-toggle.active {
-  background: var(--green-dark);
-  border-color: var(--green);
+@keyframes toast-exit {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(40px); }
 }
 
-.ytq-schedule-toggle::after {
+/* Gold shimmer line across the top */
+.ytq-achievement-toast::before {
   content: '';
   position: absolute;
-  width: 16px;
-  height: 16px;
-  background: var(--text);
-  top: 2px;
-  left: 2px;
-  transition: transform 0.2s;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #fbbf24, #fef08a, #fbbf24, transparent);
+  animation: toast-shimmer 2s 0.6s ease-in-out;
 }
 
-.ytq-schedule-toggle.active::after {
-  transform: translateX(24px);
-  background: #fff;
+@keyframes toast-shimmer {
+  0%   { left: -100%; }
+  100% { left: 200%; }
 }
 
-/* ============ REWARDS & LEVEL UP ============ */
-@keyframes bg-pulse {
-  0% {
-    background-color: #16a34a;
-  }
-
-  50% {
-    background-color: #15803d;
-  }
-
-  100% {
-    background-color: #16a34a;
-  }
+/* Tier-colored pip on the left */
+.ytq-toast-pip {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 6px currentColor;
 }
 
-.ytq-rewards {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin: 16px 0;
+.ytq-toast-pip.tier-common    { background: #4ade80; color: #4ade80; }
+.ytq-toast-pip.tier-uncommon  { background: #e9a820; color: #e9a820; }
+.ytq-toast-pip.tier-rare      { background: #f97316; color: #f97316; }
+.ytq-toast-pip.tier-legendary { background: #ef4444; color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
+.ytq-toast-body {
+  flex: 1;
+  min-width: 0;
 }
 
-.ytq-reward-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 2px solid var(--border-dark);
-  border-radius: 4px;
-}
-
-.ytq-reward-icon {
-  font-size: 16px;
-}
-
-.ytq-reward-text {
+.ytq-toast-label {
+  display: block;
   font-family: var(--pixel-font);
-  font-size: 10px;
-  color: var(--yellow);
-}
-
-.ytq-level-up-banner {
-  background: linear-gradient(135deg, #16a34a, #15803d);
-  padding: 16px;
-  margin: 16px 0;
-  border: 2px solid #bef264;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
-  animation: bg-pulse 2s infinite;
-  text-align: center;
-}
-
-.ytq-level-up-text {
-  font-family: var(--pixel-font);
-  font-size: 14px;
-  color: #fff;
+  font-size: 7px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 4px;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  color: #807a6e;
+  margin-bottom: 3px;
 }
 
-.ytq-level-up-details {
+.ytq-toast-name {
+  display: block;
   font-family: var(--pixel-font);
   font-size: 10px;
-  color: #dcfce7;
+  color: #fbbf24;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+  line-height: 1.3;
+}
+
+.ytq-toast-desc {
+  display: block;
+  font-family: var(--body-font);
+  font-size: 20px;
+  color: #a09888;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* Legendary gets extra glow */
+.ytq-achievement-toast.tier-legendary {
+  border-color: #ef4444;
+  box-shadow:
+    inset 0 0 20px rgba(239, 68, 68, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 0 12px rgba(239, 68, 68, 0.2);
+}
+
+.ytq-achievement-toast.tier-legendary .ytq-toast-name {
+  color: #fca5a5;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6), 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.ytq-achievement-toast.tier-legendary::before {
+  background: linear-gradient(90deg, transparent, #ef4444, #fca5a5, #ef4444, transparent);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 500px) {
+  .ytq-victory-stage {
+    padding: 36px 16px 24px;
+  }
+
+  .ytq-score-counter {
+    font-size: clamp(48px, 14vw, 72px);
+  }
+
+  .ytq-result-actions {
+    flex-direction: column;
+  }
+
+  .ytq-heart-recap .ytq-hrt {
+    transform: scale(0.75);
+  }
+
+  .ytq-heart-recap {
+    gap: 4px;
+  }
 }

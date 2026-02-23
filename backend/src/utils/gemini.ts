@@ -11,7 +11,85 @@ interface QuizQuestion {
     options?: { label: string; text: string }[];
     correctAnswer: string;
     concept: string;
+    sourceQuote?: string;
     timestampSeconds?: number;
+}
+
+interface TranscriptSegment {
+    seconds: number;
+    text: string;
+}
+
+/**
+ * Parse a timestamped transcript (e.g. "[1:30] some words [1:35] more words")
+ * into individual segments with their start time in seconds.
+ */
+function parseTimestampedTranscript(timestampedText: string): TranscriptSegment[] {
+    const segments: TranscriptSegment[] = [];
+    const regex = /\[(\d+):(\d{2})\]/g;
+    const markers: { matchEnd: number; seconds: number }[] = [];
+    let match;
+
+    while ((match = regex.exec(timestampedText)) !== null) {
+        const minutes = parseInt(match[1], 10);
+        const secs = parseInt(match[2], 10);
+        markers.push({ matchEnd: match.index + match[0].length, seconds: minutes * 60 + secs });
+    }
+
+    for (let i = 0; i < markers.length; i++) {
+        const start = markers[i].matchEnd;
+        // Text runs until the next timestamp marker (or end of string)
+        const nextMarkerStart = i + 1 < markers.length
+            ? timestampedText.lastIndexOf('[', markers[i + 1].matchEnd)
+            : timestampedText.length;
+        const text = timestampedText.substring(start, nextMarkerStart).trim();
+        if (text) {
+            segments.push({ seconds: markers[i].seconds, text });
+        }
+    }
+
+    return segments;
+}
+
+/**
+ * Given a quote from Gemini and the original timestamped transcript,
+ * find the real timestamp by locating the quote in the transcript text.
+ */
+function findTimestampForQuote(quote: string, timestampedText: string): number | undefined {
+    if (!quote || !timestampedText) return undefined;
+
+    const segments = parseTimestampedTranscript(timestampedText);
+    if (segments.length === 0) return undefined;
+
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const normalizedQuote = norm(quote);
+    const quoteWords = normalizedQuote.split(' ').filter(Boolean);
+    if (quoteWords.length === 0) return undefined;
+
+    let bestScore = 0;
+    let bestTimestamp: number | undefined;
+
+    // Check individual segments
+    for (const seg of segments) {
+        const nSeg = norm(seg.text);
+        if (nSeg.includes(normalizedQuote)) return seg.seconds;
+
+        const segWords = new Set(nSeg.split(' ').filter(Boolean));
+        const score = quoteWords.filter(w => segWords.has(w)).length / quoteWords.length;
+        if (score > bestScore) { bestScore = score; bestTimestamp = seg.seconds; }
+    }
+
+    // Try matching across adjacent segment pairs (quote may span a boundary)
+    for (let i = 0; i < segments.length - 1; i++) {
+        const combined = norm(segments[i].text + ' ' + segments[i + 1].text);
+        if (combined.includes(normalizedQuote)) return segments[i].seconds;
+
+        const combinedWords = new Set(combined.split(' ').filter(Boolean));
+        const score = quoteWords.filter(w => combinedWords.has(w)).length / quoteWords.length;
+        if (score > bestScore) { bestScore = score; bestTimestamp = segments[i].seconds; }
+    }
+
+    return bestScore >= 0.5 ? bestTimestamp : undefined;
 }
 
 interface GeneratedQuiz {
@@ -65,10 +143,14 @@ function getDifficultyInstruction(difficulty: QuizDifficulty): string {
     if (difficulty === 'boss') {
         return [
             'Difficulty: BOSS (genuinely hard)',
+            '- Use a MIX of question types: ~40% multiple_choice, ~30% short_answer, ~30% free_recall.',
+            '- multiple_choice: hard MC with subtle, closely-related distractors. Exactly 4 options (A/B/C/D).',
+            '- short_answer: answer is a precise 1-3 word term, name, or value. No options array.',
+            '- free_recall: ask the student to explain or describe in their own words. correctAnswer is a model answer for comparison.',
             '- Questions should require deep understanding: WHY something works, WHEN it fails, HOW concepts compare.',
             '- Ask about implications, trade-offs, edge cases, and what the speaker explicitly warned against or distinguished.',
             '- At least half the questions should require inference or synthesis across multiple points in the transcript.',
-            '- Distractors should be things the speaker ALMOST said, or that sound correct if you only half-understood the topic.',
+            '- For MC: distractors should be things the speaker ALMOST said, or that sound correct if you only half-understood.',
             '  Use partial truths, common misconceptions, and reversed cause-effect as distractors.',
             '- A student who merely skimmed the video should get ≤50% correct. Reward actual attention and thought.'
         ].join('\n');
@@ -94,6 +176,25 @@ function getModel(): GenerativeModel {
         model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     }
     return model;
+}
+
+async function callWithRetry(gemini: GenerativeModel, prompt: string, maxRetries = 3): Promise<any> {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            return await gemini.generateContent(prompt);
+        } catch (err: any) {
+            const status = err?.status ?? err?.statusCode ?? err?.code;
+            const msg = String(err?.message || '');
+            const is429 = status === 429 || status === '429' || msg.includes('429') || msg.includes('Resource exhausted');
+            if (is429 && attempt < maxRetries) {
+                const delay = Math.pow(2, attempt + 1) * 2000; // 4s, 8s, 16s
+                console.warn(`Rate limited (429). Retrying in ${delay / 1000}s... (attempt ${attempt + 1}/${maxRetries})`);
+                await new Promise(r => setTimeout(r, delay));
+                continue;
+            }
+            throw err;
+        }
+    }
 }
 
 function parseJsonObjectFromText(text: string): any {
@@ -231,7 +332,7 @@ ${priorWeakConcepts.join(', ')}
 
 ${getDifficultyInstruction(normalizedDifficulty)}
 
-DISTRACTOR RULES (critical — this is what makes a good quiz):
+DISTRACTOR RULES (critical — applies to multiple_choice questions):
 - Every distractor MUST be from the same domain/category as the correct answer.
 - Distractors should be things a student might confuse with the correct answer if they didn't fully understand.
 - Use: related concepts, partial truths, reversed relationships, common misconceptions, things mentioned elsewhere in the video but wrong for THIS question.
@@ -246,10 +347,13 @@ QUESTION VARIETY — use a mix of these question styles:
 - "Which of these is NOT true according to the video?" (attention to detail)
 
 FORMAT:
-- All questions must be multiple_choice with exactly 4 options (A/B/C/D).
-- Exactly one option must be correct based on the video content.
+${normalizedDifficulty === 'boss' ? `- Use a mix of question types: multiple_choice, short_answer, and free_recall.
+- For multiple_choice: exactly 4 options (A/B/C/D), correctAnswer is the option label (e.g. "B").
+- For short_answer: NO options array, correctAnswer is the exact expected answer (1-3 words).
+- For free_recall: NO options array, correctAnswer is a model answer the student's response will be compared against.` : `- All questions must be multiple_choice with exactly 4 options (A/B/C/D).
+- Exactly one option must be correct based on the video content.`}
 - Include a short concept label per question.
-- If the transcript contains timestamps like [M:SS], include the approximate timestamp (in seconds) where the concept is discussed. If no timestamps are present, omit the field.
+- For each question, include a "sourceQuote" field: copy a SHORT verbatim snippet (5-15 words) from the transcript that the question is based on. This must be an exact substring from the transcript — do NOT paraphrase.
 - All questions MUST be based on actual transcript content. Do not invent information.
 
 Return ONLY valid JSON in this exact format:
@@ -266,8 +370,22 @@ Return ONLY valid JSON in this exact format:
             ],
             "correctAnswer": "B",
             "concept": "specific topic",
-            "timestampSeconds": 90
-        }
+            "sourceQuote": "exact words copied from the transcript"
+        }${normalizedDifficulty === 'boss' ? `,
+        {
+            "type": "short_answer",
+            "text": "What protocol does the speaker say is used for...?",
+            "correctAnswer": "TCP",
+            "concept": "networking basics",
+            "sourceQuote": "we use TCP for reliable delivery"
+        },
+        {
+            "type": "free_recall",
+            "text": "Explain why the speaker argues that X is better than Y.",
+            "correctAnswer": "The speaker explains that X provides faster throughput because...",
+            "concept": "performance trade-offs",
+            "sourceQuote": "X is better than Y because of the throughput"
+        }` : ''}
     ]
 }
 
@@ -275,7 +393,7 @@ Return ONLY the JSON, no markdown formatting or explanation.`;
 
     try {
         console.log('Generating quiz with Gemini...');
-        const result = await gemini.generateContent(prompt);
+        const result = await callWithRetry(gemini, prompt);
         const response = result.response;
         const text = response.text();
 
@@ -293,6 +411,23 @@ Return ONLY the JSON, no markdown formatting or explanation.`;
 
         const parsed = JSON.parse(jsonText);
         console.log(`Quiz generated: ${parsed.questions?.length || 0} questions`);
+
+        // Resolve sourceQuote → timestampSeconds by finding quotes in the transcript
+        if (Array.isArray(parsed.questions)) {
+            for (const q of parsed.questions) {
+                if (typeof q.sourceQuote === 'string' && q.sourceQuote.trim()) {
+                    const resolved = findTimestampForQuote(q.sourceQuote, truncatedTranscript);
+                    if (resolved !== undefined) {
+                        q.timestampSeconds = resolved;
+                        console.log(`  Timestamp resolved: "${q.sourceQuote.slice(0, 40)}..." → ${resolved}s`);
+                    } else {
+                        console.log(`  Timestamp not found for: "${q.sourceQuote.slice(0, 40)}..."`);
+                    }
+                }
+                // Don't send sourceQuote to the client — it was just for matching
+                delete q.sourceQuote;
+            }
+        }
 
         // Log Token Usage
         const usage = response.usageMetadata;
@@ -386,7 +521,7 @@ Return ONLY the JSON, no markdown formatting.`;
 
     try {
         console.log('Grading quiz with Gemini...');
-        const result = await gemini.generateContent(prompt);
+        const result = await callWithRetry(gemini, prompt);
         const response = result.response;
         const text = response.text();
         const parsed = parseJsonObjectFromText(text);

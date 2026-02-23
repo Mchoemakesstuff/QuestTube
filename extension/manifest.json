@@ -5,14 +5,14 @@
     "description": "Gamified learning for YouTube videos. Complete quests, earn XP, and master knowledge through spaced repetition!",
     "permissions": [
         "activeTab",
-        "scripting",
         "storage",
         "alarms",
         "notifications"
     ],
     "host_permissions": [
         "*://*.youtube.com/*",
-        "http://localhost:3000/*"
+        "http://localhost:3000/*",
+        "http://localhost:3001/*"
     ],
     "background": {
         "service_worker": "scripts/background.js"
@@ -25,6 +25,7 @@
             "js": [
                 "scripts/api.js",
                 "scripts/storage.js",
+                "scripts/achievements.js",
                 "scripts/utils.js",
                 "scripts/sounds.js",
                 "scripts/particles.js",

@@ -6,8 +6,7 @@ import { z } from 'zod';
 
 export const GenerateQuizRequestSchema = z.object({
     videoId: z.string().min(1),
-    title: z.string().min(1),
-    transcriptText: z.string().min(1),
+    title: z.string().optional().default('YouTube Video'),
     questionCount: z.number().int().min(3).max(15).optional().default(8),
     difficulty: z.enum(['easy', 'intermediate', 'boss']).optional().default('intermediate'),
     priorWeakConcepts: z.array(z.string()).optional().default([]),

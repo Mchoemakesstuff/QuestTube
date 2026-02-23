@@ -1,19 +1,19 @@
 /* QuestTube - Visual System V2 Theme
-   Refined variables, sizes, and overrides for the polished look */
+   Dungeon Stone palette — dark caverns, arcane purple, treasure gold */
 
 :root {
-  --bg-dark: #0f1726;
-  --bg-panel: #1a2740;
-  --bg-panel-raised: #223454;
-  --border: #2f4f79;
-  --border-light: #4f76a9;
-  --border-dark: #142038;
-  --gold: #f7c65d;
-  --green: #78d97b;
-  --green-dark: #3ea55e;
-  --red: #f26a6a;
-  --text: #f1f5ff;
-  --text-dim: #9ba9c2;
+  --bg-dark: #0c0c14;
+  --bg-panel: #151520;
+  --bg-panel-raised: #1e1d2a;
+  --border: #2e2e3e;
+  --border-light: #464658;
+  --border-dark: #08080e;
+  --gold: #d4a020;
+  --green: #4ade80;
+  --green-dark: #22c55e;
+  --red: #ef4444;
+  --text: #e0dbd0;
+  --text-dim: #807a6e;
   --pixel-font: 'Press Start 2P', monospace;
   --body-font: 'VT323', monospace;
   --space-2: 8px;
@@ -26,14 +26,14 @@
   --panel-shadow:
     inset -2px -2px 0 var(--border-dark),
     inset 2px 2px 0 var(--border-light),
-    6px 6px 0 rgba(0, 0, 0, 0.35);
+    6px 6px 0 rgba(0, 0, 0, 0.45);
 }
 
 .ytq-overlay {
   background:
-    radial-gradient(circle at 22% 20%, rgba(94, 165, 255, 0.14) 0, rgba(94, 165, 255, 0) 36%),
-    radial-gradient(circle at 80% 82%, rgba(123, 214, 104, 0.12) 0, rgba(123, 214, 104, 0) 38%),
-    rgba(8, 12, 22, 0.93);
+    radial-gradient(circle at 20% 25%, rgba(167, 139, 250, 0.07) 0, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(212, 160, 32, 0.05) 0, transparent 40%),
+    rgba(6, 6, 12, 0.95);
 }
 
 .ytq-modal {
@@ -43,12 +43,99 @@
   border-radius: var(--radius-panel);
   box-shadow: var(--panel-shadow);
   overflow: auto;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.006) 0px,
+      transparent 1px,
+      transparent 4px
+    ),
+    var(--bg-dark);
+}
+
+.ytq-dlg-modal {
+  width: min(94vw, 740px);
+  border: 72px solid transparent;
+  border-radius: 0;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  image-rendering: pixelated;
+  overflow: visible !important;
+  max-height: 92vh !important;
+  padding: 0 !important;
+}
+
+/* Tight spacing — 2-3px gap between frame and content */
+.ytq-dlg-modal .ytq-header,
+.ytq-dlg-modal .ytq-dlg-header {
+  padding: 3px 4px !important;
+}
+
+.ytq-dlg-modal .ytq-hud {
+  padding: 3px 4px !important;
+}
+
+.ytq-dlg-modal .ytq-content {
+  padding: 2px !important;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.ytq-dlg-modal .ytq-question {
+  padding: 10px !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+}
+
+.ytq-dlg-modal .ytq-options {
+  gap: 6px !important;
+}
+
+.ytq-dlg-modal .ytq-option {
+  padding: 14px 12px !important;
+}
+
+.ytq-dlg-modal .ytq-dlg-progress {
+  padding: 3px 4px !important;
+}
+
+.ytq-dlg-modal .ytq-battle-scene {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Retro pixel text inside dialog modal */
+.ytq-dlg-modal .ytq-question-text {
+  font-family: var(--pixel-font) !important;
+  font-size: clamp(12px, 1.6vw, 16px) !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.5px !important;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.3), 0 0 2px rgba(74, 222, 128, 0.15);
+}
+
+.ytq-dlg-modal .ytq-option-text {
+  font-family: var(--pixel-font) !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.3px !important;
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.25), 0 0 2px rgba(74, 222, 128, 0.1);
+}
+
+.ytq-dlg-modal .ytq-textarea {
+  font-family: var(--pixel-font) !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.25);
+}
+
+.ytq-dlg-modal .ytq-fb-text {
+  font-size: 10px !important;
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.2);
 }
 
 .ytq-header {
   padding: var(--space-5);
   border-bottom: var(--panel-stroke);
-  background: linear-gradient(180deg, #243a5f 0%, #1a2842 100%);
+  background: linear-gradient(180deg, #1e1d28 0%, #151520 100%);
 }
 
 .ytq-title {
@@ -94,7 +181,7 @@
 
 .ytq-mode-card {
   border: var(--panel-stroke);
-  background: linear-gradient(180deg, #1e2f4c 0%, #17253e 100%);
+  background: linear-gradient(180deg, #1a1925 0%, #141320 100%);
   box-shadow: var(--panel-shadow);
   padding: var(--space-4);
 }
@@ -121,21 +208,26 @@
   border: var(--panel-stroke);
   border-bottom: none;
   border-radius: 8px 8px 0 0;
-  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.55);
 }
 
 .ytq-question {
   border: var(--panel-stroke);
-  background: linear-gradient(180deg, #1c2c49 0%, #152139 100%);
+  background: linear-gradient(180deg, #1a1925 0%, #141320 100%);
   box-shadow: var(--panel-shadow);
   padding: var(--space-6);
 }
 
 .ytq-question-number {
-  font-family: var(--body-font);
-  font-size: 26px;
+  font-family: var(--pixel-font);
+  font-size: 9px;
   line-height: 1;
   letter-spacing: 0.5px;
+  background: var(--gold);
+  color: var(--bg-dark);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 2px solid #8b6914;
 }
 
 .ytq-question-type {
@@ -157,16 +249,22 @@
 
 .ytq-option {
   border: var(--panel-stroke);
+  border-bottom: 4px solid #08080e;
   border-radius: 8px;
-  background: #121e34;
-  padding: 12px 14px;
+  background: #0e0e18;
+  padding: 14px 18px;
   box-shadow:
-    inset -2px -2px 0 #101a2d,
-    inset 2px 2px 0 #334f79;
+    inset -2px -2px 0 #0a0a12,
+    inset 2px 2px 0 #2a2940;
 }
 
 .ytq-option:hover {
-  background: #1d2f4e;
+  background: #1c1b28;
+  border-bottom-width: 6px;
+  box-shadow:
+    inset -2px -2px 0 #0a0a12,
+    inset 2px 2px 0 #2a2940,
+    0 0 14px rgba(167, 139, 250, 0.1);
 }
 
 .ytq-option-label {
@@ -182,7 +280,7 @@
 .ytq-textarea {
   border: var(--panel-stroke);
   border-radius: 8px;
-  background: #101a2f;
+  background: #0c0c16;
   font-family: var(--body-font);
   font-size: 27px;
   line-height: 1.12;
@@ -238,17 +336,21 @@
 
 .ytq-error {
   border: var(--panel-stroke);
-  background: linear-gradient(180deg, #1a2a45 0%, #13203a 100%);
+  background: linear-gradient(180deg, #1a1925 0%, #141320 100%);
   box-shadow: var(--panel-shadow);
 }
 
 .ytq-error-message {
   font-family: var(--body-font);
   font-size: 28px;
-  color: #ffb4b4;
+  color: #fca5a5;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 500px) {
+  .ytq-dlg-modal {
+    border-width: 48px;
+  }
+
   .ytq-title {
     font-size: 10px;
   }

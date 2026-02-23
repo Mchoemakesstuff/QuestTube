@@ -20,11 +20,11 @@ async function postJsonWithFallback(paths, payload, defaultErrorMessage) {
 
             if (!response.ok) {
                 let message = defaultErrorMessage;
+                const text = await response.text();
                 try {
-                    const error = await response.json();
+                    const error = JSON.parse(text);
                     message = error.message || error.error || message;
                 } catch (parseError) {
-                    const text = await response.text();
                     if (text) message = text;
                 }
 
@@ -54,8 +54,12 @@ async function fetchTranscript(videoId) {
         const response = await fetch(`${API_BASE_URL}/api/transcript/${videoId}`);
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to fetch transcript');
+            let message = 'Failed to fetch transcript';
+            try {
+                const error = await response.json();
+                message = error.error || message;
+            } catch (_) { /* non-JSON response */ }
+            throw new Error(message);
         }
 
         return await response.json();
@@ -108,11 +112,11 @@ async function submitQuiz(videoId, quiz, userAnswers) {
 
         if (!response.ok) {
             let message = 'Failed to submit quiz';
+            const text = await response.text();
             try {
-                const error = await response.json();
+                const error = JSON.parse(text);
                 message = error.message || error.error || message;
             } catch (parseError) {
-                const text = await response.text();
                 if (text) message = text;
             }
             throw new Error(message);

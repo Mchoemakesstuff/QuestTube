@@ -71,7 +71,14 @@
      * Observe YouTube navigation (SPA)
      */
     function observeNavigations() {
-        // YouTube uses History API for navigation
+        // YouTube dispatches this custom event on SPA navigations
+        window.addEventListener('yt-navigate-finish', setup);
+
+        // Fallback for popstate (back/forward)
+        window.addEventListener('popstate', setup);
+
+        // Secondary fallback: lightweight MutationObserver on <title> only,
+        // in case yt-navigate-finish is ever dropped by YouTube
         const observer = new MutationObserver(() => {
             const videoId = getVideoId();
             if (videoId && videoId !== currentVideoId) {
@@ -79,13 +86,10 @@
             }
         });
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-        });
-
-        // Also listen for popstate
-        window.addEventListener('popstate', setup);
+        const titleEl = document.querySelector('title');
+        if (titleEl) {
+            observer.observe(titleEl, { childList: true });
+        }
     }
 
     /**
@@ -222,6 +226,11 @@
      */
     async function handleQuizClick() {
         console.log('YouTube Quizzer: Quiz button clicked');
+        // Pause the video when starting a quest
+        const video = document.querySelector('video');
+        if (video && !video.paused) {
+            video.pause();
+        }
         questSound.playQuestChime();
         await startQuiz();
     }
@@ -279,20 +288,26 @@
                 priorWeakConcepts = await window.QuestTubeStorage.getPriorWeakConcepts();
             }
 
-            // Generate quiz (Gemini analyzes video directly - no transcript needed)
-            const quiz = await window.YouTubeQuizzerAPI.generateQuiz(
-                videoId,
-                title,
-                priorWeakConcepts,
-                modeConfig
-            );
+            // Re-check context before making API call (catches stale scripts after extension reload)
+            if (isExtensionContextInvalidated()) {
+                quizModal.hide();
+                window.location.reload();
+                return false;
+            }
+
+            // Generate quiz — use mock data in demo mode, otherwise call API
+            const quiz = modeConfig.demo
+                ? getDemoQuiz(videoId, title, modeConfig)
+                : await window.YouTubeQuizzerAPI.generateQuiz(videoId, title, priorWeakConcepts, modeConfig);
 
             // Show quiz
             quizModal.showQuiz(quiz);
 
             // Setup submit handler
             quizModal.onSubmit = async (answers) => {
-                const results = await window.YouTubeQuizzerAPI.submitQuiz(videoId, quiz, answers);
+                const results = modeConfig.demo
+                    ? getDemoResults(quiz, answers)
+                    : await window.YouTubeQuizzerAPI.submitQuiz(videoId, quiz, answers);
 
                 // Post-submit persistence should never block result rendering
                 try {
@@ -304,21 +319,28 @@
                             weakConcepts: results.weakConcepts,
                         });
 
-                        await window.QuestTubeStorage.updateStreak();
+                        const streakResult = await window.QuestTubeStorage.updateStreak();
+                        results.streakEvent = streakResult.streakEvent;
+                        results.streakCount = streakResult.stats?.streak || 0;
 
                         await window.QuestTubeStorage.updateConceptModel(
                             results.weakConcepts,
                             results.spacingSchedule
                         );
 
-                        // Award XP: 1 XP per 1% Score (e.g. 80% = 80 XP)
-                        const xpEarned = Math.round(results.score);
+                        // Floor-based reward multiplier
+                        const preStats = await window.QuestTubeStorage.getPlayerStats();
+                        const floorBonus = window.QuestTubeStorage.getFloorBonus(preStats.floor);
+
+                        // Award XP: 1 XP per 1% Score, scaled by floor bonus
+                        const xpEarned = Math.round(results.score * floorBonus);
                         const xpResult = await window.QuestTubeStorage.addXP(xpEarned);
 
-                        // Add Coins: 10 coins for passing (>70%), 20 for perfect
-                        let coinsEarned = 0;
-                        if (results.score >= 70) coinsEarned = 10;
-                        if (results.score === 100) coinsEarned = 20;
+                        // Add Coins: 10 coins for passing (>70%), 20 for perfect, scaled by floor
+                        let baseCoins = 0;
+                        if (results.score >= 70) baseCoins = 10;
+                        if (results.score === 100) baseCoins = 20;
+                        let coinsEarned = Math.round(baseCoins * floorBonus);
                         if (coinsEarned > 0) {
                             const coinsResult = await window.QuestTubeStorage.addCoins(coinsEarned);
                             coinsEarned = Number(coinsResult?.coinsEarned || 0);
@@ -326,6 +348,13 @@
 
                         results.xpResult = xpResult;
                         results.coinsEarned = coinsEarned;
+
+                        // Update persistent floor progression
+                        const floorResult = await window.QuestTubeStorage.updateFloor(
+                            results.score,
+                            modeConfig.mode
+                        );
+                        results.floorResult = floorResult;
 
                         // Save wrong answers for popup review
                         const feedback = Array.isArray(results.questionFeedback) ? results.questionFeedback : [];
@@ -348,6 +377,20 @@
                         }).catch((scheduleError) => {
                             console.error('YouTube Quizzer: Failed to schedule reviews', scheduleError);
                         });
+                    }
+
+                    // Check for newly unlocked achievements
+                    if (window.QuestTubeAchievements) {
+                        const freshStats = await window.QuestTubeStorage.getPlayerStats();
+                        const newBadges = await window.QuestTubeAchievements.checkQuestAchievements({
+                            score: results.score,
+                            mode: modeConfig.mode,
+                            maxCombo: quizModal.maxCombo || 0,
+                            stats: freshStats,
+                        });
+                        if (newBadges.length > 0) {
+                            results.newAchievements = newBadges;
+                        }
                     }
                 } catch (postSubmitError) {
                     console.error('YouTube Quizzer: Post-submit processing failed', postSubmitError);
@@ -389,6 +432,174 @@
             videoElement.removeEventListener('ended', handleVideoEnd);
             videoElement = null;
         }
+    }
+
+    /**
+     * Demo mode — mock quiz data for UI testing without API calls
+     */
+    function getDemoQuiz(videoId, title, modeConfig) {
+        const count = modeConfig.questionCount || 5;
+        const questions = [];
+        const pool = [
+            {
+                type: 'multiple_choice',
+                text: 'What is the main topic discussed in this video?',
+                options: [
+                    { label: 'A', text: 'Machine learning basics' },
+                    { label: 'B', text: 'Cooking techniques' },
+                    { label: 'C', text: 'Space exploration' },
+                    { label: 'D', text: 'Ancient history' },
+                ],
+                correctAnswer: 'A',
+                feedback: 'The video primarily covers machine learning.',
+                concepts: ['main topic'],
+            },
+            {
+                type: 'multiple_choice',
+                text: 'Which framework was mentioned as the most popular?',
+                options: [
+                    { label: 'A', text: 'Django' },
+                    { label: 'B', text: 'React' },
+                    { label: 'C', text: 'Flask' },
+                    { label: 'D', text: 'Vue' },
+                ],
+                correctAnswer: 'B',
+                feedback: 'React was highlighted as the most popular.',
+                concepts: ['frameworks'],
+            },
+            {
+                type: 'short_answer',
+                text: 'What protocol is used for secure web communication?',
+                correctAnswer: 'HTTPS',
+                feedback: 'HTTPS encrypts data in transit.',
+                concepts: ['security'],
+            },
+            {
+                type: 'free_recall',
+                text: 'In your own words, explain why testing is important in software development.',
+                correctAnswer: 'Testing catches bugs early, ensures code works as expected, prevents regressions, and gives developers confidence to refactor.',
+                feedback: 'Testing is a core practice in professional development.',
+                concepts: ['testing'],
+            },
+            {
+                type: 'multiple_choice',
+                text: 'What does "DRY" stand for in programming?',
+                options: [
+                    { label: 'A', text: 'Do Repeat Yourself' },
+                    { label: 'B', text: 'Don\'t Repeat Yourself' },
+                    { label: 'C', text: 'Data Runs Yearly' },
+                    { label: 'D', text: 'Debug Run Yield' },
+                ],
+                correctAnswer: 'B',
+                feedback: 'DRY = Don\'t Repeat Yourself.',
+                concepts: ['principles'],
+            },
+            {
+                type: 'short_answer',
+                text: 'What language is Chrome extensions primarily written in?',
+                correctAnswer: 'JavaScript',
+                feedback: 'Chrome extensions use JavaScript, HTML, and CSS.',
+                concepts: ['web tech'],
+            },
+            {
+                type: 'multiple_choice',
+                text: 'Which data structure uses FIFO ordering?',
+                options: [
+                    { label: 'A', text: 'Stack' },
+                    { label: 'B', text: 'Queue' },
+                    { label: 'C', text: 'Tree' },
+                    { label: 'D', text: 'Graph' },
+                ],
+                correctAnswer: 'B',
+                feedback: 'Queues follow First In, First Out.',
+                concepts: ['data structures'],
+            },
+            {
+                type: 'free_recall',
+                text: 'Describe the difference between authentication and authorization.',
+                correctAnswer: 'Authentication verifies who you are (identity), while authorization determines what you are allowed to do (permissions).',
+                feedback: 'These are distinct security concepts.',
+                concepts: ['security'],
+            },
+            {
+                type: 'multiple_choice',
+                text: 'What is the time complexity of binary search?',
+                options: [
+                    { label: 'A', text: 'O(n)' },
+                    { label: 'B', text: 'O(n²)' },
+                    { label: 'C', text: 'O(log n)' },
+                    { label: 'D', text: 'O(1)' },
+                ],
+                correctAnswer: 'C',
+                feedback: 'Binary search halves the search space each step.',
+                concepts: ['algorithms'],
+            },
+            {
+                type: 'short_answer',
+                text: 'What does API stand for?',
+                correctAnswer: 'Application Programming Interface',
+                feedback: 'APIs define how software components interact.',
+                concepts: ['fundamentals'],
+            },
+            {
+                type: 'multiple_choice',
+                text: 'Which HTTP method is used to update a resource?',
+                options: [
+                    { label: 'A', text: 'GET' },
+                    { label: 'B', text: 'POST' },
+                    { label: 'C', text: 'PUT' },
+                    { label: 'D', text: 'DELETE' },
+                ],
+                correctAnswer: 'C',
+                feedback: 'PUT is the standard method for updating resources.',
+                concepts: ['HTTP'],
+            },
+            {
+                type: 'free_recall',
+                text: 'Explain what a closure is in JavaScript.',
+                correctAnswer: 'A closure is a function that retains access to variables from its outer (enclosing) scope even after the outer function has returned.',
+                feedback: 'Closures are fundamental to JS.',
+                concepts: ['JavaScript'],
+            },
+        ];
+
+        for (let i = 0; i < count; i++) {
+            questions.push(pool[i % pool.length]);
+        }
+
+        return {
+            videoId,
+            title: title || 'Demo Quiz',
+            questions,
+            generatedAt: new Date().toISOString(),
+        };
+    }
+
+    function getDemoResults(quiz, answers) {
+        const total = quiz.questions.length;
+        const feedback = quiz.questions.map((q, i) => {
+            const userAns = answers[i]?.answer || '';
+            const isCorrect = userAns.toLowerCase().trim() === (q.correctAnswer || '').toLowerCase().trim();
+            return {
+                questionIndex: i,
+                isCorrect,
+                userAnswer: userAns,
+                correctAnswer: q.correctAnswer,
+                feedback: q.feedback || '',
+                conceptsMissed: isCorrect ? [] : (q.concepts || []),
+            };
+        });
+        const correctCount = feedback.filter(f => f.isCorrect).length;
+        const score = Math.round((correctCount / total) * 100);
+        return {
+            score,
+            totalQuestions: total,
+            correctCount,
+            questionFeedback: feedback,
+            weakConcepts: feedback.filter(f => !f.isCorrect).flatMap(f => f.conceptsMissed),
+            followUpQuestions: [],
+            spacingSchedule: [],
+        };
     }
 
     // Start

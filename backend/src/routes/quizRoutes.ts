@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { fetchTranscript } from '../utils/transcript';
 import { generateQuizFromTranscript, gradeQuizAnswers } from '../utils/gemini';
+import { GenerateQuizRequestSchema, SubmitQuizRequestSchema } from '../schemas';
 
 /**
  * Register quiz routes
