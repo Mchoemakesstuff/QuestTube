@@ -59,11 +59,6 @@ QuestTube is a Chrome extension that injects a "Quest Available!" button into Yo
 
 ## Setup
 
-### Prerequisites
-- Node.js 18+
-- Google Gemini API key ([get one free](https://aistudio.google.com/apikey))
-- Supadata API key ([sign up](https://supadata.ai/)) — optional, extension falls back to youtube-transcript
-
 ### 1. Clone the repo
 ```bash
 git clone https://github.com/Mchoemakesstuff/QuestTube.git

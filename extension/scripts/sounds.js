@@ -287,12 +287,12 @@ class SoundManager {
 
     const loop = () => {
       if (!this.isPlayingMusic) return;
-      while (nextTime < this.ctx.currentTime + 0.1) {
+      while (nextTime < this.ctx.currentTime + 0.2) {
         this[fn](step, nextTime);
         nextTime += this._eighthNote;
         step = (step + 1) % 32;
       }
-      this.timerID = setTimeout(loop, 25);
+      this.timerID = setTimeout(loop, 100);
     };
 
     loop();
@@ -429,12 +429,12 @@ class SoundManager {
 
     const loop = () => {
       if (!this.isPlayingMusic) return;
-      while (nextTime < this.ctx.currentTime + 0.1) {
+      while (nextTime < this.ctx.currentTime + 0.2) {
         this[fn](step, nextTime);
         nextTime += this._eighthNote;
         step = (step + 1) % 32;
       }
-      this.timerID = setTimeout(loop, 25);
+      this.timerID = setTimeout(loop, 100);
     };
 
     loop();

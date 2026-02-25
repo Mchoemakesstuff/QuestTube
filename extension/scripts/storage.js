@@ -463,6 +463,23 @@ function getFloorBonus(floor) {
     return 1 + Math.min(Math.floor((floor || 1) / 5) * 0.1, 1.0);
 }
 
+/**
+ * Set floor directly (for demo/testing purposes)
+ */
+async function setFloor(targetFloor) {
+    try {
+        const stats = await getPlayerStats();
+        stats.floor = Math.max(1, targetFloor);
+        stats.deepestFloor = Math.max(stats.deepestFloor || 1, stats.floor);
+        await chrome.storage.local.set({ [STORAGE_KEYS.PLAYER_STATS]: stats });
+        console.log(`Floor set to ${stats.floor}`);
+        return stats.floor;
+    } catch (error) {
+        console.error('Failed to set floor:', error);
+        return 1;
+    }
+}
+
 // Export for use in other scripts
 window.QuestTubeStorage = {
     saveQuizAttempt,
@@ -484,6 +501,7 @@ window.QuestTubeStorage = {
     getFloorZone,
     updateFloor,
     getFloorBonus,
+    setFloor,
     // Shop
     SHOP_ITEMS,
     getShopInventory,

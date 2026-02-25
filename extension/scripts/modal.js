@@ -166,6 +166,16 @@ class QuizModal {
     this.sound.playMusic(this._selectedMode);
     this.dismissDungeonDrop();
     this._spawnZoneParticles();
+    this._autoFocusTextarea();
+  }
+
+  /** Auto-focus textarea if the current question has one (short_answer / free_recall) */
+  _autoFocusTextarea() {
+    setTimeout(() => {
+      if (!this.overlay) return;
+      const ta = this.overlay.querySelector('.ytq-textarea');
+      if (ta) ta.focus();
+    }, 80);
   }
 
   /**
@@ -178,6 +188,7 @@ class QuizModal {
 
     const zone = this._zone.zone;
     const count = zone === 'abyss' ? 18 : zone === 'dungeon' ? 12 : zone === 'cave' ? 10 : 14;
+    const frag = document.createDocumentFragment();
 
     for (let i = 0; i < count; i++) {
       const p = document.createElement('span');
@@ -186,14 +197,13 @@ class QuizModal {
       p.style.animationDelay = `${Math.random() * 6}s`;
       p.style.animationDuration = `${3 + Math.random() * 4}s`;
       if (zone === 'meadow') {
-        // Grass blades sway at the bottom
         p.style.bottom = `${Math.random() * 4}%`;
       } else {
-        // Floating particles rise from various heights
         p.style.bottom = `${-5 + Math.random() * 10}%`;
       }
-      modal.appendChild(p);
+      frag.appendChild(p);
     }
+    modal.appendChild(frag);
   }
 
   getModeConfig(mode) {
@@ -658,7 +668,7 @@ class QuizModal {
     // Build heart recap from answer correctness
     const heartsHtml = Array.from({ length: totalQuestions }, (_, i) => {
       const result = this.answerCorrectness[i];
-      const cls = result === 'correct' ? 'filled' : result === 'incorrect' ? 'broken' : '';
+      const cls = result === 'correct' ? 'filled' : result === 'incorrect' ? 'broken' : result === 'recall' ? 'filled' : '';
       return `<span class="ytq-hrt ${cls}"><span class="ytq-hrt-px"></span></span>`;
     }).join('');
 
@@ -1178,11 +1188,13 @@ class QuizModal {
           this.currentQuestionIndex++;
           container.innerHTML = this.renderQuestion(this.currentQuestionIndex);
           this.updateProgressHearts(false);
+          this._autoFocusTextarea();
         }, { once: true });
       } else {
         this.currentQuestionIndex++;
         container.innerHTML = this.renderQuestion(this.currentQuestionIndex);
         this.updateProgressHearts(false);
+        this._autoFocusTextarea();
       }
     } else {
       this.handleSubmit();
@@ -1333,6 +1345,18 @@ class QuizModal {
       const idx = textarea.dataset.question;
       const btn = this.overlay.querySelector(`.ytq-check-btn[data-question="${idx}"]`);
       if (btn) btn.disabled = !textarea.value.trim();
+    });
+
+    // Enter key submits short answer / free recall (Shift+Enter for newline)
+    this.overlay.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' || e.shiftKey) return;
+      const textarea = e.target.closest('.ytq-textarea');
+      if (!textarea || !textarea.value.trim()) return;
+      e.preventDefault();
+      const index = parseInt(textarea.dataset.question);
+      if (this.userAnswers[index] === undefined) {
+        this.checkAnswer(index, textarea.value.trim());
+      }
     });
 
     // Triple-click on floor badge toggles dev controls

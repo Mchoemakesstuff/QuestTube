@@ -246,9 +246,14 @@
     /**
      * Start the quiz flow
      */
+    let isLaunching = false;
     async function startQuiz(options = {}) {
+        if (isLaunching) return false;
+        isLaunching = true;
+
         if (isExtensionContextInvalidated()) {
             console.warn('YouTube Quizzer: Extension context invalidated, refreshing tab...');
+            isLaunching = false;
             window.location.reload();
             return false;
         }
@@ -258,6 +263,7 @@
 
         if (!videoId) {
             console.error('YouTube Quizzer: No videoId found');
+            isLaunching = false;
             return false;
         }
 
@@ -276,6 +282,7 @@
             const modeConfig = await quizModal.showModeSelection();
             if (!modeConfig) {
                 quizModal.hide();
+                isLaunching = false;
                 return false;
             }
 
@@ -299,6 +306,11 @@
             const quiz = modeConfig.demo
                 ? getDemoQuiz(videoId, title, modeConfig)
                 : await window.YouTubeQuizzerAPI.generateQuiz(videoId, title, priorWeakConcepts, modeConfig);
+
+            // Demo mode: add artificial delay to show the full descent animation
+            if (modeConfig.demo) {
+                await new Promise(resolve => setTimeout(resolve, 5000));
+            }
 
             // Show quiz
             quizModal.showQuiz(quiz);
@@ -396,6 +408,17 @@
                     console.error('YouTube Quizzer: Post-submit processing failed', postSubmitError);
                 }
 
+                // Sync backend grading into answerCorrectness so hearts render correctly
+                // (free recall / short answer questions are marked 'recall' locally and
+                // only graded by the backend — update them now before rendering results)
+                if (Array.isArray(results.questionFeedback)) {
+                    for (const fb of results.questionFeedback) {
+                        if (quizModal.answerCorrectness[fb.questionIndex] === 'recall') {
+                            quizModal.answerCorrectness[fb.questionIndex] = fb.isCorrect ? 'correct' : 'incorrect';
+                        }
+                    }
+                }
+
                 quizModal.showResults(results);
             };
 
@@ -410,9 +433,11 @@
             } else {
                 alert(message);
             }
+            isLaunching = false;
             return false;
         }
 
+        isLaunching = false;
         return true;
     }
 
